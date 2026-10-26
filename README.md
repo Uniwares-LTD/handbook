@@ -6,9 +6,11 @@ individual repositories retain their architectural and operational knowledge.
 
 ## Start here
 
+- **[Initialize and use the handbook in another repository](docs/onboarding.md):**
+  clone setup, adoption PR checklist, AGENTS.md and skill entrypoint examples, and
+  the task-start workflow for reading synchronized guidance and documentation.
 - [Work policy](docs/work-policy.md): ownership, readiness, agent authority, completion.
 - [Project operations](docs/project.md): fields, views, workflows, enrollment.
-- [Onboarding](docs/onboarding.md): local clone refresh and deliberate adoption.
 - [Examples](docs/examples.md): issue writing and evidence handoffs.
 - [Provenance](PROVENANCE.md) and [verification](docs/verification.md).
 
@@ -16,6 +18,10 @@ The project URL and identifiers are recorded in [project.json](project.json).
 Only handbook adopts this policy initially. Linking unibase, infrastructure, and
 unitale-mockup to the project does not replace their existing instructions or queues.
 No historical backlog is imported during bootstrap.
+
+Reading the handbook requires repository read access. Adopting it is an explicit
+consumer-repository change: follow the initialization guide before replacing local
+instructions or skills. Merely cloning or linking the repository does not adopt policy.
 
 ## Local checks
 
