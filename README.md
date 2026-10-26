@@ -15,8 +15,9 @@ individual repositories retain their architectural and operational knowledge.
 - [Provenance](PROVENANCE.md) and [verification](docs/verification.md).
 
 The project URL and identifiers are recorded in [project.json](project.json).
-Only handbook adopts this policy initially. Linking unibase, infrastructure, and
-unitale-mockup to the project does not replace their existing instructions or queues.
+Handbook and Unibase adopt this policy. Unibase retains already accepted milestone
+queues; infrastructure and unitale-mockup retain their existing guidance. Project
+association alone never adopts policy or migrates a queue.
 No historical backlog is imported during bootstrap.
 
 Reading the handbook requires repository read access. Adopting it is an explicit
