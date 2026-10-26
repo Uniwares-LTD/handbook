@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "hashFormat": "sha256 LF-normalized text",
+  "files": {
+    ".agents/agents/implementation.md": "7278f47e7b1251b2e0709587c686619217426ed09c43062795d6f875356ad2bd",
+    ".agents/agents/reviewer.md": "5ff09201c69e897962ccb5720f8b174f9cf2dcbee5a5bf526eb889730c217a00",
+    ".agents/repository-adapter.md": "3ba0fb1287abf6667528f60163d4ab172e5da70f3eb2a7b7b390f5ea583eb502",
+    ".agents/skills/capture-project-learnings/SKILL.md": "b24387047ed8555178cbe1facac8cff2b30154b9edd5b79e69773f259f347a24",
+    ".agents/skills/capture-project-learnings/agents/openai.yaml": "88d64c14af35b5804e217a0f9fd61142e8fc712a8a2e5fb9d734408014b1c512",
+    ".agents/skills/capture-project-learnings/assets/lessons-learned-template.md": "bfde5451de0dd602d6214e2b164935ab8801e9f15c1863bf2ee86d7ea8771a33",
+    ".agents/skills/compile-feature-spec/SKILL.md": "ac299930897dbfbac2016973c6f28a4c2ee033177e4937c42b7355829983a9fb",
+    ".agents/skills/compile-feature-spec/agents/openai.yaml": "4294ee2e6f4fa0ea97df363330f9dee8b07c490d5679477224c7acf97aa869a9",
+    ".agents/skills/manage-issues/SKILL.md": "89370f4d6105494bd9fd4da4aca20df66bdb7ae8cc3d3054ce24d5b00dc831ce",
+    ".agents/skills/review-change/SKILL.md": "a2cc54d1185ea9ba758672e364331a6e9d150fafd3bbd17dbc34015587d4ffe6",
+    ".agents/skills/review-change/agents/openai.yaml": "a89e4bc18623e21f2fe83121b268e208a8ab85bd3a2f10d200806cb9092a57ec",
+    ".agents/skills/sync-docs-issues/SKILL.md": "6ed1132d19e755270e512876cd32e8e4e5531df838bce79fd3b51258ff6c9e79",
+    ".agents/skills/sync-docs-issues/agents/openai.yaml": "a70469432fe0b50814a8387931d9c91d44264d798479418f35ed6c0c5e09fcbf",
+    ".agents/skills/work-on-task/SKILL.md": "86d62480b0b3466b555db21d308322ec6d6af6a20d99a973176d4fdaf9afc5de",
+    ".agents/skills/work-on-task/agents/openai.yaml": "fd46b629795ad6275ad1dfcfe6ab07e897b4857727639a75d8235c2b72dfdf92"
+  }
+}

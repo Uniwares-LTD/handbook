@@ -1,0 +1,67 @@
+{
+  "name": "Bug",
+  "description": "Propose a bounded bug for human triage.",
+  "type": "Bug",
+  "body": [
+    {
+      "type": "textarea",
+      "id": "outcome",
+      "attributes": {
+        "label": "Problem and intended outcome"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "scope",
+      "attributes": {
+        "label": "Scope and exclusions"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "acceptance",
+      "attributes": {
+        "label": "Observable acceptance criteria"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "reproduction",
+      "attributes": {
+        "label": "Reproduction steps"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "behavior",
+      "attributes": {
+        "label": "Expected and actual behavior"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "context",
+      "attributes": {
+        "label": "Context, dependencies, and evidence"
+      },
+      "validations": {
+        "required": false
+      }
+    }
+  ]
+}

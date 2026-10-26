@@ -1,0 +1,84 @@
+{
+  "sourceRepository": "Uniwares-LTD/unibase",
+  "sourceRevision": "b2c78f5fc8af4dc55c77f7302b1174c19d5338d8",
+  "skills": {
+    "compile-feature-spec": {
+      "source": "karpishe-experiments/agentic-poc",
+      "sourceRef": "4e1478355843e42e1b27fdc8e33212476a4d4fa3",
+      "sourcePath": ".agents/skills/compile-feature-spec",
+      "upstream": {
+        "source": "karpishe-experiments/core-agent-skills",
+        "sourceType": "github",
+        "sourceRef": "v0.4.0",
+        "skillPath": "skills/compile-feature-spec/SKILL.md",
+        "computedHash": "6eb42d774a921197d17876592d60de23f54b789e3d8a001449e8d1259d7ae134"
+      },
+      "files": {
+        ".agents/skills/compile-feature-spec/SKILL.md": "401671dbc19bda70cb0d3fd3c026260b4c46dcc96a9bcc0a32b59253179bf6e9",
+        ".agents/skills/compile-feature-spec/agents/openai.yaml": "4294ee2e6f4fa0ea97df363330f9dee8b07c490d5679477224c7acf97aa869a9"
+      }
+    },
+    "work-on-task": {
+      "source": "karpishe-experiments/agentic-poc",
+      "sourceRef": "4e1478355843e42e1b27fdc8e33212476a4d4fa3",
+      "sourcePath": ".agents/skills/work-on-task",
+      "upstream": {
+        "source": "karpishe-experiments/core-agent-skills",
+        "sourceType": "github",
+        "sourceRef": "v0.4.0",
+        "skillPath": "skills/work-on-task/SKILL.md",
+        "computedHash": "5752a54a720c7c75875a07ff6504669ab4b2449ec8ab09d5298106445c518337"
+      },
+      "files": {
+        ".agents/skills/work-on-task/SKILL.md": "85fed1929e5be78759e38b7356719492a779ca0bd9072a2fea9c1c52d1c26e92",
+        ".agents/skills/work-on-task/agents/openai.yaml": "fd46b629795ad6275ad1dfcfe6ab07e897b4857727639a75d8235c2b72dfdf92"
+      }
+    },
+    "review-change": {
+      "source": "karpishe-experiments/agentic-poc",
+      "sourceRef": "4e1478355843e42e1b27fdc8e33212476a4d4fa3",
+      "sourcePath": ".agents/skills/review-change",
+      "upstream": {
+        "source": "karpishe-experiments/core-agent-skills",
+        "sourceType": "github",
+        "sourceRef": "v0.4.0",
+        "skillPath": "skills/review-change/SKILL.md",
+        "computedHash": "4b5459cb948348b950785eedbd530dacccd26cac83bc36b5c6633bed76aa7fd1"
+      },
+      "files": {
+        ".agents/skills/review-change/SKILL.md": "b028e5a124b2255d2babe849b2610bd0605b2873f30bf910ec722452ef2bf908",
+        ".agents/skills/review-change/agents/openai.yaml": "a89e4bc18623e21f2fe83121b268e208a8ab85bd3a2f10d200806cb9092a57ec"
+      }
+    },
+    "sync-docs-issues": {
+      "source": "karpishe-experiments/agentic-poc",
+      "sourceRef": "4e1478355843e42e1b27fdc8e33212476a4d4fa3",
+      "sourcePath": ".agents/skills/sync-docs-issues",
+      "upstream": {
+        "source": "karpishe-experiments/core-agent-skills",
+        "sourceType": "github",
+        "sourceRef": "v0.4.0",
+        "skillPath": "skills/sync-docs-issues/SKILL.md",
+        "computedHash": "e81070870cde72ede433dfa063dc303276c2ebb0437a7410bc82be91300d4e8f"
+      },
+      "files": {
+        ".agents/skills/sync-docs-issues/SKILL.md": "6fb54f9af1e1d4489b5c4200c1daee3c0bbfbd8f2b60d28801eb024496d5ac2c",
+        ".agents/skills/sync-docs-issues/agents/openai.yaml": "a70469432fe0b50814a8387931d9c91d44264d798479418f35ed6c0c5e09fcbf"
+      }
+    },
+    "capture-project-learnings": {
+      "source": "karpishe-experiments/agentic-poc",
+      "sourceRef": "4e1478355843e42e1b27fdc8e33212476a4d4fa3",
+      "sourcePath": ".agents/skills/capture-project-learnings",
+      "upstream": {
+        "source": "karpishe-experiments/agentic-poc",
+        "sourceRef": "4e1478355843e42e1b27fdc8e33212476a4d4fa3"
+      },
+      "files": {
+        ".agents/skills/capture-project-learnings/SKILL.md": "f9606a6e5e9ef8674abe811d03a36568f3b1402130ef2875478b92cedfae1722",
+        ".agents/skills/capture-project-learnings/agents/openai.yaml": "88d64c14af35b5804e217a0f9fd61142e8fc712a8a2e5fb9d734408014b1c512",
+        ".agents/skills/capture-project-learnings/assets/lessons-learned-template.md": "bfde5451de0dd602d6214e2b164935ab8801e9f15c1863bf2ee86d7ea8771a33"
+      }
+    }
+  }
+}

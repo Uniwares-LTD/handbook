@@ -1,0 +1,13 @@
+{
+  "name": "uniwares-handbook",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "validate": "npm run check && npm test"
+  }
+}

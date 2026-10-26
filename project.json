@@ -1,0 +1,24 @@
+{
+  "organization": "Uniwares-LTD",
+  "title": "Uniwares",
+  "number": 2,
+  "url": "https://github.com/orgs/Uniwares-LTD/projects/2",
+  "repositories": [
+    "Uniwares-LTD/unibase",
+    "Uniwares-LTD/unitale-mockup",
+    "Uniwares-LTD/infrastructure",
+    "Uniwares-LTD/handbook"
+  ],
+  "adoptedRepositories": [
+    "Uniwares-LTD/handbook"
+  ],
+  "fields": {
+    "Status": "Status",
+    "Priority": "433249524",
+    "Blocked": "433250021",
+    "Size": "433250395",
+    "Start date": "433248647",
+    "Target date": "433248650"
+  },
+  "fieldIdentifierFormat": "GitHub project settings URL suffix; GraphQL IDs resolve at runtime"
+}

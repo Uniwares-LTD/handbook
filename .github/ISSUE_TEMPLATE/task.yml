@@ -1,0 +1,47 @@
+{
+  "name": "Task",
+  "description": "Propose a bounded task for human triage.",
+  "type": "Task",
+  "body": [
+    {
+      "type": "textarea",
+      "id": "outcome",
+      "attributes": {
+        "label": "Problem and intended outcome"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "scope",
+      "attributes": {
+        "label": "Scope and exclusions"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "acceptance",
+      "attributes": {
+        "label": "Observable acceptance criteria"
+      },
+      "validations": {
+        "required": true
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "context",
+      "attributes": {
+        "label": "Context, dependencies, and evidence"
+      },
+      "validations": {
+        "required": false
+      }
+    }
+  ]
+}
