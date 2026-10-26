@@ -10,7 +10,8 @@
     "Uniwares-LTD/handbook"
   ],
   "adoptedRepositories": [
-    "Uniwares-LTD/handbook"
+    "Uniwares-LTD/handbook",
+    "Uniwares-LTD/unibase"
   ],
   "fields": {
     "Status": "Status",

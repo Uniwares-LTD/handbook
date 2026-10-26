@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readFileSync, rmSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
-import { refresh } from '../scripts/refresh-handbook.mjs';
+import { execFileSync, spawn } from 'node:child_process';
+import { refresh, diagnose, intervalMs } from '../scripts/refresh-handbook.mjs';
 import { reconcile } from '../scripts/enroll.mjs';
 
 function fixture(t) {
@@ -18,7 +18,7 @@ function fixture(t) {
   git(seed, 'config', 'user.name', 'Fixture'); git(seed, 'config', 'user.email', 'fixture@example.invalid');
   writeFileSync(path.join(seed, 'policy.md'), 'one'); git(seed, 'add', '.'); git(seed, 'commit', '-m', 'fixture'); git(seed, 'branch', '-M', 'main'); git(seed, 'push', 'origin', 'main');
   git(root, 'clone', remote, clone);
-  return { root, remote, seed, clone, git, run: () => refresh(clone, { origin: remote }) };
+  return { root, remote, seed, clone, git, run: (options = {}) => refresh(clone, { origin: remote, force: true, ...options }) };
 }
 test('clean refresh fast-forwards and records the exact remote baseline', t => {
   const f = fixture(t); const first = f.run();
@@ -54,6 +54,44 @@ test('ahead/diverged main and another branch are preserved', t => {
   writeFileSync(path.join(f.seed,'policy.md'),'remote'); f.git(f.seed,'commit','-am','remote'); f.git(f.seed,'push','origin','main');
   assert(!f.run().fresh); assert.equal(f.git(f.clone,'rev-parse','HEAD'),head);
   f.git(f.clone,'checkout','-b','work'); assert(!f.run().fresh); assert.equal(f.git(f.clone,'branch','--show-current'),'work');
+});
+test('four-hour cache skips fetch, expiry updates and force bypasses the interval', t => {
+  const f = fixture(t), now = Date.now(), first = f.run({ now });
+  writeFileSync(path.join(f.seed, 'policy.md'), 'new'); f.git(f.seed, 'commit', '-am', 'new'); f.git(f.seed, 'push', 'origin', 'main');
+  assert.equal(f.run({ now: now + intervalMs - 1, force: false }).revision, first.revision);
+  const next = f.run({ now: now + intervalMs, force: false });
+  assert.notEqual(next.revision, first.revision);
+  assert.equal(f.run({ now: now + intervalMs + 1 }).mode, 'updated');
+});
+test('offline retries cool down while immutable cache and doctor remain usable', t => {
+  const f = fixture(t), now = Date.now(), first = f.run({ now });
+  rmSync(f.remote, { recursive: true, force: true });
+  const failed = f.run({ force: false, now: now + intervalMs });
+  assert.match(failed.limitation, /Could not fetch/);
+  const metadata = f.git(f.clone, 'rev-parse', '--absolute-git-dir');
+  const attempt = path.join(metadata, 'uniwares-handbook-attempt.json');
+  const before = readFileSync(attempt, 'utf8');
+  assert.equal(f.run({ force: false, now: now + intervalMs + 1000 }).revision, first.revision);
+  assert.equal(readFileSync(attempt, 'utf8'), before);
+  assert.equal(diagnose(f.clone, { origin: f.remote }).revision, first.revision);
+  assert.equal(readFileSync(attempt, 'utf8'), before);
+  f.run({ now: now + intervalMs + 2000 });
+  assert.notEqual(readFileSync(attempt, 'utf8'), before);
+});
+test('simultaneous checks preserve valid metadata and task baseline', async t => {
+  const f = fixture(t), first = f.run();
+  const helper = new URL('../scripts/refresh-handbook.mjs', import.meta.url).href;
+  const code = `import {refresh} from ${JSON.stringify(helper)}; console.log(JSON.stringify(refresh(${JSON.stringify(f.clone)}, {origin:${JSON.stringify(f.remote)},force:true})));`;
+  const run = () => new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, ['--input-type=module', '-e', code], { windowsHide: true });
+    let out = '', err = ''; child.stdout.on('data', data => out += data); child.stderr.on('data', data => err += data);
+    child.on('error', reject); child.on('close', status => status === 0 ? resolve(JSON.parse(out)) : reject(new Error(err)));
+  });
+  const results = await Promise.all([run(), run()]);
+  assert(results.every(item => item.revision === first.revision));
+  const metadata = f.git(f.clone, 'rev-parse', '--absolute-git-dir');
+  assert.equal(JSON.parse(readFileSync(path.join(metadata, 'uniwares-handbook-baseline.json'))).revision, first.revision);
+  assert(!readdirSync(metadata).some(name => name.endsWith('.tmp') || name === 'uniwares-handbook-refresh.lock'));
 });
 const config = { id:'P1',number:2,url:'https://github.com/orgs/Uniwares-LTD/projects/2',organization:'Uniwares-LTD',title:'Uniwares',repositories:['Uniwares-LTD/handbook'] };
 function mock({ failWrite = false, graphErrors = false } = {}) {

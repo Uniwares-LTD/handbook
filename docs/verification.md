@@ -1,5 +1,20 @@
 # Bootstrap verification
 
+## Lazy refresh and consumer onboarding — 2026-10-26
+
+The follow-up change adds four-hour lazy refresh, attempt cooldown, read-only diagnosis
+and concurrent-refresh protection. All twelve handbook tests and static checks passed.
+The dependent Unibase launcher passed five fixture tests and an end-to-end local Git
+test covering setup, cache reuse, shared resource reads, offline operation and a dirty
+helper. Its skill/docs checks and derived-project initializer fixture also passed.
+The current change was reviewed in a separate read-only pass by the same agent.
+No independent-agent or fresh-session client acceptance is claimed. Codex VS Code
+extension and desktop app acceptance remain pending; see [onboarding](onboarding.md).
+Publish handbook before the dependent Unibase change; merge/activation are separate
+from this implementation evidence. No live issue event was exercised.
+
+The remaining record describes the original bootstrap and its then-current adoption state.
+
 Verified on 2026-10-26. [Uniwares project #2](https://github.com/orgs/Uniwares-LTD/projects/2)
 and [handbook](https://github.com/Uniwares-LTD/handbook) are private.
 
