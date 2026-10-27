@@ -35,15 +35,22 @@ remains visible in Active work.
 
 ## Automation and enrollment
 
-Only two workflows are enabled: item added to Backlog and item reopened to Backlog.
-The unconditional item closed to Done workflow is disabled. All auto-close, auto-add (including sub-issues), archive, merge and
-review-driven workflows are disabled. Closure is a human decision under policy. Agents may mirror verified human completion
-to Done or not-planned closure to Cancelled, preserving reasons and duplicate links.
+Target configuration: two workflows enabled, item added to Backlog and item reopened to
+Backlog. Auto-add to project, the unconditional item closed to Done workflow, and all
+auto-close, auto-add sub-issues, archive, merge and review-driven workflows disabled.
+Auto-add to project is still enabled live until a human turns it off; see verification. Closure is a human
+decision under policy. Agents may mirror verified human completion to Done or
+not-planned closure to Cancelled, preserving reasons and duplicate links.
+
+Agent-created issues in adopted repositories reach the project through
+`create-issue.mjs`; issues people create in the GitHub UI are added with the enrollment
+helper. [Verification](verification.md) records the live workflow state.
 
 Handbook is the default repository when creating an issue from the project. Select
 the owning repository for application work. Project drafts are not the work queue;
-create approved repository issues instead. Enroll all new approved issues manually
-or through an agent acting on that assigned work. Set Blocked during enrollment/triage.
+create approved repository issues instead. Agents create them with `create-issue.mjs`,
+which also adds them to this project; enroll human-created issues through an agent acting
+on that assigned work or by hand. Set Blocked during enrollment/triage.
 Do not add PR cards; reference PRs from issue evidence without auto-closing links.
 
 From handbook, `node scripts/enroll.mjs` reports open issues missing from the project.
@@ -55,8 +62,8 @@ partial successful additions are reported and reruns skip enrolled issues.
 
 Use a locally authenticated gh account with repository read and Projects read access;
 applying additions needs Projects write access. A missing scope is reported, never
-silently upgraded. No tokens belong in repository configuration. GitHub Free permits
-one native auto-add workflow; this setup intentionally uses no unattended enrollment.
+silently upgraded. No tokens belong in repository configuration. There is no unattended
+enrollment: no auto-add, scheduled or token-based automation.
 
 For a new repository: approve onboarding, link it to the project, add its full name to
 project.json, then reconcile approved issues. Linking alone neither imports issues

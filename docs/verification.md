@@ -1,5 +1,107 @@
 # Bootstrap verification
 
+## Branch review before merge — 2026-10-27
+
+A fresh-context review of the full branch diff (a delegated read-only agent given only
+the diff, base and rubric) ran `npm run validate` and reported one Blocking finding:
+review-change told agents to delegate without session authorization. Fixed, along with
+medium findings: a stale auto-add state in the Uniwares record and history notes,
+conflicting untracked-fix branch wording, bare commands and `git clean`/`git branch -D`
+missing from gates, and create-issue not reporting labels or type GitHub dropped (one
+regression test added). Wording on advisory checks, sub-issue linking and adopted
+repositories was clarified. Left as noted: the description-budget lint does not parse
+YAML folded descriptions (no current skill uses one). A second same-agent pass over the
+fix diff found no Blocking issues. `npm run validate` passed 55 of 55 tests.
+
+## Durable branches — 2026-10-27
+
+Each repository records one integration branch (`main` or `dev`, also its default branch)
+and optional `_<environment>` deployment branches with their promotion source in the
+repository preferences. Work branches start from and merge into the integration branch;
+deployment branches change only through authorized promotion PRs. Readiness checks the
+recorded values offline (not that the default branch matches); one test covers valid
+chains, unknown integration names, missing lines, bad format, out-of-order sources and
+duplicates. Handbook records `main` with no deployment branches. Org survey: all four
+repositories default to `main`; unibase has `_staging`, promoted from `main`. Existing
+work branches with older prefixes are left as they are.
+
+## Explicit enrollment only; handbook-only CI — 2026-10-27
+
+GitHub's auto-add workflow was dropped to simplify setup: agents add every issue through
+`create-issue.mjs`, and issues created elsewhere through `enroll.mjs`, the same way for any
+repository or plan. Setup now asks for Auto-add to project to be off. The CI workflow
+validates the handbook repository only; consumers are not asked to add or enable it.
+
+## Adopted practices from an external guidance review — 2026-10-27
+
+Generic practices from a read-only review of another repository's agent guidance were
+adapted in the handbook's own words; decisions and the reviewed revision are in
+[provenance](../PROVENANCE.md#adoption-decisions). New communication guidance applies to
+every task; engineering, review, authority, issue-management, documentation and
+source-map guidance gained compact rules. Tooling: a CI workflow running
+`npm run validate`; lints for skill catalogs, tool-neutral wording and description
+budgets; an empty-source guard in sync; and a shared gated-command list that sync merges
+into consumer lists and `.claude/settings.json` add-only. Handbook's own settings were
+generated (160 ask entries: 40 commands, bare and with arguments, for Bash and PowerShell;
+5 deny entries) and re-check reports no drift. New tests cover each
+lint, gate merging that preserves unrelated settings, drift reporting, malformed settings
+and the empty-source guard. The CI workflow has not yet run on GitHub. Codex gate rules
+remain manual. Claude Code's handling of the generated rules was not exercised live.
+
+## Tracking defaults, auto-add and branch workflow — 2026-10-27
+
+Shared guidance now requires every adopted repository to record one tracking project:
+an existing project, an organization-wide project (the default) or a dedicated
+repository project. Offline readiness warns when a consumer omits `tracking`; one new
+fixture test covers that warning and the existing consumer fixture records a project.
+An auto-add enrollment default was added here and later dropped in the same branch;
+see "Explicit enrollment only" above.
+
+Work policy gains a branches-and-integration rule: edit only on an issue branch named
+`<issue-type>/<issue-number>-<issue-slug>`, integrate through a PR, and never commit, merge or fast-forward into
+main directly. AGENTS.md, work-on-task and the implementation contract route to it.
+This change itself started on main before that rule existed; the uncommitted edits were
+moved to a branch before any commit, and main was not modified.
+
+Project operations now lists the browser-only workflow steps and a setup acceptance
+checklist; maintain-project reports setup as partial until it is met.
+
+`scripts/create-issue.mjs` lets agents create an approved issue and add it to the recorded
+tracking project in one step, so agent-created issues no longer depend on auto-add. Preview
+is read-only; apply requires the preview fingerprint, creates once, reuses an auto-added
+item, fills an empty Status with Backlog, sets Blocked and reads both back. Add-plus-readback
+moved from `reconcile` into the shared `enrollItem`, beside shared single-select read/write
+helpers that pass GraphQL variables. Six fixture tests cover preview validation without
+reading project items, duplicate refusal, plain-word paginated search and incomplete-search
+refusal, fingerprint binding, single creation with field readback, auto-added Status reported
+by name, `--resume` after a tracking failure, and an uncertain creation caught by the
+exact-title recent-issue check. A same-agent code review found these defects before
+publication; the fixes and regression tests address them. The
+helper has not been run against live GitHub; the first approved issue it creates is the
+live check.
+
+Repository preferences: `handbook.json` gains a `preferences` reference to a Markdown file
+(`.agents/repository.md` here) that agents load at task start. Its required issue language
+(English by default, or Persian) governs issue titles, bodies and comments; labels, types,
+fields, statuses and branch names stay English. Project setup asks for it and its setup
+acceptance checks it. Readiness warns when a consumer omits the file or the value is
+missing or invalid; one fixture test covers those cases. Handbook records English.
+`npm run validate` passed 47 of 47 tests with clean readiness and entrypoint checks.
+
+Project #2 setup acceptance, checked 2026-10-27:
+
+- Met: handbook.json records `project.json`; readiness reports no tracking warning.
+- Met: [handbook#5](https://github.com/Uniwares-LTD/handbook/issues/5), created before
+  auto-add, was enrolled with `enroll.mjs --apply` (first attempt failed on the network
+  with no write; readback confirmed zero items before the retry). Item added set Status to
+  Backlog; Blocked was set to Not blocked. The helper reports no missing open issues.
+- Met: workflow readback shows Item added and Item reopened on; Item closed, Auto-close
+  issue, Auto-add sub-issues and both pull-request workflows off.
+- Superseded: auto-add is no longer used (see "Explicit enrollment only" above). Readback on 2026-10-27 shows Auto-add
+  to project enabled from the earlier instruction; it must be turned off in the browser.
+- Pending: the first real issue created with `create-issue.mjs` must land in Backlog with
+  Blocked set.
+
 ## Generic tracking and project #2 migration — 2026-10-27
 
 Shared guidance now separates consumer-owned tracking from Handbook's local Uniwares

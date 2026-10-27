@@ -13,11 +13,17 @@ Update the nearest canonical documentation for changed behavior, setup, interfac
 constraints and procedures; otherwise give a concise no-change rationale. Link rather
 than duplicate changing facts. Preserve historical evidence separately from current
 guidance. Check paths, commands, links and generated catalogs named by the adapter.
+Write issue evidence in the issue language from the repository preferences.
 For authorized assigned work in an adopted repository, re-fetch the issue and publish
 concise evidence without overwriting human edits or duplicating comments. State outcome,
 checks, documentation, reviewed revision and remaining acceptance. Do not rewrite scope,
 create follow-ups, accept/cancel or close issues. Verified closure mirroring belongs to manage-issues. New issue proposals require human approval.
 Use capture-project-learnings only for useful verified reusable knowledge.
+
+For user-facing guides, write from what actually shipped. When a decision changes,
+rewrite the affected journey instead of adding a correction. Leave out abandoned
+proposals and issue, PR or review history. Test each sentence: would a reader who never
+saw the planning discussion still need it?
 
 ## Workflow contract
 

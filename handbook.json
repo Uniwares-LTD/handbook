@@ -3,6 +3,7 @@
   "kind": "source",
   "guidance": ".agents/repository-adapter.md",
   "sourceMap": "docs/source-map.md",
+  "preferences": ".agents/repository.md",
   "technologySkills": [],
   "tracking": "project.json"
 }

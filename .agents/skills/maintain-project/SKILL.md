@@ -37,10 +37,15 @@ Use existing documentation/learning/issue skills for subsequent focused maintena
 When tracking setup is authorized, follow [project operations](../../../docs/project.md).
 Resolve the repository organization, inventory accessible projects and accepted queues,
 and distinguish missing access from no projects. On first selection offer reuse, dedicated
-repository project or organization-wide project. Retain later recorded choices.
+repository project or organization-wide project, defaulting to organization-wide. Ask the
+issue language (English by default, or Persian) and confirm the durable branches proposed
+from the repository's default and `_`-prefixed branches; record both in the repository
+preferences declared in handbook.json. Retain later recorded choices.
 Keep identity/mappings and policy references in consumer-owned tracking metadata.
 Preview exact project/field/view/link changes and conflicts before applying authorized
-operations; verify readback and disclose manual steps. Preserve custom content, permissions,
+operations; verify readback and disclose manual steps, including the browser-only
+workflow configuration. Tracking setup is complete only when its setup acceptance in
+project operations is met; otherwise report it as partial. Preserve custom content, permissions,
 existing items and legacy queues. No demonstration issues or implicit migration.
 Before a local workflow override, assess promoting the improvement to shared guidance;
 record a local rationale when specialization is necessary. Shared publication is separate.

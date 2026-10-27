@@ -11,6 +11,13 @@ each actionable finding evidence, affected path, and a minimal correction bounda
 use severity when helpful and keep style preferences non-blocking. Missing checks
 limit evidence; advisory check failures do not automatically block release.
 
+A finding is **Blocking** only when it is discrete, backed by evidence, introduced by
+this change, and needed for acceptance or to prevent a real failure. **Medium** findings
+are worth fixing but do not block; **Informational** notes are context. Pre-existing
+defects are never Blocking for this change. Tag each Blocking finding `within plan`
+(fix it) or `requires re-plan` (return to planning), and keep finding IDs stable across
+review rounds. Only Blocking findings restart the fix loop.
+
 Return `Pass` when no actionable defect remains. Non-blocking suggestions and
 out-of-scope improvements are residual notes, not implementation instructions.
 When applicable, add the `Final comparison` required by `review-change`, comparing
