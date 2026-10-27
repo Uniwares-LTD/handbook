@@ -1,6 +1,31 @@
 {
   "protocolVersion": 1,
   "resourceIndex": "skills-lock.json",
-  "requiredFiles": ["docs/bootstrap.md", "docs/project-guidance.md", "docs/guidance/README.md", "docs/guidance/technology.md", "docs/guidance/engineering.md", "docs/guidance/task-management.md", "scripts/handbook.mjs", "scripts/handbook-integration.mjs"],
-  "skills": ["capture-project-learnings", "compile-feature-spec", "manage-issues", "maintain-project", "review-change", "sync-docs-issues", "work-on-task", "next-best-practices", "vercel-react-best-practices", "web-design-guidelines", "playwright"]
+  "requiredFiles": [
+    "docs/bootstrap.md",
+    "docs/project-guidance.md",
+    "docs/guidance/README.md",
+    "docs/guidance/technology.md",
+    "docs/guidance/engineering.md",
+    "docs/guidance/task-management.md",
+    "scripts/handbook.mjs",
+    "scripts/handbook-integration.mjs",
+    "scripts/tracking-config.mjs",
+    "scripts/project-management.mjs",
+    "scripts/enroll.mjs",
+    "scripts/reconcile-status.mjs"
+  ],
+  "skills": [
+    "capture-project-learnings",
+    "compile-feature-spec",
+    "manage-issues",
+    "maintain-project",
+    "review-change",
+    "sync-docs-issues",
+    "work-on-task",
+    "next-best-practices",
+    "vercel-react-best-practices",
+    "web-design-guidelines",
+    "playwright"
+  ]
 }

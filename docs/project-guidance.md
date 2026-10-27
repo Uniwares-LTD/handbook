@@ -31,3 +31,9 @@ required map sections, local links/anchors, selected skill metadata and instruct
 routing. Warnings exit successfully; execution/usage errors remain failures. It does
 not check external URLs or establish prose accuracy, ownership authority or completeness.
 No private clone, authentication, Git or network is needed for this check.
+
+Optional `tracking` names the consumer's repository-relative tracking JSON. Missing
+selection does not block unrelated work; tracking operations require an explicit choice.
+Keep organization/project identity, included repositories, field/status mappings and
+local policy references there. See [project operations](project.md). Readiness checks
+validate declared local references offline, not live permissions or remote accuracy.

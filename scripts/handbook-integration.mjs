@@ -47,6 +47,18 @@ export function checkReadiness(root) {
   const warnings = [];
   let config;
   try { config = configAt(root); } catch (error) { return { ready: false, warnings: [`handbook.json: ${error.message}`] }; }
+  if (config.tracking !== undefined) {
+    try {
+      const tracking = JSON.parse(read(local(root, config.tracking).target));
+      if (!tracking || (tracking.version !== undefined && tracking.version !== 1) ||
+          (tracking.provider !== undefined && tracking.provider !== 'github') ||
+          typeof tracking.organization !== 'string' || !tracking.organization ||
+          !Array.isArray(tracking.repositories) || !tracking.repositories.length ||
+          tracking.repositories.some(r => typeof r !== 'string' || !/^[A-Za-z0-9-]+\/[\w.-]+$/.test(r) || r.split('/')[0].toLowerCase() !== tracking.organization.toLowerCase())) throw new Error('Invalid organization/repository selection.');
+      if (tracking.number !== undefined && (!Number.isSafeInteger(tracking.number) || tracking.number < 1 || tracking.url !== `https://github.com/orgs/${tracking.organization}/projects/${tracking.number}`)) throw new Error('Project number/URL mismatch.');
+      if (tracking.policy) document(root, tracking.policy);
+    } catch (error) { warnings.push(`tracking: ${error.message}`); }
+  }
   for (const key of ['guidance', 'sourceMap']) {
     try {
       const { text, target } = document(root, config[key]);

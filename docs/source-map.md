@@ -12,7 +12,7 @@
 
 [README](../README.md) routes adoption. [Bootstrap](bootstrap.md) defines task context;
 [work policy](work-policy.md) defines authority; [project operations](project.md) defines
-the existing organization project. [Domains](guidance/README.md) route reusable guidance.
+shared project procedures; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance.
 [Onboarding](onboarding.md) defines integration; [provenance](../PROVENANCE.md) records imports.
 
 ## Commands
@@ -29,7 +29,7 @@ live under Git metadata and are never committed.
 
 ## Ownership
 
-Admins review shared policy under [work policy](work-policy.md); project ownership remains
+Handbook Admins review policy under [local governance](../README.md#contribution); project ownership remains
 with each consumer. No application or deployment is owned here. Individual task ownership
 comes from the assignment, not credentials. [Verification](verification.md) records evidence
 and pending checks. Consumer code maps and application operational facts belong elsewhere.

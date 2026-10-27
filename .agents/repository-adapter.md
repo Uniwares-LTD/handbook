@@ -1,7 +1,7 @@
 # Handbook repository adapter
 
 Canonical policy: docs/work-policy.md. Project configuration: project.json and
-docs/project.md. Setup: README.md and docs/onboarding.md. Evidence: docs/verification.md.
+docs/uniwares-project.md. Shared procedures: docs/project.md. Setup: README.md and docs/onboarding.md. Evidence: docs/verification.md.
 Default branch: main. Initial bootstrap follows the accepted session plan and needs
 no artificial issue. Future substantial work uses issues; trivial low-risk changes
 may be untracked. No backlog migration is authorized by onboarding alone.

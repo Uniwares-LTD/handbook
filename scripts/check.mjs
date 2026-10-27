@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
+import { validateTracking } from './tracking-config.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const walk = directory => readdirSync(path.join(root, directory), { withFileTypes: true }).flatMap(entry => {
@@ -33,7 +34,7 @@ for (const name of ['bug','feature','task','initiative']) {
 }
 JSON.parse(readFileSync(path.join(root, '.github/ISSUE_TEMPLATE/config.yml'), 'utf8'));
 const config = JSON.parse(readFileSync(path.join(root, 'project.json'), 'utf8'));
-assert.equal(config.organization, 'Uniwares-LTD');
+validateTracking(config);
 const hashes = Object.fromEntries(walk('.agents').sort().map(file => {
   const bytes = readFileSync(path.join(root, file));
   const binary = /\.(png|jpg|jpeg|gif|ico|woff2?|pdf|zip)$/i.test(file) || bytes.includes(0);

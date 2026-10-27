@@ -18,8 +18,8 @@ read-only pass. Correct actionable in-scope defects and revalidate affected beha
 Use sync-docs-issues for canonical documentation and authorized evidence updates.
 Do not impose an arbitrary retry limit or make advisory quality warnings release gates.
 Report real build/operational failures. Stop at In review for member acceptance.
-Use manage-issues only within the shared authority policy; never close issues or mark
-Done. Commits, pushes, PRs, merges, deployments and releases need session authorization.
+Use manage-issues only within the shared authority policy; never independently accept/cancel or close issues. Verified human closure
+may be mirrored by manage-issues under the shared policy. Commits, pushes, PRs, merges, deployments and releases need session authorization.
 
 ## Workflow contract
 

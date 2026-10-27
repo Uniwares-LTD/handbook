@@ -1,5 +1,57 @@
 # Bootstrap verification
 
+## Generic tracking and project #2 migration — 2026-10-27
+
+Shared guidance now separates consumer-owned tracking from Handbook's local Uniwares
+configuration. Inventory/preview/apply, explicit enrollment and human-closure mirroring
+use consumer configuration; no consumer implicitly enrolls in Uniwares.
+
+Before live migration, `npm run validate` passed all 37 tests, skill integrity/link
+checks, offline structural readiness and generated-entrypoint drift checks. Execution
+required child-process escalation. The enrollment identity correction and its affected
+tests were rerun successfully. A final read-only readiness-reporting addition passed
+all nine tracking tests (38 tests across the current suite). These tests use mocked
+GitHub APIs, including two unrelated organizations; they are not live API certification.
+A separate same-agent read-only implementation review preceded live changes. Final
+review covered the readiness addition and migration records; no independent-agent review
+is claimed. A subsequent PR-preparation review found that option colors were emitted
+as quoted strings in GraphQL input. The serializer now validates and emits color enum
+literals for both created and preserved options; regression coverage includes GitHub's
+initial Status field, retained option IDs and quoted descriptions.
+After this correction, `npm run validate` passed all 39 tests, integrity/link checks,
+offline readiness and entrypoint drift checks. The separate same-agent final review
+found no remaining blocking defect; live Projects API execution remains unverified.
+
+The signed-in browser refreshed project #2 immediately before migration: the project
+was still empty with seven views. Applied and read back:
+
+- Added Cancelled after Done, retaining the other five status options.
+- Disabled Item closed; only Item added and Item reopened remain enabled, both to Backlog.
+- Renamed Overview to Active work, made it a Status board with `is:issue is:open`,
+  and retained it as the first/default view.
+- Renamed Status board to Triage, a table with
+  `is:issue is:open -status:"Ready","In progress","In review"`.
+- Added Review (`is:issue is:open status:"In review"`) and History (`is:issue is:closed`)
+  tables. History includes Closed and native issue-state reasons.
+- Retained My items, Blocked, By repository, Priority board and Roadmap: nine views total.
+- Updated the project README with closure distinctions, readiness, local coordination
+  and consumer-owned destination choice; verified persistence after reload.
+
+Project identity, privacy, access, repository links and default issue repository were
+not changed. No issues, draft items or demonstration projects were created. No other
+project or Unibase files were modified. The live project settings are applied; this
+Handbook code/documentation publication and merge status is recorded by the PR containing
+this change. Unibase must consume the merged main revision, not this mutable working tree.
+
+Limitations: the CLI credential still lacks `read:project`; API mutations and enrollment
+were fixture-tested, not exercised live. No scopes were changed. Workflow behavior is
+configuration-verified only, pending an authorized real issue. Normal client Git spawning
+still reports `spawnSync git EPERM`; successful elevated tests do not resolve actual
+client-permission verification. Claude runtime checks remain deferred. Earlier sections
+below are historical snapshots, superseded by this section for current project settings.
+
+See the [Unibase handoff](unibase-tracking-handoff.md) for later consumer work.
+
 ## Shared guidance and project ownership — 2026-10-27
 
 Review corrections: candidate validation now parses and links real named exports without

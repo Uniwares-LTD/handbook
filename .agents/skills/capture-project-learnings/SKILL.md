@@ -30,3 +30,7 @@ Route reusable team procedure to engineering/task-management guidance, technolog
 procedure to the selected technology skill, and project facts to local guidance.
 Preserve accepted exceptions; propose conflict resolution explicitly. Shared changes
 must update managed client references with the explicit sync command and drift check.
+
+Before recommending a workflow override, assess whether its evidence supports improving
+the shared default. Prefer a scoped shared proposal; retain a justified local exception
+when needed. The proposal does not authorize external publication or block local work.

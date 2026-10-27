@@ -2,14 +2,14 @@
 
 ## Authority and adoption
 
-This policy applies to handbook and repositories that explicitly adopt it. A user
+These shared defaults apply to Handbook and repositories that explicitly adopt them. A user
 assignment authorizes work within its scope, not arbitrary work found in issues.
 Repository adapters define local architecture, tests, operational boundaries, and
 canonical documents. Reconcile contradictory local rules during adoption; do not
 silently choose a weaker rule. System/developer instructions and explicit session
 instructions remain controlling.
 
-Issues own implementation and documentation queues after adoption. Documents retain
+Repository issues are the default work queue after adoption; preserve explicitly accepted legacy queues and milestones. Documents retain
 decisions, setup, architecture and verified evidence, linking to issues for pending
 work. Historical documents are not a task queue. Small standalone low-risk fixes may
 be untracked. Use one issue per meaningful outcome, not per file or commit.
@@ -22,11 +22,12 @@ be untracked. Use one issue per meaningful outcome, not per file or commit.
 | Ready | Clear scope, acceptance criteria, Priority, and one accountable human assignee |
 | In progress | Assigned member is actively working, possibly with an agent |
 | In review | Implementation/research outcome and relevant evidence are ready for acceptance |
-| Done | Human closed the issue; GitHub closure reason distinguishes completed from not planned |
+| Done | Human accepted completion and closed the issue as completed |
+| Cancelled | Human closed without completion; retain not-planned/duplicate reason and references |
 
-Devs may triage, prioritize and self-assign. Changes to another member's ownership
-must be coordinated. Admins handle reassignment/cancellation when needed. The assigned
-member accepts completion and closes the issue. Reopened work returns to Backlog.
+Local governance identifies who triages, prioritizes, assigns and accepts work; no team
+names or permission model are implied. Keep one accountable human, allowing additional
+contributors. Coordinate ownership changes. The authorized human accepts/cancels and closes. Reopened work returns to Backlog.
 No automatic issue closure or Done transition on PR merge is permitted by default.
 Use ordinary `Related to OWNER/REPO#NUMBER` references, not closing keywords in commits
 or PR descriptions or Development links that auto-close on merge.
@@ -44,7 +45,9 @@ triaged; enrollment/triage explicitly sets Not blocked or Blocked.
 | Enroll existing assigned issue, maintain nonterminal status and blocker metadata, post evidence | Within assigned task in an adopted repository |
 | Create issue or sub-issue | Suggest first; obtain human approval for concrete scope and destination |
 | Assign a member, reprioritize, expand scope | Human decision; do not do independently |
-| Close/reopen issue, mark Done, cancel work | Human member action |
+| Accept/cancel work, close/reopen issue | Human member action |
+| Mirror Done/Cancelled after verified human closure | Authorized maintenance with closure reason and decision evidence; never independent acceptance |
+| Create/configure/link external projects | Explicit authorization of a concrete preview; no implied access changes |
 | Commit, push, publish PR, merge, deploy, release, change access | Separate explicit session authorization |
 
 Suggest discoveries with destination, outcome, scope, acceptance and known duplicates.
@@ -66,9 +69,19 @@ silently substitute a follow-up issue for an unmet criterion.
 
 ## Issue structure
 
-Use native Task, Bug and Feature types. An Initiative is a Task with `initiative`
+Prefer native Task, Bug and Feature types where supported; preserve or explicitly map local equivalents. An Initiative is a Task with `initiative`
 label and native sub-issues. `documentation`, `research`, and `operations` classify
 Tasks; do not duplicate lifecycle/priority in labels. Cross-repository coordination
-lives in handbook; implementation lives in the responsible repository. Search for
+lives in the consumer organization's explicitly chosen coordination repository; implementation
+lives in the responsible repository. Handbook is not a universal issue destination. Search for
 duplicates before proposing or creating work. Use sub-issues for independently owned
 outcomes and checklists for small steps. Size is optional relative effort, not a deadline.
+
+## Improving guidance
+
+Use shared workflows by default. Before tailoring one, assess whether the improvement
+applies to shared guidance and propose that change first. Record project-specific
+overrides with rationale and authoritative local references. A shared proposal neither
+authorizes external publication nor blocks independently authorized local work.
+No universal local/shared winner replaces explicit conflict resolution. Team names,
+project identities, capability limits and organization governance remain local facts.
