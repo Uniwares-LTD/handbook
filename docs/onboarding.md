@@ -10,8 +10,11 @@ not adopt policy, migrate queues or change permissions.
    documents. Confirm authorized local adoption/update scope. Preserve adaptations and
    legacy queues; identify actual conflicts rather than replacing local instructions.
 2. Establish [project guidance and a local source map](project-guidance.md). Reuse
-   canonical documents and select relevant technology skills. External project proposals
-   are optional and separately authorized, never a local setup prerequisite.
+   canonical documents and select relevant technology skills. Record the tracking
+   project per [project operations](project.md): existing, organization-wide (default)
+   or dedicated. Creating or linking a project is separately authorized. Ask the issue
+   language (English by default, or Persian) and record it in the
+   [repository preferences](project-guidance.md#repository-preferences).
 3. Copy [the launcher](../scripts/handbook.mjs) and [offline tool](../scripts/handbook-integration.mjs)
    to the consumer's scripts directory. Reconcile existing copies through reviewed edits.
    Add commands below. No dependency installation or global installation is required.
@@ -31,6 +34,7 @@ Example `handbook.json` (use actual canonical document references):
   "kind": "consumer",
   "guidance": ".agents/repository-adapter.md",
   "sourceMap": "docs/architecture.md#source-map",
+  "preferences": ".agents/repository.md",
   "technologySkills": ["next-best-practices", "vercel-react-best-practices", "web-design-guidelines", "playwright"]
 }
 ```

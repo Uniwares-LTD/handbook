@@ -13,6 +13,7 @@ Update the nearest canonical documentation for changed behavior, setup, interfac
 constraints and procedures; otherwise give a concise no-change rationale. Link rather
 than duplicate changing facts. Preserve historical evidence separately from current
 guidance. Check paths, commands, links and generated catalogs named by the adapter.
+Write issue evidence in the issue language from the repository preferences.
 For authorized assigned work in an adopted repository, re-fetch the issue and publish
 concise evidence without overwriting human edits or duplicating comments. State outcome,
 checks, documentation, reviewed revision and remaining acceptance. Do not rewrite scope,

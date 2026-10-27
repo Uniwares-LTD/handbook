@@ -43,7 +43,7 @@ triaged; enrollment/triage explicitly sets Not blocked or Blocked.
 | --- | --- |
 | Read issue, inspect code, plan and verify | Within assigned task |
 | Enroll existing assigned issue, maintain nonterminal status and blocker metadata, post evidence | Within assigned task in an adopted repository |
-| Create issue or sub-issue | Suggest first; obtain human approval for concrete scope and destination |
+| Create issue or sub-issue | Suggest first; obtain human approval for concrete scope and destination, then create through the [issue helper](project.md#issue-maintenance-and-acceptance), which adds it to the recorded tracking project |
 | Assign a member, reprioritize, expand scope | Human decision; do not do independently |
 | Accept/cancel work, close/reopen issue | Human member action |
 | Mirror Done/Cancelled after verified human closure | Authorized maintenance with closure reason and decision evidence; never independent acceptance |
@@ -69,6 +69,12 @@ silently substitute a follow-up issue for an unmet criterion.
 
 ## Issue structure
 
+Write issue titles, bodies and issue comments, including evidence comments, in the issue
+language recorded in the [repository preferences](project-guidance.md#repository-preferences);
+use English when none is recorded. Labels, issue types, project fields and options,
+status names and branch names stay in English, so branch slugs are English even for
+issues written in Persian.
+
 Prefer native Task, Bug and Feature types where supported; preserve or explicitly map local equivalents. An Initiative is a Task with `initiative`
 label and native sub-issues. `documentation`, `research`, and `operations` classify
 Tasks; do not duplicate lifecycle/priority in labels. Cross-repository coordination
@@ -76,6 +82,24 @@ lives in the consumer organization's explicitly chosen coordination repository; 
 lives in the responsible repository. Handbook is not a universal issue destination. Search for
 duplicates before proposing or creating work. Use sub-issues for independently owned
 outcomes and checklists for small steps. Size is optional relative effort, not a deadline.
+
+## Branches and integration
+
+Never edit, commit or merge on the default branch. Before the first change, create a
+branch from current main named `<issue-type>/<issue-number>-<issue-slug>`:
+
+- `issue-type` is the issue's native type in lowercase: `task`, `bug` or `feature`. An
+  Initiative is a Task, so it uses `task`. Map local equivalents the same way.
+- `issue-number` is the issue number in the owning repository.
+- `issue-slug` is a short lowercase, hyphenated form of the title (letters, digits and
+  hyphens only).
+
+For example, `task/5-review-claude-code-readiness` or `bug/42-fix-login-redirect`.
+Untracked low-risk fixes omit the number: `bug/<slug>` for a defect, otherwise `task/<slug>`. Integrate every change into main through a pull request that
+references its issue with `Related to`; direct pushes, local merges and fast-forwards
+into main are not permitted. Refreshing a checkout from origin is not integration.
+Keep one branch per issue unless the issue explicitly splits delivery. Review happens
+on the PR; merging still needs the session and local governance authorization above.
 
 ## Improving guidance
 

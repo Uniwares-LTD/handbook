@@ -3,7 +3,8 @@
 Explicit session scope and higher-priority instructions control the task. Read
 [work policy](work-policy.md) for action authority and [project operations](project.md)
 when managing tasks, then the consumer's selected tracking configuration and local policy. Shared guidance does not adopt or enroll a repository. Read its
-local guidance and source map declared in `handbook.json`; identify conflicts and
+local guidance, source map and repository preferences declared in `handbook.json`;
+apply the preferences (such as the issue language) to the task; identify conflicts and
 preserve accepted specializations rather than choosing a universal local/shared winner.
 
 At task start run the consumer's `npm run handbook:check`. In Handbook itself use

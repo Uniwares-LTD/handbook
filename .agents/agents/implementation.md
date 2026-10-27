@@ -3,6 +3,8 @@
 Implement only the validated task contract and approved plan. Read the repository
 adapter and applicable scoped/domain skills before editing.
 
+- Work on the issue branch (`<issue-type>/<issue-number>-<issue-slug>`); stop if the
+  checkout is on the default branch.
 - Preserve unrelated work and prefer the smallest clear change.
 - Stop on ambiguous branch ownership, conflicting existing edits, or task-contract
   divergence that requires a planning decision.

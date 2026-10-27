@@ -14,11 +14,30 @@ export function graph(api, query, variables = {}) {
   if (result.errors?.length || !result.data) throw new Error('GitHub GraphQL returned errors; no successful result assumed.');
   return result.data;
 }
-export function reconcile(config, { api = ghJson, apply = [], log = () => {} } = {}) {
-  validateTracking(config);
+export function projectIdOf(config, api = ghJson) {
   if (!Number.isSafeInteger(config.number) || config.number < 1 || !config.url) throw new Error('Project identity is not configured.');
   const projectId = config.id || graph(api, `query($owner:String!){organization(login:$owner){projectV2(number:${config.number}){id}}}`, { owner: config.organization }).organization?.projectV2?.id;
   if (!projectId) throw new Error('Configured project could not be resolved.');
+  return projectId;
+}
+// Adding existing content returns its current item, so callers may run this after auto-add.
+export function enrollItem(api, projectId, contentId) {
+  const data = graph(api, 'mutation($project:ID!,$content:ID!){addProjectV2ItemById(input:{projectId:$project,contentId:$content}){item{id}}}', { project: projectId, content: contentId });
+  const item = data.addProjectV2ItemById?.item?.id;
+  if (!item) throw new Error('Enrollment result missing; inspect project before retrying.');
+  const confirmed = graph(api, 'query($id:ID!){node(id:$id){... on ProjectV2Item{project{id} content{... on Issue{id}}}}}', { id: item }).node;
+  if (confirmed?.project?.id !== projectId || confirmed?.content?.id !== contentId) throw new Error('Enrollment readback mismatch; inspect remote state before retrying.');
+  return item;
+}
+export function readSingleSelect(api, itemId, fieldName) {
+  return graph(api, 'query($id:ID!,$name:String!){node(id:$id){... on ProjectV2Item{fieldValueByName(name:$name){... on ProjectV2ItemFieldSingleSelectValue{optionId}}}}}', { id: itemId, name: fieldName }).node?.fieldValueByName?.optionId ?? null;
+}
+export function setSingleSelect(api, projectId, itemId, fieldId, optionId) {
+  graph(api, 'mutation($project:ID!,$item:ID!,$field:ID!,$option:String!){updateProjectV2ItemFieldValue(input:{projectId:$project,itemId:$item,fieldId:$field,value:{singleSelectOptionId:$option}}){projectV2Item{id}}}', { project: projectId, item: itemId, field: fieldId, option: optionId });
+}
+export function reconcile(config,{ api = ghJson, apply = [], log = () => {} } = {}) {
+  validateTracking(config);
+  const projectId = projectIdOf(config, api);
   const allowed = new Set(config.repositories);
   const requested = [...new Set(apply)];
   for (const ref of requested) if (!/^[A-Za-z0-9-]+\/[\w.-]+#[1-9]\d*$/.test(ref) || !allowed.has(ref.split('#')[0])) throw new Error(`Unenrolled or invalid issue reference: ${ref}`);
@@ -43,11 +62,8 @@ export function reconcile(config, { api = ghJson, apply = [], log = () => {} } =
   for (const ref of requested) {
     const issue = issues.get(ref);
     if (items.has(issue.id)) { skipped.push(ref); continue; }
-    const data = graph(api, 'mutation($project:ID!,$content:ID!){addProjectV2ItemById(input:{projectId:$project,contentId:$content}){item{id}}}', { project: projectId, content: issue.id });
-    if (!data.addProjectV2ItemById?.item?.id) throw new Error('Enrollment result missing; inspect project before retrying.');
-    const confirmed = graph(api, 'query($id:ID!){node(id:$id){... on ProjectV2Item{project{id} content{... on Issue{id}}}}}', { id: data.addProjectV2ItemById.item.id }).node;
-    if (confirmed?.project?.id !== projectId || confirmed?.content?.id !== issue.id) throw new Error('Enrollment readback mismatch; inspect remote state before retrying.');
-    items.add(issue.id); added.push(ref); log({ added: ref, item: data.addProjectV2ItemById.item.id });
+    const item = enrollItem(api, projectId, issue.id);
+    items.add(issue.id); added.push(ref); log({ added: ref, item });
   }
   return { mode: requested.length ? 'apply' : 'report', missing, added, skipped };
 }

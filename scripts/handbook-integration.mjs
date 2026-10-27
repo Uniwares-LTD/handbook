@@ -8,6 +8,7 @@ const sha = text => createHash('sha256').update(text.replace(/\r\n/g, '\n')).dig
 const read = file => readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
 const core = ['capture-project-learnings', 'compile-feature-spec', 'manage-issues', 'maintain-project', 'review-change', 'sync-docs-issues', 'work-on-task'];
 export const mapSections = ['Components', 'Documentation', 'Commands', 'Generated areas', 'Ownership'];
+export const languages = ['English', 'Persian'];
 function local(root, reference) {
   if (typeof reference !== 'string' || !reference || reference.includes('\\') || reference.includes(':')) throw new Error('Use a repository-relative reference.');
   const [file, anchor] = reference.split('#');
@@ -47,6 +48,7 @@ export function checkReadiness(root) {
   const warnings = [];
   let config;
   try { config = configAt(root); } catch (error) { return { ready: false, warnings: [`handbook.json: ${error.message}`] }; }
+  if (config.kind === 'consumer' && config.tracking === undefined) warnings.push('handbook.json: record a tracking project selection (organization-wide by default); see docs/project.md.');
   if (config.tracking !== undefined) {
     try {
       const tracking = JSON.parse(read(local(root, config.tracking).target));
@@ -58,6 +60,14 @@ export function checkReadiness(root) {
       if (tracking.number !== undefined && (!Number.isSafeInteger(tracking.number) || tracking.number < 1 || tracking.url !== `https://github.com/orgs/${tracking.organization}/projects/${tracking.number}`)) throw new Error('Project number/URL mismatch.');
       if (tracking.policy) document(root, tracking.policy);
     } catch (error) { warnings.push(`tracking: ${error.message}`); }
+  }
+  if (config.preferences === undefined) {
+    if (config.kind === 'consumer') warnings.push('handbook.json: record repository preferences, including the issue language (English by default); see docs/project-guidance.md.');
+  } else {
+    try {
+      const value = document(root, config.preferences).text.match(/^- Issue language: (.+)$/m)?.[1]?.trim();
+      if (!languages.includes(value)) throw new Error(`Set "- Issue language:" to one of ${languages.join(', ')}.`);
+    } catch (error) { warnings.push(`preferences: ${error.message}`); }
   }
   for (const key of ['guidance', 'sourceMap']) {
     try {
@@ -106,7 +116,7 @@ function entry(meta, body) {
   return text + `<!-- handbook-managed:${sha(text)} -->\n`;
 }
 function sharedEntry(meta) {
-  return entry(meta, `Use the task's existing Handbook path and full revision. Only if no baseline is\nrecorded, run \`npm run handbook:check\` (or \`node scripts/handbook.mjs check\`).\nRead \`docs/bootstrap.md\`, \`docs/work-policy.md\` and\n\`.agents/skills/${meta.name}/SKILL.md\` with \`git -C PATH show REVISION:FILE\`.\nRead this project's guidance and source map declared in \`handbook.json\`.\nResolve all shared references at that same revision; use \`resources --revision SHA\`\nthrough the launcher for filesystem assets. Never substitute the mutable checkout.\nRetain path/revision in handoffs and resume summaries. If lost, recover from context\nfirst; otherwise establish a new baseline and report the discontinuity.\nIf unavailable, continue under local guidance and pause only dependent decisions.`);
+  return entry(meta, `Use the task's existing Handbook path and full revision. Only if no baseline is\nrecorded, run \`npm run handbook:check\` (or \`node scripts/handbook.mjs check\`).\nRead \`docs/bootstrap.md\`, \`docs/work-policy.md\` and\n\`.agents/skills/${meta.name}/SKILL.md\` with \`git -C PATH show REVISION:FILE\`.\nRead this project's guidance, source map and preferences declared in \`handbook.json\`.\nResolve all shared references at that same revision; use \`resources --revision SHA\`\nthrough the launcher for filesystem assets. Never substitute the mutable checkout.\nRetain path/revision in handoffs and resume summaries. If lost, recover from context\nfirst; otherwise establish a new baseline and report the discontinuity.\nIf unavailable, continue under local guidance and pause only dependent decisions.`);
 }
 function claudeEntry(meta) {
   return entry(meta, `Read and follow the canonical local entrypoint\n[${meta.name}](../../../.agents/skills/${meta.name}/SKILL.md).\nResolve its relative references from that canonical file, not this wrapper.\nFor shared guidance, retain the task's Handbook revision through continuation.\nThis reference grants no hooks, tools, permissions, or delegation authority.`);

@@ -141,7 +141,7 @@ export function preview(config, options = {}) {
   }
   return { version: 1, config, repository: inv.target.repository, fingerprint: hash({ target: inv.target, projects: inv.projects, current, repositories }), operations, conflicts,
     permissions: { projectWrite: current?.viewerCanUpdate ?? 'creation capability must be verified by GitHub', repositoryPermissions: inv.target.permissions },
-    manual: ['Review existing workflow semantics in GitHub: disable unconditional closed-to-Done and all independent acceptance automation; retain added/reopened-to-Backlog where appropriate.', 'Set Active work as the default view, group its board by status and By repository by repository; display closure reason in History. API does not expose all grouping/default/workflow settings.', 'Review scope/acceptance prose and legacy queues; Triage filters alone cannot certify readiness.'] };
+    manual: ['Review existing workflow semantics in GitHub: disable unconditional closed-to-Done and all independent acceptance automation; retain added/reopened-to-Backlog where appropriate.', 'Enable the native auto-add workflow (filter is:issue is:open) for the recorded repository; GitHub Free allows one per project, so other linked repositories keep explicit enrollment.', 'Set Active work as the default view, group its board by status and By repository by repository; display closure reason in History. API does not expose all grouping/default/workflow settings.', 'Review scope/acceptance prose and legacy queues; Triage filters alone cannot certify readiness.'] };
 }
 const optionColors = new Set(['GRAY', 'BLUE', 'GREEN', 'YELLOW', 'ORANGE', 'RED', 'PINK', 'PURPLE']);
 function gql(value, key) {

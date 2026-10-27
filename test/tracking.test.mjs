@@ -8,6 +8,7 @@ import { closureDecision, reconcileStatus } from '../scripts/reconcile-status.mj
 import { loadTracking, validateTracking } from '../scripts/tracking-config.mjs';
 import { checkReadiness } from '../scripts/handbook-integration.mjs';
 import { reconcile } from '../scripts/enroll.mjs';
+import { previewIssue, applyIssue } from '../scripts/create-issue.mjs';
 
 function fixture(org = 'Example', { empty = false } = {}) {
   const repository = `${org}/product`, writes = [];
@@ -191,4 +192,103 @@ test('closure mirrors only confirmed latest human decision and never changes iss
   reconcileStatus(f.config, { ...args, apply: true }); assert.equal(f.writes.length, count);
   f.issue.state = 'open';
   assert.throws(() => reconcileStatus(f.config, { ...args, apply: true }), /no writes/);
+});
+function issueFixture({ duplicates = [], recent = [], autoAdded = false, failEnroll = false, failField = false } = {}) {
+  const f = fixture();
+  f.state.fields.push(
+    { id: 'S', name: 'Status', dataType: 'SINGLE_SELECT', options: ['Backlog', 'Ready', 'In progress', 'In review', 'Done', 'Cancelled'].map(name => ({ id: `s-${name}`, name })) },
+    { id: 'B', name: 'Blocked', dataType: 'SINGLE_SELECT', options: [{ id: 'b-no', name: 'Not blocked' }, { id: 'b-yes', name: 'Blocked' }] });
+  const values = {}, creates = [], adds = [], searches = [], sets = [], queries = [];
+  const created = { number: 9, node_id: 'I', title: 'Review guidance', html_url: 'https://github.com/Example/product/issues/9' };
+  const variable = (args, key) => args.find(a => a.startsWith(`${key}=`))?.slice(key.length + 1);
+  const api = args => {
+    const endpoint = args.find(a => a.startsWith('repos/') || a === 'search/issues');
+    if (endpoint === 'search/issues') { searches.push(variable(args, 'q')); return [{ items: duplicates, total_count: duplicates.length, incomplete_results: false }]; }
+    if (endpoint?.includes('/issues?state=all')) return recent;
+    if (endpoint?.endsWith('/issues/9')) return created;
+    if (endpoint?.endsWith('/labels?per_page=100')) return [[{ name: 'documentation' }]];
+    if (endpoint?.endsWith('/issues') && args.includes('POST')) {
+      creates.push(args);
+      if (autoAdded) values.Status = autoAdded;
+      return created;
+    }
+    const q = variable(args, 'query') ?? '';
+    queries.push(q);
+    if (q.includes('issueTypes')) return { data: { repository: { issueTypes: { nodes: [{ name: 'Task' }, { name: 'Bug' }] } } } };
+    if (q.includes('fieldValueByName')) {
+      const name = variable(args, 'name');
+      return { data: { node: { fieldValueByName: values[name] ? { optionId: values[name] } : null } } };
+    }
+    if (q.includes('addProjectV2ItemById')) { adds.push(q); if (failEnroll) throw new Error('network outcome unknown'); }
+    if (q.includes('updateProjectV2ItemFieldValue')) {
+      if (failField) throw new Error('field write failed');
+      const field = variable(args, 'field'); sets.push(field);
+      values[field === 'S' ? 'Status' : 'Blocked'] = variable(args, 'option');
+      return { data: { updateProjectV2ItemFieldValue: { projectV2Item: { id: 'ITEM' } } } };
+    }
+    return f.api(args);
+  };
+  const spec = { repository: f.repository, title: 'Review guidance', body: 'Outcome, scope and acceptance.', type: 'Task', labels: ['documentation'], blocked: 'Not blocked' };
+  return { ...f, api, spec, values, creates, adds, searches, sets, queries, created };
+}
+const approve = (f, spec = f.spec) => previewIssue(f.config, spec, f).fingerprint;
+test('issue preview validates the spec against tracking and the project without writing or reading items', () => {
+  const f = issueFixture({ duplicates: [{ number: 3, title: 'Review guidance docs', state: 'open', html_url: 'u' }] });
+  const result = previewIssue(f.config, f.spec, f);
+  assert.deepEqual(result.unreviewedDuplicates, [3]);
+  assert.equal(f.writes.length, 0);
+  assert(!f.queries.some(q => q.includes('items(first:')));
+  assert.throws(() => previewIssue(f.config, { ...f.spec, repository: 'Example/other' }, f), /not in the tracking selection/);
+  assert.throws(() => previewIssue(f.config, { ...f.spec, blocked: 'Maybe' }, f), /Missing Blocked option/);
+  assert.throws(() => previewIssue(f.config, { ...f.spec, labels: ['nope'] }, f), /Unknown labels/);
+  assert.throws(() => previewIssue(f.config, { ...f.spec, type: 'Feature' }, f), /type unavailable/);
+  assert.throws(() => applyIssue(f.config, f.spec, { ...f, expect: result.fingerprint }), /Unreviewed duplicate/);
+  assert.equal(f.creates.length, 0);
+});
+test('duplicate search uses plain words, paginates and refuses incomplete results', () => {
+  const f = issueFixture();
+  previewIssue(f.config, { ...f.spec, title: 'Remove -legacy flag (OR "fast": path)' }, f);
+  assert.equal(f.searches.at(-1), `repo:${f.repository} is:issue in:title Remove legacy flag fast path`);
+  const pages = [{ items: [{ number: 1, title: 'a' }], total_count: 2 }, { items: [{ number: 12, title: 'b' }], total_count: 2 }];
+  const paged = args => args.includes('search/issues') ? (assert(args.includes('--paginate')), pages) : f.api(args);
+  assert.deepEqual(previewIssue(f.config, f.spec, { api: paged }).unreviewedDuplicates, [1, 12]);
+  const partial = args => args.includes('search/issues') ? [{ items: [], total_count: 5, incomplete_results: true }] : f.api(args);
+  assert.throws(() => previewIssue(f.config, f.spec, { api: partial }), /incomplete/);
+});
+test('approved issue is created once, added to the project and given Backlog and Blocked', () => {
+  const f = issueFixture();
+  const fingerprint = approve(f);
+  assert.throws(() => applyIssue(f.config, { ...f.spec, title: 'Edited after approval' }, { ...f, expect: fingerprint }), /changed since the approved preview/);
+  assert.equal(f.creates.length, 0);
+  const result = applyIssue(f.config, f.spec, { ...f, expect: fingerprint });
+  assert.deepEqual([result.reference, result.status, result.blocked], [`${f.repository}#9`, 'Backlog', 'Not blocked']);
+  assert.equal(f.creates.length, 1);
+  assert(f.creates[0].includes('type=Task') && f.creates[0].includes('labels[]=documentation'));
+  assert.deepEqual(f.values, { Status: 's-Backlog', Blocked: 'b-no' });
+});
+test('auto-added issue keeps workflow Status and reports its option name', () => {
+  const f = issueFixture({ autoAdded: 's-Ready' });
+  const result = applyIssue(f.config, f.spec, { ...f, expect: approve(f) });
+  assert.equal(result.status, 'Ready');
+  assert.deepEqual(f.sets, ['B']);
+});
+test('tracking failure after creation is resumed without creating again', () => {
+  const failing = issueFixture({ failField: true });
+  assert.throws(() => applyIssue(failing.config, failing.spec, { ...failing, expect: approve(failing) }),
+    /Example\/product#9 exists.*after \[enrolled\].*same --spec and --config plus --resume 9/s);
+  assert.equal(failing.creates.length, 1);
+  const f = issueFixture();
+  const result = applyIssue(f.config, f.spec, { ...f, resume: 9 });
+  assert.deepEqual([result.reference, result.status, f.creates.length], [`${f.repository}#9`, 'Backlog', 0]);
+  assert.throws(() => applyIssue(f.config, { ...f.spec, title: 'Other work' }, { ...f, resume: 9 }), /does not match this spec/);
+});
+test('uncertain creation is caught by the consistent exact-title check, not search', () => {
+  const f = issueFixture();
+  const expect = approve(f);
+  const api = args => args.includes('POST') ? (() => { throw new Error('TLS handshake timeout'); })() : f.api(args);
+  assert.throws(() => applyIssue(f.config, f.spec, { api, expect }), /outcome unknown.*Do not rerun --apply.*--resume/s);
+  assert.equal(f.adds.length, 0);
+  // GitHub created it and search has not indexed it yet; the recent list already shows it.
+  const after = issueFixture({ recent: [{ number: 9, title: ' review  GUIDANCE ', state: 'open', html_url: 'u' }] });
+  assert.deepEqual(previewIssue(after.config, after.spec, after).unreviewedDuplicates, [9]);
 });

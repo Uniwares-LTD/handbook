@@ -1,5 +1,60 @@
 # Bootstrap verification
 
+## Tracking defaults, auto-add and branch workflow — 2026-10-27
+
+Shared guidance now requires every adopted repository to record one tracking project:
+an existing project, an organization-wide project (the default) or a dedicated
+repository project. Offline readiness warns when a consumer omits `tracking`; one new
+fixture test covers that warning and the existing consumer fixture records a project.
+GitHub's native auto-add workflow (`is:issue is:open`) is the default enrollment path;
+explicit enrollment remains for repositories a plan's single Free-tier workflow cannot
+cover and for pre-existing issues. The preview tool lists enabling it as a manual step.
+Handbook's local record names the handbook repository as the auto-add source for project #2.
+
+Work policy gains a branches-and-integration rule: edit only on an issue branch named
+`<issue-type>/<issue-number>-<issue-slug>`, integrate through a PR, and never commit, merge or fast-forward into
+main directly. AGENTS.md, work-on-task and the implementation contract route to it.
+This change itself started on main before that rule existed; the uncommitted edits were
+moved to a branch before any commit, and main was not modified.
+
+Project operations now lists the browser-only workflow steps and a setup acceptance
+checklist; maintain-project reports setup as partial until it is met.
+
+`scripts/create-issue.mjs` lets agents create an approved issue and add it to the recorded
+tracking project in one step, so agent-created issues no longer depend on auto-add. Preview
+is read-only; apply requires the preview fingerprint, creates once, reuses an auto-added
+item, fills an empty Status with Backlog, sets Blocked and reads both back. Add-plus-readback
+moved from `reconcile` into the shared `enrollItem`, beside shared single-select read/write
+helpers that pass GraphQL variables. Six fixture tests cover preview validation without
+reading project items, duplicate refusal, plain-word paginated search and incomplete-search
+refusal, fingerprint binding, single creation with field readback, auto-added Status reported
+by name, `--resume` after a tracking failure, and an uncertain creation caught by the
+exact-title recent-issue check. A same-agent code review found these defects before
+publication; the fixes and regression tests address them. The
+helper has not been run against live GitHub; the first approved issue it creates is the
+live check.
+
+Repository preferences: `handbook.json` gains a `preferences` reference to a Markdown file
+(`.agents/repository.md` here) that agents load at task start. Its required issue language
+(English by default, or Persian) governs issue titles, bodies and comments; labels, types,
+fields, statuses and branch names stay English. Project setup asks for it and its setup
+acceptance checks it. Readiness warns when a consumer omits the file or the value is
+missing or invalid; one fixture test covers those cases. Handbook records English.
+`npm run validate` passed 47 of 47 tests with clean readiness and entrypoint checks.
+
+Project #2 setup acceptance, checked 2026-10-27:
+
+- Met: handbook.json records `project.json`; readiness reports no tracking warning.
+- Met: [handbook#5](https://github.com/Uniwares-LTD/handbook/issues/5), created before
+  auto-add, was enrolled with `enroll.mjs --apply` (first attempt failed on the network
+  with no write; readback confirmed zero items before the retry). Item added set Status to
+  Backlog; Blocked was set to Not blocked. The helper reports no missing open issues.
+- Met: workflow readback shows Item added and Item reopened on; Item closed, Auto-close
+  issue, Auto-add sub-issues and both pull-request workflows off.
+- Pending: no Auto-add to project workflow exists yet; a human must create it in the
+  browser for the handbook repository with `is:issue is:open`.
+- Pending: the first real handbook issue after that must appear in Backlog unaided.
+
 ## Generic tracking and project #2 migration — 2026-10-27
 
 Shared guidance now separates consumer-owned tracking from Handbook's local Uniwares

@@ -2,16 +2,17 @@
   "version": 2,
   "hashFormat": "sha256 LF-normalized text, raw binary",
   "files": {
-    ".agents/agents/implementation.md": "7278f47e7b1251b2e0709587c686619217426ed09c43062795d6f875356ad2bd",
+    ".agents/agents/implementation.md": "b7d00c375c2e576eb1c27b60baaa7b769ce51c8ae134c48d1bd0e65a843b358e",
     ".agents/agents/reviewer.md": "5ff09201c69e897962ccb5720f8b174f9cf2dcbee5a5bf526eb889730c217a00",
     ".agents/repository-adapter.md": "df4fc6cb93967f5f7b7bd6113c1f3cd9cf618033768a388010bc96ede3b9bfdd",
+    ".agents/repository.md": "011f874416cdc694748dff1b02b219dbeaa2891b3d4cfc0d3c0f111e95fd0454",
     ".agents/skills/capture-project-learnings/SKILL.md": "c824d6da302e614583bc05b3fd1b909ef41c296c2e414d95344b4dd4058a2096",
     ".agents/skills/capture-project-learnings/agents/openai.yaml": "88d64c14af35b5804e217a0f9fd61142e8fc712a8a2e5fb9d734408014b1c512",
     ".agents/skills/capture-project-learnings/assets/lessons-learned-template.md": "bfde5451de0dd602d6214e2b164935ab8801e9f15c1863bf2ee86d7ea8771a33",
     ".agents/skills/compile-feature-spec/SKILL.md": "bf05df72bb61807e8aa0289dfefe1a6295f640954d0db909143e37f944b495da",
     ".agents/skills/compile-feature-spec/agents/openai.yaml": "4294ee2e6f4fa0ea97df363330f9dee8b07c490d5679477224c7acf97aa869a9",
-    ".agents/skills/maintain-project/SKILL.md": "f1e1460686d63c7905baf532a36da1a949512d880a8df722326339a637ba0298",
-    ".agents/skills/manage-issues/SKILL.md": "366cb0f0f8d1d33fdf504f5ee71f97aa9f5b8563d1025a61aac0fa3ee8c87638",
+    ".agents/skills/maintain-project/SKILL.md": "c123b038a965dc1e14c50a185beefcd2135597a4437cedd5c4513773f2b33193",
+    ".agents/skills/manage-issues/SKILL.md": "fdb26ffb88e79afa35214dd073f8f924b2f739f20d549194a43309bbcec50804",
     ".agents/skills/next-best-practices/SKILL.md": "420887e3fe236c43246fe174712ab755277a73aff90eafbe4ff1a5c7e112a95c",
     ".agents/skills/next-best-practices/async-patterns.md": "3a5e4a91d8399f0922c4a3b15b3490fbeb7396f976139a92311ea34cfa300584",
     ".agents/skills/next-best-practices/bundling.md": "5496b337073985068c61527e0a89fbf7088faa47b9f92d2dd09a7d070cb48a7c",
@@ -43,7 +44,7 @@
     ".agents/skills/playwright/scripts/playwright_cli.sh": "aa3fdff5d0e4556177f4dfd5f04117e772aa54f94b6a2e34b6c0edf629c6b9b5",
     ".agents/skills/review-change/SKILL.md": "90fe5cfcaa3a867f52936b0defcd318029e4302c210339a40c2b635870e163c6",
     ".agents/skills/review-change/agents/openai.yaml": "a89e4bc18623e21f2fe83121b268e208a8ab85bd3a2f10d200806cb9092a57ec",
-    ".agents/skills/sync-docs-issues/SKILL.md": "15ef437dc4556688531ca477390c400c1232697c7bd0779a958f26e17e4ea4be",
+    ".agents/skills/sync-docs-issues/SKILL.md": "f79590f880ab97da1da8b65fcb8852ca82fd1526c2dff5c01e0b0929eaf4a4fa",
     ".agents/skills/sync-docs-issues/agents/openai.yaml": "a70469432fe0b50814a8387931d9c91d44264d798479418f35ed6c0c5e09fcbf",
     ".agents/skills/vercel-react-best-practices/AGENTS.md": "1fe182a457585dc5d1f532beef4c956f2d071d452a1fa243602297c97b7eb7e4",
     ".agents/skills/vercel-react-best-practices/README.md": "9eafb2123d3b8b2aef41fba0db2648a3f4f49996f8c7c8bb2c86263befd8b48a",
@@ -122,7 +123,7 @@
     ".agents/skills/vercel-react-best-practices/rules/server-parallel-nested-fetching.md": "ad5d9656984d4a959997a2367bf59cc6632297b4634a1dd13a087939d83f30b3",
     ".agents/skills/vercel-react-best-practices/rules/server-serialization.md": "f4c7d68b29c82381baad059c4a7f09e868e71ec9c3115a26ad3ae7d24c0dfe1f",
     ".agents/skills/web-design-guidelines/SKILL.md": "3e0fcb4024e4624d46fdd63c4d4f04c42fb08509a8775eaf9b7a04202b3bf7eb",
-    ".agents/skills/work-on-task/SKILL.md": "40d13fa7de9d4baeecc6b0c9ad7b29a2c77ba902cdc6707c8e089e197966de82",
+    ".agents/skills/work-on-task/SKILL.md": "c41db656b8ac5d3de08765028e8c7b5faeaf7fbff63b66f5ec97ce9f60a8ec70",
     ".agents/skills/work-on-task/agents/openai.yaml": "fd46b629795ad6275ad1dfcfe6ab07e897b4857727639a75d8235c2b72dfdf92"
   }
 }

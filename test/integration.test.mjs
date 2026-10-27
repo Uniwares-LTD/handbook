@@ -10,9 +10,12 @@ const source = fileURLToPath(new URL('..', import.meta.url));
 function fixture(t) {
   const root = mkdtempSync(path.join(tmpdir(), 'handbook-integration-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
-  const config = { version: 1, kind: 'consumer', guidance: 'docs/local.md', sourceMap: 'docs/architecture.md#source-map', technologySkills: ['playwright'] };
+  const config = { version: 1, kind: 'consumer', guidance: 'docs/local.md', sourceMap: 'docs/architecture.md#source-map', technologySkills: ['playwright'], tracking: 'tracking.json', preferences: '.agents/repository.md' };
+  mkdirSync(path.join(root, '.agents'));
+  writeFileSync(path.join(root, '.agents/repository.md'), '# Repository preferences\n\n## Work tracking\n\n- Issue language: Persian\n');
   mkdirSync(path.join(root, 'docs'));
   writeFileSync(path.join(root, 'handbook.json'), JSON.stringify(config));
+  writeFileSync(path.join(root, 'tracking.json'), JSON.stringify({ version: 1, provider: 'github', organization: 'example-org', title: 'Delivery', scope: 'organization', number: 3, url: 'https://github.com/orgs/example-org/projects/3', repositories: ['example-org/product'] }));
   writeFileSync(path.join(root, 'AGENTS.md'), `Run handbook:check. Read ${config.guidance} and ${config.sourceMap}.`);
   writeFileSync(path.join(root, 'docs/local.md'), '# Local\nRead [architecture](architecture.md#source-map).\n');
   writeFileSync(path.join(root, 'docs/architecture.md'), '# Architecture\n\n## Source map\n' + mapSections.map(name => `\n### ${name}\nUnknown; resolve from project evidence.\n`).join(''));
@@ -86,6 +89,31 @@ test('unmanaged consumer skills survive adoption and removed skills are reported
   assert.equal(readFileSync(file, 'utf8'), own);
   rmSync(file);
   assert(syncEntrypoints(root).warnings.some(w => w.includes('Orphan Claude')));
+});
+
+test('issue language preference is required for consumers and limited to English or Persian', t => {
+  const root = fixture(t);
+  syncEntrypoints(root, { source, write: true });
+  const prefs = path.join(root, '.agents/repository.md');
+  writeFileSync(prefs, '# Repository preferences\n\n- Issue language: French\n');
+  assert.deepEqual(checkReadiness(root).warnings, ['preferences: Set "- Issue language:" to one of English, Persian.']);
+  writeFileSync(prefs, '# Repository preferences\n');
+  assert.deepEqual(checkReadiness(root).warnings, ['preferences: Set "- Issue language:" to one of English, Persian.']);
+  const config = JSON.parse(readFileSync(path.join(root, 'handbook.json'), 'utf8'));
+  delete config.preferences;
+  writeFileSync(path.join(root, 'handbook.json'), JSON.stringify(config));
+  assert.match(checkReadiness(root).warnings[0], /record repository preferences, including the issue language/);
+});
+
+test('consumer without a recorded tracking project is reported, not blocked', t => {
+  const root = fixture(t);
+  syncEntrypoints(root, { source, write: true });
+  const config = JSON.parse(readFileSync(path.join(root, 'handbook.json'), 'utf8'));
+  delete config.tracking;
+  writeFileSync(path.join(root, 'handbook.json'), JSON.stringify(config));
+  const result = checkReadiness(root);
+  assert.equal(result.ready, false);
+  assert.deepEqual(result.warnings, ['handbook.json: record a tracking project selection (organization-wide by default); see docs/project.md.']);
 });
 
 test('copied offline tool works independently of its original source tree', async t => {

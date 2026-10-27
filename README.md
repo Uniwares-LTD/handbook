@@ -48,7 +48,8 @@ and mocked GitHub responses, never production services.
 
 ## Contribution
 
-Use a branch and PR for subsequent policy changes. Request review from the Admins team;
+Every change uses an issue branch and a PR; nothing is committed, merged or
+fast-forwarded into main directly. Request review from the Admins team;
 Admin approval is a team procedure, not enforced branch protection on private GitHub
 Free. Devs have write access but must follow that procedure. Never store credentials,
 raw private logs, personal tokens, or machine-specific configuration here.
