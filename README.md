@@ -1,10 +1,23 @@
 # Uniwares handbook
 
-Shared work-management policy and agent skills for Uniwares. This repository is
+Shared technology, engineering and task-management guidance for Uniwares. This repository is
 private. The organization project tracks implementation and documentation work;
 individual repositories retain their architectural and operational knowledge.
 
 ## Start here
+
+For authorized first adoption or an integration update, follow this route:
+
+1. Inspect project instructions, authority and adoption; preserve local adaptations.
+2. Select relevant [domains and technology skills](docs/guidance/README.md).
+3. Establish [project guidance and a local source map](docs/project-guidance.md).
+4. Follow [onboarding](docs/onboarding.md) to reconcile bootstrap and client references.
+5. Initialize or refresh Handbook, retaining one committed revision for the task.
+6. Run offline readiness/drift checks, read shared/local sources, and report evidence.
+
+Use maintain-project for this workflow. Repetition preserves custom content; normal
+refresh never rewrites instructions. Readiness warnings do not block CI. Project maps
+and application facts belong in their owner repositories.
 
 - **[Initialize and use the handbook in another repository](docs/onboarding.md):**
   clone setup, adoption PR checklist, AGENTS.md and skill entrypoint examples, and
@@ -13,6 +26,8 @@ individual repositories retain their architectural and operational knowledge.
 - [Project operations](docs/project.md): fields, views, workflows, enrollment.
 - [Examples](docs/examples.md): issue writing and evidence handoffs.
 - [Provenance](PROVENANCE.md) and [verification](docs/verification.md).
+- [Bootstrap](docs/bootstrap.md), [Handbook source map](docs/source-map.md), and
+  [client acceptance](docs/clients.md).
 
 The project URL and identifiers are recorded in [project.json](project.json).
 Handbook and Unibase adopt this policy. Unibase retains already accepted milestone

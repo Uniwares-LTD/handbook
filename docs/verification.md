@@ -1,5 +1,61 @@
 # Bootstrap verification
 
+## Shared guidance and project ownership — 2026-10-27
+
+Review corrections: candidate validation now parses and links real named exports without
+executing candidate code, so comments/string literals cannot conceal a missing export.
+Doctor catches malformed consumer metadata and returns actionable warnings alongside
+baseline diagnostics. The full validation suite passed 29 tests with explicit
+child-process escalation, including both regressions. A full-change same-agent review
+also removed the redundant launcher string check so valid export aliases can load.
+
+Handbook implementation is local and unpublished. Unibase was read as an import source
+and remains unchanged; its adoption update waits for Handbook review and merge into main.
+Infrastructure and unitale-mockup were not modified or adopted. No issues, projects,
+backlogs, permissions, deployments, commits or publication were created by this change.
+
+The shared inventory now has eleven skills: the original six, maintain-project, and
+four reusable technology/UI imports. [Domains](guidance/README.md) route them;
+[provenance](../provenance/technology-imports.json) retains import identities and hashes.
+Project-owned guidance/source maps, warning-only validation, explicit client sync and
+the staged migration route are documented in [onboarding](onboarding.md).
+
+Verification performed:
+
+- `npm.cmd run validate` passed all 26 tests plus static links/frontmatter/integrity,
+  readiness and entrypoint checks with explicit child-process escalation. Fixtures
+  use disposable local repositories and mocked APIs, not production services.
+- After the final snapshot-directory correction, both affected tests passed again:
+  task A resources across refresh/resume, and the actual complete Handbook candidate.
+  Static checks were repeated after the Playwright documentation portability correction.
+- Six standalone offline integration tests passed under normal sandbox permissions
+  using `node --test --test-isolation=none test/integration.test.mjs`.
+- Coverage includes fresh/repeat setup, offline cooldown, origin rejection, checkout
+  preservation, concurrent refresh, incompatible helper/protocol/resource fallback,
+  dirty/ahead helper provenance, read-only doctor, source-map warnings, wrapper drift,
+  custom-content preservation, and executable/binary revision-A resources after B.
+- Same-agent separate read-only review covered the final code, documentation, import
+  changes and authority boundaries. No independent-agent review is claimed.
+- `git diff --check` passed; the Unibase worktree remained clean.
+
+Actual Codex session limitations: the original task-start refresh and the new launcher
+doctor both failed under normal permissions with `spawnSync git EPERM`. The normal
+test runner also failed before executing tests with `spawn EPERM`; escalated fixture
+success does not prove unrestricted client operation. Existing shared skills were
+available in this session and local guidance was read, but fresh-session discovery of
+the new inventory and a successful normal-permission refresh remain pending.
+
+Remaining Codex checks: in each supported Codex VS Code/desktop client, verify fresh
+discovery/activation of maintain-project and selected technology skills, local guidance
+and source-map reads, setup/cache/actual refresh under effective permissions, and task-A
+baseline retention through subsequent native skill invocation and compaction/resume.
+Fixture handoff serialization proves resource selection, not model memory behavior.
+Claude runtime acceptance is explicitly deferred; its exact checks are in
+[client acceptance](clients.md). Neither client receives expanded permissions here.
+
+Operator intervention: none. Publication, human review/merge, and the later Unibase
+integration update remain separate from this implementation evidence.
+
 ## Lazy refresh and consumer onboarding — 2026-10-26
 
 The follow-up change adds four-hour lazy refresh, attempt cooldown, read-only diagnosis
