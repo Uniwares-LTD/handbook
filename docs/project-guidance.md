@@ -21,6 +21,16 @@ nonempty headings, with explicit unknowns where evidence is unavailable:
 It may be a standalone document or a section (for example `docs/architecture.md#source-map`).
 Update it when navigation or boundaries change, not on every file edit.
 
+Optionally add a task routing table so agents load only what a task needs:
+
+| Task | Start here | Add when applicable | Verification |
+| --- | --- | --- | --- |
+| Change the API | `docs/api.md` | `docs/auth.md` for protected routes | `npm test -- api` |
+
+Give each task one row. A link is context, not authority. Scoped instruction files open
+with an "Applies to `<path>/**`" line; a deprecated area keeps a short stub pointing to
+its replacement.
+
 `handbook.json` declares version 1, `kind` (`consumer`, or `source` for Handbook itself),
 repository-relative `guidance`, `sourceMap`, `preferences`, and a `technologySkills`
 array. References may name Markdown anchors. Do not store absolute machine paths or
@@ -35,18 +45,30 @@ instead of repeating them. Record a preference only from the user's answer, and 
 only on the user's instruction. Readiness warns when a consumer has no preferences file or
 when a required preference is missing or invalid.
 
-The required preference is the issue language, written as one line:
+Two preferences are required, each written as one line:
 
 ```markdown
 ## Work tracking
 
 - Issue language: English
+
+## Branches
+
+- Integration branch: main
+- Deployment branches: _staging (from main), _production (from _staging)
 ```
 
-Allowed values are English (the default) and Persian. Ask the user during project and
+**Issue language:** English (the default) or Persian. Ask the user during project and
 workflow setup; record English when they have no preference. The language applies to
 issue titles, bodies and issue comments, including evidence comments. Labels, issue
 types, project fields and options, status names and branch names stay in English.
+
+**Branches:** the integration branch is `main` or `dev` and must be the repository's
+default branch. Deployment branches are optional; list each as `_<environment> (from
+<source>)`, where the source is the integration branch or an earlier deployment branch,
+or write `none`. During setup, propose values from the repository's actual default and
+`_`-prefixed branches and confirm them with the user. The
+[work policy](work-policy.md#branches-and-integration) defines how each is used.
 
 Run `node scripts/handbook-integration.mjs check` offline. It checks metadata, files,
 required map sections, local links/anchors, selected skill metadata and instruction

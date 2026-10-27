@@ -20,6 +20,11 @@ checks, documentation, reviewed revision and remaining acceptance. Do not rewrit
 create follow-ups, accept/cancel or close issues. Verified closure mirroring belongs to manage-issues. New issue proposals require human approval.
 Use capture-project-learnings only for useful verified reusable knowledge.
 
+For user-facing guides, write from what actually shipped. When a decision changes,
+rewrite the affected journey instead of adding a correction. Leave out abandoned
+proposals and issue, PR or review history. Test each sentence: would a reader who never
+saw the planning discussion still need it?
+
 ## Workflow contract
 
 Trigger: A change affects canonical documentation, navigation or assigned issue evidence.

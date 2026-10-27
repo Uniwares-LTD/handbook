@@ -20,7 +20,7 @@ export function projectIdOf(config, api = ghJson) {
   if (!projectId) throw new Error('Configured project could not be resolved.');
   return projectId;
 }
-// Adding existing content returns its current item, so callers may run this after auto-add.
+// Adding existing content returns its current item, so repeating this is safe.
 export function enrollItem(api, projectId, contentId) {
   const data = graph(api, 'mutation($project:ID!,$content:ID!){addProjectV2ItemById(input:{projectId:$project,contentId:$content}){item{id}}}', { project: projectId, content: contentId });
   const item = data.addProjectV2ItemById?.item?.id;

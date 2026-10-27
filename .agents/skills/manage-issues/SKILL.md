@@ -32,6 +32,9 @@ Priority and one accountable human. Do not independently reprioritize, assign me
 expand scope, accept/cancel work or reopen/close issues. Mirror Done/Cancelled only
 after verifying the human decision and latest closure reason through project operations. At In review hand off for acceptance.
 
+To triage an existing issue, recommend the next issue or review the board, follow
+[triage and board review](references/triage-and-review.md).
+
 Use the report-only enrollment helper first; apply only explicit issue references
 within authorization. On uncertain API outcomes, inspect state before retrying and
 avoid duplicate items/comments. No bulk backlog migration or project configuration

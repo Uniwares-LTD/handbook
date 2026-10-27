@@ -11,7 +11,8 @@ At task start run the consumer's `npm run handbook:check`. In Handbook itself us
 `node scripts/handbook.mjs check --path .`. Retain returned `path` and full `revision`
 in conversation context. Read policy, selected skills and their text dependencies with
 `git -C PATH show REVISION:FILE`. Paths in those files resolve inside that revision.
-Load [domains](guidance/README.md) relevant to the work, not all skill bodies.
+Always apply [communication guidance](guidance/communication.md); load other
+[domains](guidance/README.md) relevant to the work, not all skill bodies.
 
 Every subsequent skill call, authorized delegation, handoff and compaction/resume
 summary carries the same path and revision. A concurrent task refresh or `--force`

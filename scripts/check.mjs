@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { validateTracking } from './tracking-config.mjs';
+import { catalogParity, toolNeutral, descriptionBudget } from './guidance-lint.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const walk = directory => readdirSync(path.join(root, directory), { withFileTypes: true }).flatMap(entry => {
@@ -25,7 +26,13 @@ assert.deepEqual(names, JSON.parse(readFileSync(path.join(root, 'handbook-contra
 for (const name of names) {
   const text = readFileSync(path.join(root, `.agents/skills/${name}/SKILL.md`), 'utf8').replace(/\r\n/g, '\n');
   assert(text.startsWith('---\n') && text.match(/^name: ["']?([^\r\n"']+)/m)?.[1] === name && /^description: .+/m.test(text) && text.includes('\n---\n'), `Invalid skill frontmatter: ${name}`);
+  errors.push(...descriptionBudget(name, text));
 }
+const imported = Object.keys(JSON.parse(readFileSync(path.join(root, 'provenance/technology-imports.json'), 'utf8')).skills);
+const text = file => readFileSync(path.join(root, file), 'utf8');
+errors.push(...catalogParity({ skills: names, imported, agents: text('AGENTS.md'), domains: text('docs/guidance/README.md') }));
+const canonical = files.filter(file => file.endsWith('.md') && !imported.some(name => file.startsWith(`.agents/skills/${name}/`)));
+errors.push(...toolNeutral(Object.fromEntries(canonical.map(file => [file, text(file)]))));
 for (const name of ['bug','feature','task','initiative']) {
   const form = JSON.parse(readFileSync(path.join(root, `.github/ISSUE_TEMPLATE/${name}.yml`), 'utf8'));
   assert(form.name && form.description && ['Task','Bug','Feature'].includes(form.type));
@@ -44,4 +51,4 @@ const lock = path.join(root, 'skills-lock.json');
 if (process.argv.includes('--write-lock')) writeFileSync(lock, JSON.stringify({ version: 2, hashFormat: 'sha256 LF-normalized text, raw binary', files: hashes }, null, 2) + '\n');
 else assert.deepEqual(JSON.parse(readFileSync(lock, 'utf8')).files, hashes, 'Review changes before refreshing skill integrity hashes');
 assert.deepEqual(errors, []);
-console.log(`Verified ${names.length} skills, local Markdown targets, four JSON-compatible YAML forms, and integrity hashes.`);
+console.log(`Verified ${names.length} skills, local Markdown targets, four JSON-compatible YAML forms, skill catalogs, tool-neutral wording, description budgets and integrity hashes.`);

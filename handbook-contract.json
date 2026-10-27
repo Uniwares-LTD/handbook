@@ -5,6 +5,8 @@
     "docs/bootstrap.md",
     "docs/project-guidance.md",
     "docs/guidance/README.md",
+    "docs/guidance/communication.md",
+    ".agents/gated-commands.json",
     "docs/guidance/technology.md",
     "docs/guidance/engineering.md",
     "docs/guidance/task-management.md",

@@ -1,5 +1,39 @@
 # Bootstrap verification
 
+## Durable branches — 2026-10-27
+
+Each repository records one integration branch (`main` or `dev`, also its default branch)
+and optional `_<environment>` deployment branches with their promotion source in the
+repository preferences. Work branches start from and merge into the integration branch;
+deployment branches change only through authorized promotion PRs. Readiness checks the
+recorded values offline (not that the default branch matches); one test covers valid
+chains, unknown integration names, missing lines, bad format, out-of-order sources and
+duplicates. Handbook records `main` with no deployment branches. Org survey: all four
+repositories default to `main`; unibase has `_staging`, promoted from `main`. Existing
+work branches with older prefixes are left as they are.
+
+## Explicit enrollment only; handbook-only CI — 2026-10-27
+
+GitHub's auto-add workflow was dropped to simplify setup: agents add every issue through
+`create-issue.mjs`, and issues created elsewhere through `enroll.mjs`, the same way for any
+repository or plan. Setup now asks for Auto-add to project to be off. The CI workflow
+validates the handbook repository only; consumers are not asked to add or enable it.
+
+## Adopted practices from an external guidance review — 2026-10-27
+
+Generic practices from a read-only review of another repository's agent guidance were
+adapted in the handbook's own words; decisions and the reviewed revision are in
+[provenance](../PROVENANCE.md#adoption-decisions). New communication guidance applies to
+every task; engineering, review, authority, issue-management, documentation and
+source-map guidance gained compact rules. Tooling: a CI workflow running
+`npm run validate`; lints for skill catalogs, tool-neutral wording and description
+budgets; an empty-source guard in sync; and a shared gated-command list that sync merges
+into consumer lists and `.claude/settings.json` add-only. Handbook's own settings were
+generated (76 ask, 5 deny entries) and re-check reports no drift. New tests cover each
+lint, gate merging that preserves unrelated settings, drift reporting, malformed settings
+and the empty-source guard. The CI workflow has not yet run on GitHub. Codex gate rules
+remain manual. Claude Code's handling of the generated rules was not exercised live.
+
 ## Tracking defaults, auto-add and branch workflow — 2026-10-27
 
 Shared guidance now requires every adopted repository to record one tracking project:
@@ -51,9 +85,10 @@ Project #2 setup acceptance, checked 2026-10-27:
   Backlog; Blocked was set to Not blocked. The helper reports no missing open issues.
 - Met: workflow readback shows Item added and Item reopened on; Item closed, Auto-close
   issue, Auto-add sub-issues and both pull-request workflows off.
-- Pending: no Auto-add to project workflow exists yet; a human must create it in the
-  browser for the handbook repository with `is:issue is:open`.
-- Pending: the first real handbook issue after that must appear in Backlog unaided.
+- Superseded: auto-add is no longer used (see below). Readback on 2026-10-27 shows Auto-add
+  to project enabled from the earlier instruction; it must be turned off in the browser.
+- Pending: the first real issue created with `create-issue.mjs` must land in Backlog with
+  Blocked set.
 
 ## Generic tracking and project #2 migration — 2026-10-27
 

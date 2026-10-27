@@ -9,6 +9,24 @@ const read = file => readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
 const core = ['capture-project-learnings', 'compile-feature-spec', 'manage-issues', 'maintain-project', 'review-change', 'sync-docs-issues', 'work-on-task'];
 export const mapSections = ['Components', 'Documentation', 'Commands', 'Generated areas', 'Ownership'];
 export const languages = ['English', 'Persian'];
+export const integrationBranches = ['main', 'dev'];
+// Durable branches: one integration branch, plus deployment branches promoted along a chain.
+export function branchWarnings(text) {
+  const integration = text.match(/^- Integration branch: (.+)$/m)?.[1]?.trim();
+  if (!integrationBranches.includes(integration)) return [`Set "- Integration branch:" to ${integrationBranches.join(' or ')}.`];
+  const deployment = text.match(/^- Deployment branches: (.+)$/m)?.[1]?.trim();
+  if (deployment === undefined) return ['Add "- Deployment branches:" listing `_<environment> (from <source>)` entries, or none.'];
+  if (deployment === 'none') return [];
+  const known = [integration], warnings = [];
+  for (const entry of deployment.split(',').map(e => e.trim())) {
+    const match = entry.match(/^(_[a-z0-9-]+) \(from ([\w-]+)\)$/);
+    if (!match) { warnings.push(`Deployment branch "${entry}" must be written as _<environment> (from <source>).`); continue; }
+    if (known.includes(match[1])) warnings.push(`Deployment branch ${match[1]} is listed twice.`);
+    else if (!known.includes(match[2])) warnings.push(`Deployment branch ${match[1]} must come from ${integration} or an earlier listed deployment branch.`);
+    known.push(match[1]);
+  }
+  return warnings;
+}
 function local(root, reference) {
   if (typeof reference !== 'string' || !reference || reference.includes('\\') || reference.includes(':')) throw new Error('Use a repository-relative reference.');
   const [file, anchor] = reference.split('#');
@@ -64,10 +82,13 @@ export function checkReadiness(root) {
   if (config.preferences === undefined) {
     if (config.kind === 'consumer') warnings.push('handbook.json: record repository preferences, including the issue language (English by default); see docs/project-guidance.md.');
   } else {
-    try {
-      const value = document(root, config.preferences).text.match(/^- Issue language: (.+)$/m)?.[1]?.trim();
-      if (!languages.includes(value)) throw new Error(`Set "- Issue language:" to one of ${languages.join(', ')}.`);
-    } catch (error) { warnings.push(`preferences: ${error.message}`); }
+    let text;
+    try { text = document(root, config.preferences).text; } catch (error) { warnings.push(`preferences: ${error.message}`); }
+    if (text !== undefined) {
+      const value = text.match(/^- Issue language: (.+)$/m)?.[1]?.trim();
+      if (!languages.includes(value)) warnings.push(`preferences: Set "- Issue language:" to one of ${languages.join(', ')}.`);
+      warnings.push(...branchWarnings(text).map(w => `preferences: ${w}`));
+    }
   }
   for (const key of ['guidance', 'sourceMap']) {
     try {
@@ -126,6 +147,9 @@ export function syncEntrypoints(root, { write = false, source } = {}) {
   const warnings = [], changed = [];
   let config;
   try { config = configAt(root); } catch (error) { return { warnings: [error.message], changed }; }
+  // An empty skill tree means a wrong --root or --source; never sync or report orphans from it.
+  const hasSkills = base => existsSync(path.join(base, '.agents/skills')) && readdirSync(path.join(base, '.agents/skills'), { withFileTypes: true }).some(item => item.isDirectory());
+  if (config.kind === 'consumer' && source ? !hasSkills(source) : !hasSkills(root)) throw new Error('No skills found under .agents/skills; check --root and --source before syncing.');
   const put = (relative, wanted) => {
     const { target } = local(root, relative);
     const old = existsSync(target) ? read(target) : '';
@@ -172,7 +196,52 @@ export function syncEntrypoints(root, { write = false, source } = {}) {
     warnings.push('CLAUDE.md must import @AGENTS.md.');
     if (write) { writeFileSync(claude, '@AGENTS.md\n\n' + old); changed.push('CLAUDE.md'); }
   }
+  syncGates(root, { write, source: config.kind === 'consumer' ? source : undefined, warnings, changed });
   return { warnings, changed };
+}
+
+export const gatesFile = '.agents/gated-commands.json';
+function readGates(file) {
+  const gates = JSON.parse(read(file));
+  if (!Array.isArray(gates.ask) || gates.ask.some(c => !Array.isArray(c) || !c.length || c.some(p => typeof p !== 'string' || !/^[\w.:/=-]+$/.test(p))) ||
+      !Array.isArray(gates.denyRead) || gates.denyRead.some(p => typeof p !== 'string' || !p || /[()]/.test(p))) throw new Error(`${gatesFile}: expected ask (command word lists) and denyRead (path patterns).`);
+  return gates;
+}
+// Each gated command becomes an ask rule for both shell tools; each path a Read deny rule.
+export function permissionEntries(gates) {
+  return { ask: gates.ask.flatMap(c => [`Bash(${c.join(' ')} *)`, `PowerShell(${c.join(' ')} *)`]), deny: gates.denyRead.map(p => `Read(${p})`) };
+}
+const union = (current, extra, key = v => v) => [...current, ...extra.filter(v => !current.some(c => key(c) === key(v)))];
+function syncGates(root, { write, source, warnings, changed }) {
+  const localGates = local(root, gatesFile).target;
+  // Consumer upgrades merge the shared list add-only, keeping project-specific entries.
+  if (source && existsSync(path.join(source, gatesFile))) {
+    const shared = readGates(path.join(source, gatesFile));
+    const current = existsSync(localGates) ? readGates(localGates) : { ask: [], denyRead: [] };
+    const merged = { ...current, description: shared.description, ask: union(current.ask, shared.ask, c => c.join(' ')), denyRead: union(current.denyRead, shared.denyRead) };
+    if (JSON.stringify(merged) !== JSON.stringify(current)) {
+      warnings.push(`Gate list drift: ${gatesFile}`);
+      if (write) { mkdirSync(path.dirname(localGates), { recursive: true }); writeFileSync(localGates, JSON.stringify(merged, null, 2) + '\n'); changed.push(gatesFile); }
+    }
+  }
+  if (!existsSync(localGates)) return;
+  const wanted = permissionEntries(readGates(localGates));
+  const settingsFile = local(root, '.claude/settings.json').target;
+  const settings = existsSync(settingsFile) ? JSON.parse(read(settingsFile)) : {};
+  const permissions = settings.permissions ?? {};
+  if ((permissions.ask !== undefined && !Array.isArray(permissions.ask)) || (permissions.deny !== undefined && !Array.isArray(permissions.deny))) {
+    warnings.push('.claude/settings.json: permissions.ask and permissions.deny must be lists; reconcile manually.');
+    return;
+  }
+  const ask = union(permissions.ask ?? [], wanted.ask), deny = union(permissions.deny ?? [], wanted.deny);
+  const missing = ask.length - (permissions.ask?.length ?? 0) + deny.length - (permissions.deny?.length ?? 0);
+  if (!missing) return;
+  warnings.push(`.claude/settings.json: ${missing} gated permission entries missing.`);
+  if (write) {
+    mkdirSync(path.dirname(settingsFile), { recursive: true });
+    writeFileSync(settingsFile, JSON.stringify({ ...settings, permissions: { ...permissions, ask, deny } }, null, 2) + '\n');
+    changed.push('.claude/settings.json');
+  }
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

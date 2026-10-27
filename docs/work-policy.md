@@ -50,6 +50,16 @@ triaged; enrollment/triage explicitly sets Not blocked or Blocked.
 | Create/configure/link external projects | Explicit authorization of a concrete preview; no implied access changes |
 | Commit, push, publish PR, merge, deploy, release, change access | Separate explicit session authorization |
 
+Actions the table reserves for explicit session authorization need the user's explicit
+instruction for that action. These do not grant commit, push, publication or other
+such authority: accepting a plan,
+"go ahead" on a plan, answering a tool permission prompt, plan or auto modes, selecting
+an issue, or a review `Pass`. Track implementation, commit and publication authority
+separately and note where each came from. A "recommend the next issue" result authorizes
+read-only validation and planning only. Tool permission prompts and gated-command rules
+are a safety backstop, not a security boundary: prefix rules can be bypassed (for
+example `gh api`, `git -C` or shell wrappers), so never rely on them in place of authority.
+
 Suggest discoveries with destination, outcome, scope, acceptance and known duplicates.
 Do not create follow-up issues just because a skill recommends them. Re-fetch the issue
 before updating it; preserve human edits, avoid repeated comments, and report blockers
@@ -82,11 +92,23 @@ lives in the consumer organization's explicitly chosen coordination repository; 
 lives in the responsible repository. Handbook is not a universal issue destination. Search for
 duplicates before proposing or creating work. Use sub-issues for independently owned
 outcomes and checklists for small steps. Size is optional relative effort, not a deadline.
+Priority (when to do it) and severity (how bad the impact is) are separate; never derive
+one from the other or from Status. "Not set" differs from "unknown", and a value is
+never cleared because reading it failed.
 
 ## Branches and integration
 
-Never edit, commit or merge on the default branch. Before the first change, create a
-branch from current main named `<issue-type>/<issue-number>-<issue-slug>`:
+Each repository has durable branches, recorded in its
+[repository preferences](project-guidance.md#repository-preferences):
+
+- **Integration branch:** exactly one, named `main` or `dev`, and also the repository's
+  default branch. All work merges into it.
+- **Deployment branches:** optional, named `_<environment>` (for example `_staging`,
+  `_production`). Each records the branch it is promoted from: the integration branch or
+  an earlier deployment branch. They are deployment targets, never developed on.
+
+Never edit, commit or merge directly on a durable branch. Before the first change, create
+a branch from the current integration branch named `<issue-type>/<issue-number>-<issue-slug>`:
 
 - `issue-type` is the issue's native type in lowercase: `task`, `bug` or `feature`. An
   Initiative is a Task, so it uses `task`. Map local equivalents the same way.
@@ -95,11 +117,17 @@ branch from current main named `<issue-type>/<issue-number>-<issue-slug>`:
   hyphens only).
 
 For example, `task/5-review-claude-code-readiness` or `bug/42-fix-login-redirect`.
-Untracked low-risk fixes omit the number: `bug/<slug>` for a defect, otherwise `task/<slug>`. Integrate every change into main through a pull request that
-references its issue with `Related to`; direct pushes, local merges and fast-forwards
-into main are not permitted. Refreshing a checkout from origin is not integration.
+Untracked low-risk fixes omit the number: `bug/<slug>` for a defect, otherwise `task/<slug>`.
+Integrate every change into the integration branch through a pull request that references
+its issue with `Related to`; direct pushes, local merges and fast-forwards into a durable
+branch are not permitted. Refreshing a checkout from origin is not integration.
+Update a deployment branch only through a promotion pull request from its recorded source;
+a promotion is a deployment and needs explicit authorization. Fixes, including urgent
+ones, go through the integration branch and are then promoted.
 Keep one branch per issue unless the issue explicitly splits delivery. Review happens
 on the PR; merging still needs the session and local governance authorization above.
+Push with an exact refspec (`git push origin <branch>`), never force-push a shared branch,
+and confirm the local and remote head SHAs match before posting evidence that cites one.
 
 ## Improving guidance
 
@@ -109,3 +137,8 @@ overrides with rationale and authoritative local references. A shared proposal n
 authorizes external publication nor blocks independently authorized local work.
 No universal local/shared winner replaces explicit conflict resolution. Team names,
 project identities, capability limits and organization governance remain local facts.
+
+Generated guidance names the command that generates it and is never edited by hand.
+Any temporary rule names an owner and a checkable removal trigger. Archived documents
+are history, not authority, and are not read by default. When adopting guidance from an
+outside source, record each decision in [provenance](../PROVENANCE.md#adoption-decisions).

@@ -38,7 +38,8 @@ When tracking setup is authorized, follow [project operations](../../../docs/pro
 Resolve the repository organization, inventory accessible projects and accepted queues,
 and distinguish missing access from no projects. On first selection offer reuse, dedicated
 repository project or organization-wide project, defaulting to organization-wide. Ask the
-issue language (English by default, or Persian) and record it in the repository
+issue language (English by default, or Persian) and confirm the durable branches proposed
+from the repository's default and `_`-prefixed branches; record both in the repository
 preferences declared in handbook.json. Retain later recorded choices.
 Keep identity/mappings and policy references in consumer-owned tracking metadata.
 Preview exact project/field/view/link changes and conflicts before applying authorized

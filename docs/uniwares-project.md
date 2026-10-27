@@ -35,25 +35,21 @@ remains visible in Active work.
 
 ## Automation and enrollment
 
-The intended configuration enables three workflows: auto-add from the handbook
-repository with filter `is:issue is:open`, item added to Backlog, and item reopened to Backlog.
-The unconditional item closed to Done workflow is disabled. All auto-close, auto-add
+Two workflows are enabled: item added to Backlog and item reopened to Backlog. Auto-add
+to project, the unconditional item closed to Done workflow, and all auto-close, auto-add
 sub-issues, archive, merge and review-driven workflows are disabled. Closure is a human
 decision under policy. Agents may mirror verified human completion to Done or
 not-planned closure to Cancelled, preserving reasons and duplicate links.
 
-GitHub Free allows one auto-add workflow per project; handbook holds it because it is
-the default and coordination repository. Agent-created issues in all four repositories
-reach the project through `create-issue.mjs`. Issues humans create in the GitHub UI in
-unibase, infrastructure and unitale-mockup still need explicit enrollment until the plan
-changes or the auto-add repository is reassigned. Enabling the workflow is a browser action;
-[verification](verification.md) records whether it has been applied live.
+Agent-created issues in all four repositories reach the project through
+`create-issue.mjs`; issues people create in the GitHub UI are added with the enrollment
+helper. [Verification](verification.md) records the live workflow state.
 
 Handbook is the default repository when creating an issue from the project. Select
 the owning repository for application work. Project drafts are not the work queue;
 create approved repository issues instead. Agents create them with `create-issue.mjs`,
-which also adds them to this project; enroll human-created issues from other repositories
-through an agent acting on that assigned work or by hand. Set Blocked during enrollment/triage.
+which also adds them to this project; enroll human-created issues through an agent acting
+on that assigned work or by hand. Set Blocked during enrollment/triage.
 Do not add PR cards; reference PRs from issue evidence without auto-closing links.
 
 From handbook, `node scripts/enroll.mjs` reports open issues missing from the project.
@@ -65,8 +61,8 @@ partial successful additions are reported and reruns skip enrolled issues.
 
 Use a locally authenticated gh account with repository read and Projects read access;
 applying additions needs Projects write access. A missing scope is reported, never
-silently upgraded. No tokens belong in repository configuration. The native auto-add
-workflow is the only unattended enrollment; no scheduled or token-based automation exists.
+silently upgraded. No tokens belong in repository configuration. There is no unattended
+enrollment: no auto-add, scheduled or token-based automation.
 
 For a new repository: approve onboarding, link it to the project, add its full name to
 project.json, then reconcile approved issues. Linking alone neither imports issues

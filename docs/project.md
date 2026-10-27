@@ -110,14 +110,10 @@ New projects must remain private. No token scope upgrades or scheduled automatio
 
 API support varies. Workflow editing, grouping and default-view selection require
 explicit browser/manual verification. Disable unconditional closed-to-Done and independent
-acceptance automation; preserve approved added/reopened-to-Backlog behavior. Enable
-GitHub's native auto-add workflow for the designated project with filter `is:issue is:open`
-so new issues enter Backlog without manual enrollment; exclude pull requests. GitHub Free
-allows one auto-add workflow per project, covering one repository: choose the
-coordination or primary implementation repository explicitly, record that choice in the
-local tracking document, and enroll the remaining repositories' issues explicitly.
-Paid plans may add one workflow per linked repository. An API
-success with manual steps outstanding is partial setup, not completion.
+acceptance automation; preserve approved added/reopened-to-Backlog behavior. Do not use
+GitHub's auto-add workflow: agents add issues explicitly through `create-issue.mjs` and
+`enroll.mjs`, which works the same for every repository and plan. An API success with
+manual steps outstanding is partial setup, not completion.
 See [GitHub's API](https://docs.github.com/en/graphql/reference/projects) and
 [filter documentation](https://docs.github.com/en/issues/planning-and-tracking-with-projects/customizing-views-in-your-project/filtering-projects).
 
@@ -127,11 +123,9 @@ The API can read workflow state and delete workflows, but cannot create or enabl
 A human with project admin access performs these steps:
 
 1. Open the project, then **⋯** → **Workflows**.
-2. Select **Auto-add to project** → **Edit**. Choose the recorded auto-add repository,
-   set the filter to `is:issue is:open`, then **Save and turn on workflow**.
-3. Confirm **Item added to project** and **Item reopened** are on and set Status to Backlog.
-4. Confirm **Item closed**, **Auto-close issue**, **Auto-add sub-issues to project**,
-   **Pull request linked to issue** and **Pull request merged** are off.
+2. Confirm **Item added to project** and **Item reopened** are on and set Status to Backlog.
+3. Confirm **Auto-add to project**, **Item closed**, **Auto-close issue**, **Auto-add
+   sub-issues to project**, **Pull request linked to issue** and **Pull request merged** are off.
 
 Then add pre-existing open issues with the enrollment helper and set Blocked explicitly.
 Agents report these as outstanding manual steps; they never claim them from API output.
@@ -143,16 +137,14 @@ consumer's verification evidence:
 
 - The tracking file is recorded in handbook.json and readiness reports no tracking warning.
 - The repository preferences record the issue language the user chose (English if no
-  preference), and readiness reports no preferences warning.
-- Workflow readback (`workflows { name enabled }` on the project) shows auto-add, item added
-  and item reopened enabled, and every workflow in step 4 disabled.
-- The auto-add repository and filter are recorded in the local tracking document, along
-  with linked repositories that still need explicit enrollment.
+  preference) and the confirmed durable branches, the integration branch is the
+  repository's default branch, and readiness reports no preferences warning.
+- Workflow readback (`workflows { name enabled }` on the project) shows item added and
+  item reopened enabled, and every workflow in step 3 disabled.
 - The enrollment helper reports no missing open issues for the selected repositories.
-- The first real issue created after setup appears in Backlog without explicit enrollment.
-  Until that happens, record setup as pending this check; never create a demonstration issue.
-- Agent guidance routes approved issue creation through `create-issue.mjs`, so agent-created
-  issues reach the project in every selected repository, including those without auto-add.
+- Agent guidance routes approved issue creation through `create-issue.mjs`. The first real
+  issue it creates after setup is in Backlog with Blocked set; until then, record setup as
+  pending this check and never create a demonstration issue.
 - Views, grouping and default view match the defaults above or accepted local exceptions.
 
 ## Issue maintenance and acceptance
@@ -166,7 +158,7 @@ which catches an issue search has not indexed yet. Show that preview to the huma
 duplicates in `reviewedDuplicates` and preview again. After approval of that exact
 preview, run `--apply --expect FINGERPRINT`. Apply refuses if the spec, project or
 duplicates changed, creates the issue once, adds it to the recorded project (reusing an
-item auto-add already created), fills an empty Status with Backlog, sets Blocked and reads
+existing item), fills an empty Status with Backlog, sets Blocked and reads
 both back. If tracking fails after creation, it reports the created issue and what was
 completed; rerun with the same options plus `--resume NUMBER`, which finishes tracking
 without creating. If the create request's outcome is unknown, do not rerun `--apply`:
@@ -178,10 +170,9 @@ sub-issue links remain human decisions.
   "type": "Task", "labels": ["documentation"], "blocked": "Not blocked", "reviewedDuplicates": [] }
 ```
 
-Auto-add stays as the backstop for issues humans create in the GitHub UI. The
-enrollment helper reports missing open issues without writing: issues created before
-auto-add was enabled, human-created issues in repositories without an auto-add workflow,
-and items removed by hand. Apply only explicit authorized references; no bulk backlog migration,
+Issues created outside the helper (in the GitHub UI or before setup) are added with the
+enrollment helper. It reports missing open issues without writing; apply only explicit
+authorized references, then set Blocked. No bulk backlog migration,
 PR cards or invented issues. Preserve issue scope, assignees and priority unless the
 user authorizes those decisions.
 

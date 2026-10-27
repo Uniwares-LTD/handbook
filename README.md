@@ -44,12 +44,13 @@ instructions or skills. Merely cloning or linking the repository does not adopt 
 
 Requires Node.js 22+, Git, and GitHub CLI for connected operations. No npm dependencies.
 Run `npm run validate` from this repository. Tests use disposable local Git repositories
-and mocked GitHub responses, never production services.
+and mocked GitHub responses, never production services. The same command runs in this
+repository's CI workflow, which belongs to the handbook only.
 
 ## Contribution
 
 Every change uses an issue branch and a PR; nothing is committed, merged or
-fast-forwarded into main directly. Request review from the Admins team;
+fast-forwarded into a durable branch directly. Request review from the Admins team;
 Admin approval is a team procedure, not enforced branch protection on private GitHub
 Free. Devs have write access but must follow that procedure. Never store credentials,
 raw private logs, personal tokens, or machine-specific configuration here.

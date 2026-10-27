@@ -13,7 +13,8 @@ not adopt policy, migrate queues or change permissions.
    canonical documents and select relevant technology skills. Record the tracking
    project per [project operations](project.md): existing, organization-wide (default)
    or dedicated. Creating or linking a project is separately authorized. Ask the issue
-   language (English by default, or Persian) and record it in the
+   language (English by default, or Persian) and confirm the durable branches (integration
+   `main` or `dev`, optional `_<environment>` deployment branches), then record both in the
    [repository preferences](project-guidance.md#repository-preferences).
 3. Copy [the launcher](../scripts/handbook.mjs) and [offline tool](../scripts/handbook-integration.mjs)
    to the consumer's scripts directory. Reconcile existing copies through reviewed edits.
@@ -128,6 +129,8 @@ cache for inspected manual cleanup. No task registry, scheduled updater or symli
 
 Offline readiness requires only Node and consumer files: no private clone, credentials,
 Git or network. Warnings do not fail CI; missing facts may prevent dependent decisions.
+Adoption never requires a CI workflow: the handbook's own validation workflow is not
+copied or synced, and a project adds readiness checks to its CI only if it chooses to.
 Offline derived-project creation copies only permitted bootstrap/entrypoints and reviewed
 local guidance. It neither clones private Handbook content nor enrolls projects. Never
 include credentials, private caches or machine paths in generated projects.
@@ -136,6 +139,15 @@ Codex uses `.agents/skills`; Claude gets thin `.claude/skills` references and CL
 importing `@AGENTS.md`. Canonical procedures stay in `.agents/skills`. Reading Markdown
 does not register hooks, subagents, permissions or dependencies. Preserve legitimate
 client-specific content; see [client acceptance](clients.md).
+
+Command gates live in [`.agents/gated-commands.json`](../.agents/gated-commands.json): commands
+a client must confirm with the user and files it must not read. Sync with `--source`
+merges the shared list into the consumer's copy add-only, so project entries stay. Sync
+then adds the matching `Bash(...)`/`PowerShell(...)` ask rules and `Read(...)` deny rules
+to `.claude/settings.json`, keeping every other setting; `handbook:entrypoints` reports
+missing entries. Codex rules are configured by hand until their format is verified.
+Gates are a backstop, not authority, and prefix rules can be bypassed (see
+[work policy](work-policy.md#agent-authority)).
 
 Implement, test and separately review Handbook first, then obtain authorized publication,
 review and merge into main. Only afterwards update Unibase's launcher, metadata, local

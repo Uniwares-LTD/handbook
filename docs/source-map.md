@@ -24,7 +24,11 @@ shared project procedures; [local operations](uniwares-project.md) describe Hand
 
 ## Generated areas
 
-Claude skill wrappers are managed by the explicit sync command; preserve custom suffixes.
+Claude skill wrappers and the gated entries in `.claude/settings.json` are managed by the
+explicit sync command from `.agents/gated-commands.json`; preserve custom suffixes and settings.
+[CI](../.github/workflows/validate.yml) runs `npm run validate` for this repository only;
+consumers are not asked to copy or enable it; [guidance lints](../scripts/guidance-lint.mjs)
+check skill catalogs, tool-neutral wording and description budgets.
 [skills-lock.json](../skills-lock.json) is regenerated only after reviewing intentional changes.
 Policy, canonical skills and docs are manually maintained. Local cache/resource snapshots
 live under Git metadata and are never committed.
