@@ -1,108 +1,140 @@
-# Initialize and use shared guidance
+# Initialize and update Handbook integration
 
-Handbook is the shared source; consumers follow main without version pins or upgrade
-PRs. Unibase is the first consumer. Infrastructure and unitale-mockup remain unadopted.
-Project linking alone does not change instructions, permissions or queues.
+Start at [README](../README.md). Consumers follow main without version pins or routine
+upgrade PRs. Infrastructure and unitale-mockup remain unadopted. Project linking does
+not adopt policy, migrate queues or change permissions.
 
-## Unibase quick start
+## First adoption and repeat updates
 
-With Node.js, Git and read access to this private repository, run from Unibase:
+1. Inspect AGENTS.md, CLAUDE.md, scoped instructions, skills, adapter and canonical
+   documents. Confirm authorized local adoption/update scope. Preserve adaptations and
+   legacy queues; identify actual conflicts rather than replacing local instructions.
+2. Establish [project guidance and a local source map](project-guidance.md). Reuse
+   canonical documents and select relevant technology skills. External project proposals
+   are optional and separately authorized, never a local setup prerequisite.
+3. Copy [the launcher](../scripts/handbook.mjs) and [offline tool](../scripts/handbook-integration.mjs)
+   to the consumer's scripts directory. Reconcile existing copies through reviewed edits.
+   Add commands below. No dependency installation or global installation is required.
+4. Create metadata and reconcile the instruction snippet below with existing AGENTS.md.
+   Do not copy Handbook's own AGENTS.md or adapter over the project's instructions.
+5. Run setup, retain path/revision, and materialize resources at that revision. Pass the
+   returned resourcePath to explicit sync. Inspect changes and conflicts; reconcile
+   unmanaged/modified wrappers manually, retaining their adaptations in local guidance.
+6. Run offline readiness and drift checks. Read shared policy/relevant domains at the
+   task revision plus local sources. Report changes, checks, unknowns and limitations.
 
-```powershell
-npm.cmd run handbook:setup
+Example `handbook.json` (use actual canonical document references):
+
+```json
+{
+  "version": 1,
+  "kind": "consumer",
+  "guidance": ".agents/repository-adapter.md",
+  "sourceMap": "docs/architecture.md#source-map",
+  "technologySkills": ["next-best-practices", "vercel-react-best-practices", "web-design-guidelines", "playwright"]
+}
 ```
 
-This creates the sibling handbook clone if absent, validates its origin and initializes
-a synchronized baseline. No application dependency installation is required. For another
-location use `-- --path PATH` or the local `UNIWARES_HANDBOOK_PATH` override.
-Never commit a developer's absolute path or overwrite an unrelated existing directory.
+Add these package commands:
 
-At task start the agent runs `npm run handbook:check`. Within four hours it reuses the
-cache; after four hours it fetches main and fast-forwards a clean checkout. Failed
-attempts also get a four-hour cooldown. `npm run handbook:check -- --force` retries now.
-This is a lazy command, not a scheduler. Normal checks never rewrite consumer files.
+```json
+{
+  "handbook:setup": "node scripts/handbook.mjs setup",
+  "handbook:check": "node scripts/handbook.mjs check",
+  "handbook:doctor": "node scripts/handbook.mjs doctor",
+  "handbook:ready": "node scripts/handbook-integration.mjs check",
+  "handbook:sync": "node scripts/handbook-integration.mjs sync",
+  "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints"
+}
+```
 
-`npm run handbook:doctor` reports origin, cache age, checkout state and entrypoint
-compatibility without fetching or writing. See Unibase's docs/agent-tooling.md for
-troubleshooting and client acceptance checks.
-
-## Cache behavior
-
-The shared helper is `scripts/refresh-handbook.mjs`. From handbook itself run
-`node scripts/refresh-handbook.mjs --path .`; it also supports `--force` and read-only
-`--doctor`. It records successful synchronization and attempts in local Git metadata.
-Other launchers should delegate to this helper rather than implement another refresh loop.
-
-Dirty, diverged, ahead-of-main or non-main checkouts are preserved. Offline refresh uses
-the last synchronized revision. Read guidance, skills and relative resources from that
-revision with `git -C PATH show REVISION:docs/work-policy.md`, using the returned values.
-Keep the baseline for the current task. Different members can use different recent
-revisions; report limitations briefly when relevant, not on every action.
-
-If no usable baseline exists, explain setup once, continue under existing local rules,
-and pause only handbook-dependent decisions. Wrong-origin checkouts are rejected.
-Do not reset, stash, discard changes or switch branches automatically. After an
-interrupted refresh, inspect the lock PID in Git metadata before manually removing
-an abandoned lock; never remove a lock belonging to a running refresh.
-
-## Adopting another repository
-
-Use an authorized consumer change to inventory and reconcile existing instructions.
-Keep application architecture, operational ownership, build/test commands and verified
-evidence in its repository adapter and canonical docs. Preserve explicitly accepted
-legacy queues; use owning-repository issues for new substantial work. No bulk backlog
-migration, credentials setup or project enrollment is implied.
-
-Add the small Node launcher from Unibase's scripts/handbook.mjs and its three package
-commands. Copy the six thin entrypoints under `.agents/skills` after reconciling any
-local adaptations; do not copy shared procedure bodies. Preserve source provenance and
-notices. Retain domain-specific skills locally. Do not install globally or use symlinks.
-
-Add a concise AGENTS.md reference:
+AGENTS.md snippet (adjust local references):
 
 ```markdown
-At task start run `npm run handbook:check`. Read shared policy and relevant skills
-from the returned handbook path/revision, plus this repository's adapter. Keep that
-baseline for the task. Cached guidance is usable; pause only handbook-dependent
-decisions if none is available. Preserve local work and explicit session authority.
+At task start run npm run handbook:check. Retain its path and full revision for
+subsequent skills, handoffs and compaction/resume. Read docs/bootstrap.md and
+docs/work-policy.md with git show at that revision. Read local guidance at
+.agents/repository-adapter.md and docs/architecture.md#source-map. Use handbook.json
+for selected technology skills. Without a baseline, continue under local rules and
+pause only dependent decisions; setup/repair remain allowed. Recover a lost revision
+from context before explicitly establishing a new baseline and reporting discontinuity.
+After skill or routing changes run handbook:sync and handbook:entrypoints; preserve
+custom instructions. Normal refresh never rewrites wrappers.
 ```
 
-Each local entrypoint keeps the shared name and a concise stable description, runs
-the check only if the task has no baseline, and reads the matching shared SKILL.md
-with git show. All its relative policy/role/resource references resolve in the same
-handbook revision. Doctor warnings about descriptions are advisory; update wrappers
-through ordinary reviewed edits, not automatically during checks.
+Run the following with PATH/SHA/SNAPSHOT from setup/resources (not values to commit).
+Use `npm.cmd` on Windows if PowerShell wrappers are blocked.
 
-Do not copy handbook's own AGENTS.md or adapter over consumer instructions. Reconcile
-issue authority explicitly: agents can maintain assigned issue evidence/status/blockers;
-new issues need human approval; humans control closure and Done. Publication, merging,
-deployment, releases and permissions retain their separate authorization rules.
+```text
+npm run handbook:setup
+node scripts/handbook.mjs resources --path PATH --revision SHA
+npm run handbook:sync -- --source SNAPSHOT
+npm run handbook:ready
+npm run handbook:entrypoints -- --source SNAPSHOT
+```
 
-## Reading and writing documentation
+Repeat for explicit integration upgrades without duplicate documentation. Without
+`--source`, sync updates Claude references from local Codex entrypoints. A committed
+snapshot source also updates consumer Codex references/metadata. It updates intact
+managed content and preserves appended custom content. Modified managed or unmanaged
+files require manual reconciliation; orphans are reported, never deleted. Check after sync.
 
-| Need | Source/destination |
-| --- | --- |
-| Authority, readiness and acceptance | [Work policy](work-policy.md) |
-| Project fields, access and enrollment | [Project operations](project.md) and [configuration](../project.json) |
-| Issue writing and evidence | [Examples](examples.md) |
-| Shared procedures and supporting contracts | `.agents/skills` and `.agents/agents` in the resolved handbook revision |
-| Application behavior, setup and verified evidence | Consumer docs named in its adapter |
-| New implementation/documentation queue | Issues in the owning repository; handbook for cross-repository coordination |
+## Refresh, provenance and result contract
 
-## Supported clients and acceptance
+Setup clones the expected private origin only if absent. Existing paths must be ordinary
+checkouts with that origin. `--path PATH` and `UNIWARES_HANDBOOK_PATH` are local overrides.
+The launcher executes the committed baseline helper, or clean committed main on first
+setup, never a dirty working copy. Pre-contract helpers with refresh/diagnose exports
+remain supported; older unrecognized helpers require explicit bootstrap reconciliation.
+Without a baseline, main must be an ancestor of the existing origin/main reference;
+ahead/diverged or uninitialized tracking state is rejected before shared code executes.
+Keep the shared helper self-contained for data-URL loading; relative runtime imports
+require a protocol/launcher change.
 
-The initial supported clients are Codex VS Code extension and Codex desktop app,
-using repository AGENTS.md and `.agents/skills` entrypoints. Each needs a fresh-session
-check for discovery, relevant activation, local adapter reads, cached operation and
-authority boundaries. Helper tests are not proof of client behavior. Record unavailable
-client verification as pending; no other clients or cloud provisioning are implied.
+Checks refresh lazily after four hours, with the same failed-attempt cooldown. `check
+--force` retries immediately without replacing an active task's revision. The interval
+governs attempts, not maximum baseline age. Preserve dirty, diverged, ahead-of-main and
+non-main checkouts; never reset, stash or switch branches. Cached operation validates
+origin and accepted commit; doctor remains read-only. Invalid consumer metadata is
+reported as a warning without suppressing baseline diagnostics.
 
-Derived-project creation remains offline. It may copy public launcher/entrypoints but
-does not clone handbook or enroll a repository. Its maintainer reviews inherited rules
-and runs setup separately. No private cache or machine paths belong in generated projects.
+Existing result fields `path`, `revision`, `fresh`, `mode`, `synchronizedAt`, optional
+`limitation` and `read` remain. Add `usable`, `status`, `lastAttempt`, `outcome` and
+`reason`. Last attempt records `attemptedAt` and optional limitation separately from
+successful synchronization. No usable baseline produces an actionable command failure,
+not a fabricated revision. Consumer readiness remains a separate warning-only result.
 
-## Contribution
+Before promotion, validate required guidance, helper syntax/exports, indexed resources, skill identities and
+`handbook-contract.json` when present. Incompatibility retains the previous baseline and
+checkout. Deployed legacy helpers cannot retroactively run new checks: the initial
+transition must be reviewed and API-compatible; later refreshes use the new validation.
+Export validation parses and links the module without evaluating candidate code; it
+checks real named exports, including aliases, rather than strings in the source.
 
-Devs propose handbook changes by PR; Admin approval remains a documented procedure.
-Clean synchronized main does not prove human review. No plugin marketplace, submodule,
-version pin or scheduled updater is required for this workflow.
+An exclusive lock and bounded Git calls protect refreshes; cached guidance remains usable
+during another refresh. Without a baseline retry after initialization. After interruption,
+inspect lock PID before manually removing a stale lock. Never remove a running lock.
+
+Text uses git show. The optional resources command creates a revision-keyed snapshot
+under Git metadata, preserving dependencies. It compares cached files with committed
+blobs and rejects modified snapshots. Interrupted temporary directories remain private
+cache for inspected manual cleanup. No task registry, scheduled updater or symlink is used.
+
+## Offline, clients and migration
+
+Offline readiness requires only Node and consumer files: no private clone, credentials,
+Git or network. Warnings do not fail CI; missing facts may prevent dependent decisions.
+Offline derived-project creation copies only permitted bootstrap/entrypoints and reviewed
+local guidance. It neither clones private Handbook content nor enrolls projects. Never
+include credentials, private caches or machine paths in generated projects.
+
+Codex uses `.agents/skills`; Claude gets thin `.claude/skills` references and CLAUDE.md
+importing `@AGENTS.md`. Canonical procedures stay in `.agents/skills`. Reading Markdown
+does not register hooks, subagents, permissions or dependencies. Preserve legitimate
+client-specific content; see [client acceptance](clients.md).
+
+Implement, test and separately review Handbook first, then obtain authorized publication,
+review and merge into main. Only afterwards update Unibase's launcher, metadata, local
+source map and wrappers. Preserve architecture, accepted milestones, adaptations,
+provenance and advisory checks. Remove duplicated skill bodies only after verifying
+shared replacements and local exceptions. Other repositories remain unchanged.

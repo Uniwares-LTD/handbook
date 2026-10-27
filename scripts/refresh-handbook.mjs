@@ -8,6 +8,57 @@ export const intervalMs = 4 * 60 * 60 * 1000;
 export const normalizeOrigin = value => value.replace(/^git@github.com:/, 'https://github.com/').replace(/\.git\/?$/, '').replace(/\/$/, '').toLowerCase();
 const gitAt = cwd => (...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 30000, windowsHide: true }).trim();
 const readJson = file => existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
+export const protocolVersion = 1;
+export const coreSkills = ['capture-project-learnings', 'compile-feature-spec', 'manage-issues', 'review-change', 'sync-docs-issues', 'work-on-task'];
+export function validateRevision(directory, revision) {
+  const git = gitAt(directory);
+  if (!/^[a-f0-9]{40,64}$/.test(revision)) throw new Error('Expected a full committed revision.');
+  git('cat-file', '-e', `${revision}^{commit}`);
+  const read = file => git('show', `${revision}:${file}`);
+  for (const file of ['docs/work-policy.md', 'docs/project.md', 'docs/onboarding.md']) {
+    if (!read(file).trim()) throw new Error(`Empty required guidance: ${file}`);
+  }
+  const helper = read('scripts/refresh-handbook.mjs');
+  // Parse and link without evaluating candidate code. Named-import resolution checks
+  // real exports, including aliases; comments and string literals cannot satisfy it.
+  const probe = `
+    import { readFileSync } from 'node:fs';
+    import { SourceTextModule, SyntheticModule } from 'node:vm';
+    import { isBuiltin } from 'node:module';
+    const candidate = new SourceTextModule(readFileSync(0, 'utf8'));
+    const builtins = new Map();
+    await candidate.link(async specifier => {
+      if (!isBuiltin(specifier)) throw new Error('Protocol 1 requires a self-contained helper with builtin imports.');
+      if (!builtins.has(specifier)) builtins.set(specifier,
+        new SyntheticModule(Object.keys(await import(specifier)), () => {}));
+      return builtins.get(specifier);
+    });
+    const contract = new SourceTextModule("import { refresh, diagnose } from 'candidate';");
+    await contract.link(() => candidate);
+  `;
+  execFileSync(process.execPath, ['--experimental-vm-modules', '--input-type=module', '-e', probe], { input: helper, encoding: 'utf8', windowsHide: true, timeout: 30000, stdio: ['pipe', 'pipe', 'pipe'] });
+  let contract;
+  // Pre-contract baselines remain supported by existing launchers.
+  const files = git('ls-tree', '--name-only', revision).split('\n');
+  if (files.includes('handbook-contract.json')) {
+    contract = JSON.parse(read('handbook-contract.json'));
+    if (contract.protocolVersion !== protocolVersion || !Array.isArray(contract.skills) || !Array.isArray(contract.requiredFiles)) throw new Error('Unsupported Handbook contract.');
+    for (const file of contract.requiredFiles) if (!read(file).trim()) throw new Error(`Empty required resource: ${file}`);
+    if (contract.resourceIndex) {
+      const index = JSON.parse(read(contract.resourceIndex));
+      if (!index.files || typeof index.files !== 'object' || Array.isArray(index.files)) throw new Error('Invalid resource index.');
+      const committed = new Set(git('ls-tree', '-r', '--name-only', revision).split('\n'));
+      for (const file of Object.keys(index.files)) if (!committed.has(file)) throw new Error(`Missing indexed resource: ${file}`);
+    }
+  }
+  for (const name of new Set([...coreSkills, ...(contract?.skills ?? [])])) {
+    if (!/^[a-z0-9-]+$/.test(name)) throw new Error('Invalid shared skill name.');
+    const body = read(`.agents/skills/${name}/SKILL.md`);
+    const declared = body.match(/^name: ["']?([^\r\n"']+)/m)?.[1];
+    if (declared !== name || !/^description: .+/m.test(body)) throw new Error(`Incompatible skill: ${name}`);
+  }
+  return { protocolVersion, revision };
+}
 function context(directory, origin) {
   const cwd = path.resolve(directory), git = gitAt(cwd);
   if (normalizeOrigin(git('remote', 'get-url', 'origin')) !== normalizeOrigin(origin)) throw new Error('Unexpected handbook origin; no refresh or baseline fallback performed.');
@@ -18,13 +69,17 @@ function context(directory, origin) {
   if (baseline) {
     if (normalizeOrigin(baseline.origin) !== normalizeOrigin(origin) || !/^[a-f0-9]{40,64}$/.test(baseline.revision)) throw new Error('Invalid handbook baseline.');
     git('cat-file', '-e', `${baseline.revision}^{commit}`);
+    validateRevision(cwd, baseline.revision);
   }
   return { cwd, git, metadata, baselineFile, attemptFile, baseline, attempt: readJson(attemptFile) };
 }
 function result(c, baseline, mode, limitation) {
   if (!baseline) throw new Error(`${limitation || 'Guidance unavailable'}; no synchronized baseline exists. Run setup; pause only handbook-dependent decisions.`);
   return { path: c.cwd, revision: baseline.revision, fresh: mode === 'updated', mode,
-    synchronizedAt: baseline.synchronizedAt, ...(limitation ? { limitation } : {}),
+    synchronizedAt: baseline.synchronizedAt, usable: true, status: 'usable',
+    lastAttempt: readJson(c.attemptFile), outcome: mode,
+    reason: limitation || (mode === 'updated' ? 'Synchronized compatible main.' : 'Within refresh cooldown.'),
+    ...(limitation ? { limitation } : {}),
     read: ['git', '-C', c.cwd, 'show', `${baseline.revision}:docs/work-policy.md`] };
 }
 function writeJson(file, value) {
@@ -71,6 +126,8 @@ export function refresh(directory, { origin = expectedOrigin, force = false, now
     try { c.git('fetch', '--no-tags', 'origin', 'refs/heads/main:refs/remotes/origin/main'); }
     catch { return fail('Could not fetch handbook main; using cached guidance.'); }
     const remote = c.git('rev-parse', 'refs/remotes/origin/main');
+    try { validateRevision(c.cwd, remote); }
+    catch (error) { return fail(`Candidate incompatible; previous baseline retained: ${error.message}`); }
     try { c.git('merge-base', '--is-ancestor', 'HEAD', remote); }
     catch { return fail('Handbook main is ahead of or diverged from origin/main; preserved.'); }
     try { c.git('merge', '--ff-only', remote); }

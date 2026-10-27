@@ -8,6 +8,12 @@
   "scripts": {
     "test": "node --test",
     "check": "node scripts/check.mjs",
-    "validate": "npm run check && npm test"
+    "validate": "npm run check && npm test && npm run handbook:ready && npm run handbook:entrypoints",
+    "handbook:setup": "node scripts/handbook.mjs setup --path .",
+    "handbook:check": "node scripts/handbook.mjs check --path .",
+    "handbook:doctor": "node scripts/handbook.mjs doctor --path .",
+    "handbook:ready": "node scripts/handbook-integration.mjs check",
+    "handbook:sync": "node scripts/handbook-integration.mjs sync",
+    "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints"
   }
 }

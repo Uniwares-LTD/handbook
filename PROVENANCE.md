@@ -13,6 +13,10 @@ license. Do not publish these resources publicly without reviewing their source 
 The manage-issues skill and handbook-specific policy/helpers are newly authored here.
 
 Changes remove application-specific assumptions and align issue updates with member-led
-acceptance. Framework/UI skills remain in their existing repository. System-owned skills
+acceptance. Four reusable framework/UI skills are now also imported with their resources
+and notices in [the technology import record](provenance/technology-imports.json).
+This preserves their original provenance and pre-adaptation hashes; Unibase is unchanged
+until the Handbook changes are reviewed and merged. The generic launcher is derived
+from Unibase's scripts/handbook.mjs at that recorded revision. System-owned skills
 are neither copied nor modified. Refresh current hashes only after reviewing intended
 changes: `node scripts/check.mjs --write-lock`, then `npm run validate`.

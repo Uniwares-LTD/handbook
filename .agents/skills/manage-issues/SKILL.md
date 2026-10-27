@@ -5,7 +5,8 @@ description: Prepare approved issues and maintain assigned issue/project trackin
 
 # Manage Issues
 
-Read [shared work policy](../../../docs/work-policy.md) for authority and adoption.
+Read [bootstrap](../../../docs/bootstrap.md) for the task baseline and authority,
+then relevant [domain guidance](../../../docs/guidance/README.md).
 
 Read [work policy](../../../docs/work-policy.md), [project operations](../../../docs/project.md)
 and [examples](../../../docs/examples.md), plus the consumer adapter. Confirm adoption
@@ -26,3 +27,15 @@ Use the report-only enrollment helper first; apply only explicit issue reference
 within authorization. On uncertain API outcomes, inspect state before retrying and
 avoid duplicate items/comments. No bulk backlog migration or project configuration
 changes are implied by routine issue work.
+
+## Workflow contract
+
+Trigger: Task intake, readiness, dependencies, assigned status/blockers or evidence maintenance.
+
+Inputs and sources: Authorized scope, human ownership, queue/adoption rules, existing issue state and duplicates. Shared authority is [work policy](../../../docs/work-policy.md); project facts remain in local canonical sources.
+
+Permitted actions and completion: An issue-ready proposal or authorized nonterminal maintenance with readback and handoff; acceptance remains with the member.
+
+Include dependencies, readiness gaps, accountable ownership and evidence locations
+in intake. Preserve explicitly accepted legacy queues; search before proposing a
+duplicate. External project proposals are optional, never a prerequisite to local work.
