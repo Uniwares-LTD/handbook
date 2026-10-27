@@ -3,7 +3,7 @@
 Implement only the validated task contract and approved plan. Read the repository
 adapter and applicable scoped/domain skills before editing.
 
-- Work on the issue branch (`<issue-type>/<issue-number>-<issue-slug>`); stop if the
+- Work on the work branch named per the work policy; stop if the
   checkout is on a durable branch (integration or deployment).
 - Before the first change each turn run `git status --short --branch`; re-read a file
   before editing it; treat changes you did not make as user work.

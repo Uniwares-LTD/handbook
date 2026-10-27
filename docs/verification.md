@@ -1,5 +1,18 @@
 # Bootstrap verification
 
+## Branch review before merge — 2026-10-27
+
+A fresh-context review of the full branch diff (a delegated read-only agent given only
+the diff, base and rubric) ran `npm run validate` and reported one Blocking finding:
+review-change told agents to delegate without session authorization. Fixed, along with
+medium findings: a stale auto-add state in the Uniwares record and history notes,
+conflicting untracked-fix branch wording, bare commands and `git clean`/`git branch -D`
+missing from gates, and create-issue not reporting labels or type GitHub dropped (one
+regression test added). Wording on advisory checks, sub-issue linking and adopted
+repositories was clarified. Left as noted: the description-budget lint does not parse
+YAML folded descriptions (no current skill uses one). A second same-agent pass over the
+fix diff found no Blocking issues. `npm run validate` passed 55 of 55 tests.
+
 ## Durable branches — 2026-10-27
 
 Each repository records one integration branch (`main` or `dev`, also its default branch)
@@ -29,7 +42,8 @@ source-map guidance gained compact rules. Tooling: a CI workflow running
 `npm run validate`; lints for skill catalogs, tool-neutral wording and description
 budgets; an empty-source guard in sync; and a shared gated-command list that sync merges
 into consumer lists and `.claude/settings.json` add-only. Handbook's own settings were
-generated (76 ask, 5 deny entries) and re-check reports no drift. New tests cover each
+generated (160 ask entries: 40 commands, bare and with arguments, for Bash and PowerShell;
+5 deny entries) and re-check reports no drift. New tests cover each
 lint, gate merging that preserves unrelated settings, drift reporting, malformed settings
 and the empty-source guard. The CI workflow has not yet run on GitHub. Codex gate rules
 remain manual. Claude Code's handling of the generated rules was not exercised live.
@@ -40,10 +54,8 @@ Shared guidance now requires every adopted repository to record one tracking pro
 an existing project, an organization-wide project (the default) or a dedicated
 repository project. Offline readiness warns when a consumer omits `tracking`; one new
 fixture test covers that warning and the existing consumer fixture records a project.
-GitHub's native auto-add workflow (`is:issue is:open`) is the default enrollment path;
-explicit enrollment remains for repositories a plan's single Free-tier workflow cannot
-cover and for pre-existing issues. The preview tool lists enabling it as a manual step.
-Handbook's local record names the handbook repository as the auto-add source for project #2.
+An auto-add enrollment default was added here and later dropped in the same branch;
+see "Explicit enrollment only" above.
 
 Work policy gains a branches-and-integration rule: edit only on an issue branch named
 `<issue-type>/<issue-number>-<issue-slug>`, integrate through a PR, and never commit, merge or fast-forward into
@@ -85,7 +97,7 @@ Project #2 setup acceptance, checked 2026-10-27:
   Backlog; Blocked was set to Not blocked. The helper reports no missing open issues.
 - Met: workflow readback shows Item added and Item reopened on; Item closed, Auto-close
   issue, Auto-add sub-issues and both pull-request workflows off.
-- Superseded: auto-add is no longer used (see below). Readback on 2026-10-27 shows Auto-add
+- Superseded: auto-add is no longer used (see "Explicit enrollment only" above). Readback on 2026-10-27 shows Auto-add
   to project enabled from the earlier instruction; it must be turned off in the browser.
 - Pending: the first real issue created with `create-issue.mjs` must land in Backlog with
   Blocked set.

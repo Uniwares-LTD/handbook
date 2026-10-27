@@ -35,13 +35,14 @@ remains visible in Active work.
 
 ## Automation and enrollment
 
-Two workflows are enabled: item added to Backlog and item reopened to Backlog. Auto-add
-to project, the unconditional item closed to Done workflow, and all auto-close, auto-add
-sub-issues, archive, merge and review-driven workflows are disabled. Closure is a human
+Target configuration: two workflows enabled, item added to Backlog and item reopened to
+Backlog. Auto-add to project, the unconditional item closed to Done workflow, and all
+auto-close, auto-add sub-issues, archive, merge and review-driven workflows disabled.
+Auto-add to project is still enabled live until a human turns it off; see verification. Closure is a human
 decision under policy. Agents may mirror verified human completion to Done or
 not-planned closure to Cancelled, preserving reasons and duplicate links.
 
-Agent-created issues in all four repositories reach the project through
+Agent-created issues in adopted repositories reach the project through
 `create-issue.mjs`; issues people create in the GitHub UI are added with the enrollment
 helper. [Verification](verification.md) records the live workflow state.
 

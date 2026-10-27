@@ -17,9 +17,10 @@ limits the claim. For risky/cross-cutting work compare actual surfaces with the 
 Remain read-only: no edits, comments, publication or project/issue mutations. Distinguish
 a separate pass by the same agent from genuinely independent-agent review.
 
-When the client supports it, collect raw findings in a fresh context given only the
-diff, base and acceptance criteria, without the implementation summary, plan or earlier
-findings; otherwise label the result "cold-review fallback". Then verify each finding
+When the client supports it and the session authorizes delegation, collect raw findings
+in a fresh context given only the diff, base and acceptance criteria, without the
+implementation summary, plan or earlier findings; otherwise label the result
+"cold-review fallback". Then verify each finding
 against the code and give it one verdict (Confirmed, Plausible, Pre-existing, Not
 confirmed) and one tier (Blocking, Medium, Informational) as the reviewer contract
 defines. Report Not confirmed findings only as discarded.

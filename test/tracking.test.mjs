@@ -199,7 +199,7 @@ function issueFixture({ duplicates = [], recent = [], autoAdded = false, failEnr
     { id: 'S', name: 'Status', dataType: 'SINGLE_SELECT', options: ['Backlog', 'Ready', 'In progress', 'In review', 'Done', 'Cancelled'].map(name => ({ id: `s-${name}`, name })) },
     { id: 'B', name: 'Blocked', dataType: 'SINGLE_SELECT', options: [{ id: 'b-no', name: 'Not blocked' }, { id: 'b-yes', name: 'Blocked' }] });
   const values = {}, creates = [], adds = [], searches = [], sets = [], queries = [];
-  const created = { number: 9, node_id: 'I', title: 'Review guidance', html_url: 'https://github.com/Example/product/issues/9' };
+  const created = { number: 9, node_id: 'I', title: 'Review guidance', html_url: 'https://github.com/Example/product/issues/9', labels: [{ name: 'documentation' }], type: { name: 'Task' } };
   const variable = (args, key) => args.find(a => a.startsWith(`${key}=`))?.slice(key.length + 1);
   const api = args => {
     const endpoint = args.find(a => a.startsWith('repos/') || a === 'search/issues');
@@ -265,6 +265,12 @@ test('approved issue is created once, added to the project and given Backlog and
   assert.equal(f.creates.length, 1);
   assert(f.creates[0].includes('type=Task') && f.creates[0].includes('labels[]=documentation'));
   assert.deepEqual(f.values, { Status: 's-Backlog', Blocked: 'b-no' });
+  assert.deepEqual(result.warnings, []);
+  const dropped = issueFixture();
+  Object.assign(dropped.created, { labels: [], type: null });
+  const partial = applyIssue(dropped.config, dropped.spec, { ...dropped, expect: approve(dropped) });
+  assert.equal(dropped.creates.length, 1);
+  assert.match(partial.warnings.join(' '), /did not apply labels: documentation.*did not apply type Task/s);
 });
 test('auto-added issue keeps workflow Status and reports its option name', () => {
   const f = issueFixture({ autoAdded: 's-Ready' });

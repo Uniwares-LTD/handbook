@@ -95,7 +95,12 @@ function track(config, spec, plan, issue, api) {
     if (readSingleSelect(api, item, plan.blockedName) !== plan.blockedOption) { setSingleSelect(api, plan.projectId, item, plan.blockedField, plan.blockedOption); done.push('blocked set'); }
     const status = readSingleSelect(api, item, plan.statusName), blocked = readSingleSelect(api, item, plan.blockedName);
     if (!status || blocked !== plan.blockedOption) throw new Error('Status/Blocked readback mismatch.');
-    return { mode: 'apply', reference, url: issue.html_url, item, status: plan.statusOptions[status] ?? status, blocked: spec.blocked };
+    // GitHub silently drops labels and type the creator may not set; report, never retry.
+    const labels = (issue.labels ?? []).map(l => typeof l === 'string' ? l : l.name), warnings = [];
+    const dropped = (spec.labels ?? []).filter(l => !labels.includes(l));
+    if (dropped.length) warnings.push(`GitHub did not apply labels: ${dropped.join(', ')}; check triage access and set them on the issue.`);
+    if (spec.type && issue.type?.name !== spec.type) warnings.push(`GitHub did not apply type ${spec.type}; check access and set it on the issue.`);
+    return { mode: 'apply', reference, url: issue.html_url, item, status: plan.statusOptions[status] ?? status, blocked: spec.blocked, warnings };
   } catch (error) {
     throw new Error(`${reference} exists (${issue.html_url}) but project tracking is incomplete after [${done.join(', ') || 'nothing'}]: ${error.message} Do not create it again; rerun with the same --spec and --config plus --resume ${issue.number}.`);
   }

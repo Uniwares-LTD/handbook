@@ -6,6 +6,8 @@
     ["git", "merge"],
     ["git", "rebase"],
     ["git", "reset", "--hard"],
+    ["git", "clean"],
+    ["git", "branch", "-D"],
     ["gh", "pr", "create"],
     ["gh", "pr", "edit"],
     ["gh", "pr", "ready"],

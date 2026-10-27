@@ -43,7 +43,7 @@ triaged; enrollment/triage explicitly sets Not blocked or Blocked.
 | --- | --- |
 | Read issue, inspect code, plan and verify | Within assigned task |
 | Enroll existing assigned issue, maintain nonterminal status and blocker metadata, post evidence | Within assigned task in an adopted repository |
-| Create issue or sub-issue | Suggest first; obtain human approval for concrete scope and destination, then create through the [issue helper](project.md#issue-maintenance-and-acceptance), which adds it to the recorded tracking project |
+| Create issue or sub-issue | Suggest first; obtain human approval for concrete scope and destination, then create through the [issue helper](project.md#issue-maintenance-and-acceptance), which adds it to the recorded tracking project; a human links a sub-issue to its parent |
 | Assign a member, reprioritize, expand scope | Human decision; do not do independently |
 | Accept/cancel work, close/reopen issue | Human member action |
 | Mirror Done/Cancelled after verified human closure | Authorized maintenance with closure reason and decision evidence; never independent acceptance |
@@ -119,7 +119,7 @@ a branch from the current integration branch named `<issue-type>/<issue-number>-
 For example, `task/5-review-claude-code-readiness` or `bug/42-fix-login-redirect`.
 Untracked low-risk fixes omit the number: `bug/<slug>` for a defect, otherwise `task/<slug>`.
 Integrate every change into the integration branch through a pull request that references
-its issue with `Related to`; direct pushes, local merges and fast-forwards into a durable
+its issue with `Related to` (an untracked fix has none to reference); direct pushes, local merges and fast-forwards into a durable
 branch are not permitted. Refreshing a checkout from origin is not integration.
 Update a deployment branch only through a promotion pull request from its recorded source;
 a promotion is a deployment and needs explicit authorization. Fixes, including urgent

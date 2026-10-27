@@ -41,8 +41,8 @@ and live acceptance are separate outcomes governed by shared authority.
 Choose checks from the changed behavior and its risks: focused checks while iterating,
 then the affected suite, build/type checks and integrity checks once the change settles.
 Reuse a result while its inputs are unchanged; rerun only missing, stale, failed or flaky
-checks, and say why for any repeat. A pending final check does not block an authorized
-local commit but always blocks publication. Report skipped and failed checks as such.
+checks, and say why for any repeat. A required check still pending does not block an
+authorized local commit but blocks publication; advisory checks never block. Report skipped and failed checks as such.
 
 ## Evaluating guidance changes
 

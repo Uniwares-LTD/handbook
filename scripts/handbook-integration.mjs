@@ -207,9 +207,10 @@ function readGates(file) {
       !Array.isArray(gates.denyRead) || gates.denyRead.some(p => typeof p !== 'string' || !p || /[()]/.test(p))) throw new Error(`${gatesFile}: expected ask (command word lists) and denyRead (path patterns).`);
   return gates;
 }
-// Each gated command becomes an ask rule for both shell tools; each path a Read deny rule.
+// Each gated command becomes ask rules for both shell tools, with and without arguments,
+// so the bare command (for example `git push`) is gated too; each path a Read deny rule.
 export function permissionEntries(gates) {
-  return { ask: gates.ask.flatMap(c => [`Bash(${c.join(' ')} *)`, `PowerShell(${c.join(' ')} *)`]), deny: gates.denyRead.map(p => `Read(${p})`) };
+  return { ask: gates.ask.flatMap(c => ['Bash', 'PowerShell'].flatMap(tool => [`${tool}(${c.join(' ')})`, `${tool}(${c.join(' ')} *)`])), deny: gates.denyRead.map(p => `Read(${p})`) };
 }
 const union = (current, extra, key = v => v) => [...current, ...extra.filter(v => !current.some(c => key(c) === key(v)))];
 function syncGates(root, { write, source, warnings, changed }) {

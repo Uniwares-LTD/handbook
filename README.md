@@ -49,7 +49,7 @@ repository's CI workflow, which belongs to the handbook only.
 
 ## Contribution
 
-Every change uses an issue branch and a PR; nothing is committed, merged or
+Every change uses a work branch named per the work policy and a PR; nothing is committed, merged or
 fast-forwarded into a durable branch directly. Request review from the Admins team;
 Admin approval is a team procedure, not enforced branch protection on private GitHub
 Free. Devs have write access but must follow that procedure. Never store credentials,

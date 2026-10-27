@@ -25,8 +25,9 @@ Use only relevant skills. Perform a separate read-only review after implementati
 Do not claim independent-agent review when the same agent performs both passes.
 No subagent delegation is required or implied.
 
-Edit only on an issue branch (`<issue-type>/<issue-number>-<issue-slug>`, e.g.
-`task/5-review-claude-code-readiness`), never on a durable branch (the integration branch
+Edit only on a work branch (`<issue-type>/<issue-number>-<issue-slug>`, e.g.
+`task/5-review-claude-code-readiness`; untracked small fixes use `bug/<slug>` or
+`task/<slug>`), never on a durable branch (the integration branch
 `main`/`dev` or a `_<environment>` deployment branch); changes reach the integration branch
 through a PR. Agents may maintain status/blockers and evidence for authorized assigned work.
 New issues require human approval; humans control acceptance/cancellation and closure.
