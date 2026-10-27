@@ -16,7 +16,7 @@ guidance. Check paths, commands, links and generated catalogs named by the adapt
 For authorized assigned work in an adopted repository, re-fetch the issue and publish
 concise evidence without overwriting human edits or duplicating comments. State outcome,
 checks, documentation, reviewed revision and remaining acceptance. Do not rewrite scope,
-create follow-ups, close issues or mark Done. New issue proposals require human approval.
+create follow-ups, accept/cancel or close issues. Verified closure mirroring belongs to manage-issues. New issue proposals require human approval.
 Use capture-project-learnings only for useful verified reusable knowledge.
 
 ## Workflow contract

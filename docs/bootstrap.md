@@ -2,7 +2,7 @@
 
 Explicit session scope and higher-priority instructions control the task. Read
 [work policy](work-policy.md) for action authority and [project operations](project.md)
-when managing tasks. Shared guidance does not adopt or enroll a repository. Read its
+when managing tasks, then the consumer's selected tracking configuration and local policy. Shared guidance does not adopt or enroll a repository. Read its
 local guidance and source map declared in `handbook.json`; identify conflicts and
 preserve accepted specializations rather than choosing a universal local/shared winner.
 

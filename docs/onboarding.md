@@ -138,3 +138,13 @@ review and merge into main. Only afterwards update Unibase's launcher, metadata,
 source map and wrappers. Preserve architecture, accepted milestones, adaptations,
 provenance and advisory checks. Remove duplicated skill bodies only after verifying
 shared replacements and local exceptions. Other repositories remain unchanged.
+
+## Tracking setup and upgrades
+
+Adoption never selects Uniwares as a consumer's project. Follow [project operations](project.md)
+to inventory the target organization and obtain the user's reuse/dedicated/organization-wide
+choice. Store it locally through handbook.json's optional tracking reference. Preserve
+existing choices, accepted queues and project-specific overrides; assess shared improvements
+before adding overrides. Preview external setup before applying authorized changes.
+The tracking tools run together from the task snapshot; older integrations can omit tracking
+until selection is authorized. Current Handbook project.json remains local-only.

@@ -31,3 +31,16 @@ Derived-project creation remains offline and copies only permitted bootstrap mat
 Completion: local guidance, source-map routing and selected entrypoints are reconciled,
 checks are reported honestly, and unresolved conflicts/unknowns have clear next actions.
 Use existing documentation/learning/issue skills for subsequent focused maintenance.
+
+## Organization-owned work tracking
+
+When tracking setup is authorized, follow [project operations](../../../docs/project.md).
+Resolve the repository organization, inventory accessible projects and accepted queues,
+and distinguish missing access from no projects. On first selection offer reuse, dedicated
+repository project or organization-wide project. Retain later recorded choices.
+Keep identity/mappings and policy references in consumer-owned tracking metadata.
+Preview exact project/field/view/link changes and conflicts before applying authorized
+operations; verify readback and disclose manual steps. Preserve custom content, permissions,
+existing items and legacy queues. No demonstration issues or implicit migration.
+Before a local workflow override, assess promoting the improvement to shared guidance;
+record a local rationale when specialization is necessary. Shared publication is separate.

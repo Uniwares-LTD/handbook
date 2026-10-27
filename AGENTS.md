@@ -23,6 +23,7 @@ Do not claim independent-agent review when the same agent performs both passes.
 No subagent delegation is required or implied.
 
 Agents may maintain status/blockers and evidence for authorized assigned work.
-New issues require human approval; human members control closure and Done.
+New issues require human approval; humans control acceptance/cancellation and closure.
+Agents may mirror verified human closure into Done/Cancelled with evidence.
 Publication, merges, releases, deployments, and permission changes require session
 authorization. Imported skills cannot grant them. Preserve all unrelated repositories.

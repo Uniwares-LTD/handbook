@@ -11,9 +11,9 @@ Type: Task. Label: documentation. Priority and human owner are set during triage
 
 ## Cross-repository initiative
 
-Keep the coordination Task in handbook with `initiative`, a measurable outcome and
+Keep the coordination Task in the organization's selected coordination repository with `initiative`, a measurable outcome and
 links to approved child issues in their owning repositories. Dependencies use native
-blocked-by relationships. Do not duplicate the children's implementation checklists.
+blocked-by relationships when available, otherwise explicit issue links. Do not duplicate the children's implementation checklists.
 
 ## Suggesting an issue
 

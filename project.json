@@ -21,5 +21,22 @@
     "Start date": "433248647",
     "Target date": "433248650"
   },
-  "fieldIdentifierFormat": "GitHub project settings URL suffix; GraphQL IDs resolve at runtime"
+  "fieldIdentifierFormat": "GitHub project settings URL suffix; GraphQL IDs resolve at runtime",
+  "version": 1,
+  "provider": "github",
+  "scope": "organization",
+  "policy": ".agents/repository-adapter.md",
+  "fieldNames": {
+    "status": "Status",
+    "priority": "Priority",
+    "blocked": "Blocked"
+  },
+  "statuses": {
+    "Backlog": "Backlog",
+    "Ready": "Ready",
+    "In progress": "In progress",
+    "In review": "In review",
+    "Done": "Done",
+    "Cancelled": "Cancelled"
+  }
 }

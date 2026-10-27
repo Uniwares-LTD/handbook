@@ -1,7 +1,7 @@
 # Uniwares handbook
 
-Shared technology, engineering and task-management guidance for Uniwares. This repository is
-private. The organization project tracks implementation and documentation work;
+Reusable technology, engineering and task-management guidance maintained by Uniwares.
+This repository is private. Consumers select tracking in their own GitHub organization;
 individual repositories retain their architectural and operational knowledge.
 
 ## Start here
@@ -10,7 +10,7 @@ For authorized first adoption or an integration update, follow this route:
 
 1. Inspect project instructions, authority and adoption; preserve local adaptations.
 2. Select relevant [domains and technology skills](docs/guidance/README.md).
-3. Establish [project guidance and a local source map](docs/project-guidance.md).
+3. Establish [project guidance and a local source map](docs/project-guidance.md). When tracking setup is in scope, inventory the repository organization and let the user select reuse, a dedicated project or an organization-wide project; follow [project operations](docs/project.md).
 4. Follow [onboarding](docs/onboarding.md) to reconcile bootstrap and client references.
 5. Initialize or refresh Handbook, retaining one committed revision for the task.
 6. Run offline readiness/drift checks, read shared/local sources, and report evidence.
@@ -29,7 +29,8 @@ and application facts belong in their owner repositories.
 - [Bootstrap](docs/bootstrap.md), [Handbook source map](docs/source-map.md), and
   [client acceptance](docs/clients.md).
 
-The project URL and identifiers are recorded in [project.json](project.json).
+Handbook's own project URL and identifiers are recorded in [project.json](project.json)
+and [local operations](docs/uniwares-project.md); consumers never inherit that destination.
 Handbook and Unibase adopt this policy. Unibase retains already accepted milestone
 queues; infrastructure and unitale-mockup retain their existing guidance. Project
 association alone never adopts policy or migrates a queue.

@@ -264,7 +264,8 @@ function mock({ failWrite = false, graphErrors = false } = {}) {
         const id = args.find(arg => arg.startsWith('content=')).slice(8); writes.push(id); enrolled.add(id);
         return {data:{addProjectV2ItemById:{item:{id:'ITEM'}}}};
       }
-      return {data:{node:{title:'Uniwares',owner:{login:'Uniwares-LTD'},items:{nodes:[...enrolled].map(id=>({content:{id}})),pageInfo:{hasNextPage:false}}}}};
+      if (query.includes('... on ProjectV2Item{project')) return {data:{node:{project:{id:'P1'},content:{id:'I2'}}}};
+      return {data:{node:{number:2,title:'Uniwares',owner:{login:'Uniwares-LTD'},items:{nodes:[...enrolled].map(id=>({content:{id}})),pageInfo:{hasNextPage:false}}}}};
     }
     return [[{number:1,node_id:'I1',title:'Existing'},{number:2,node_id:'I2',title:'New'},{number:3,node_id:'PR',title:'PR',pull_request:{}}]];
   };
@@ -281,7 +282,7 @@ test('failed API and GraphQL errors cannot be reported as successful enrollment'
 });
 test('invalid selection fails before writes; unknown project is rejected', () => {
   const m=mock(); assert.throws(()=>reconcile(config,{...m,apply:['Uniwares-LTD/handbook#2','Uniwares-LTD/handbook#99']}),/not an accessible open issue/);
-  assert.deepEqual(m.writes,[]); assert.throws(()=>reconcile({...config,title:'Wrong'},m),/identity/);
+  assert.deepEqual(m.writes,[]); assert.throws(()=>reconcile({...config,organization:'Wrong'},m),/organization/);
   assert.throws(()=>reconcile(config,{...m,apply:['Other/repo#1']}),/invalid issue/);
 });
 test('project number resolves to a GraphQL ID without requiring stored opaque IDs', () => {
