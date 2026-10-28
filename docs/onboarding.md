@@ -71,8 +71,9 @@ or handed-off work keep its path and revision as docs/bootstrap.md describes. Lo
 guidance: .agents/repository-adapter.md and docs/architecture.md#source-map. Read the
 shared work policy when an action depends on authority, lifecycle or branches. Skills
 are selected in handbook.json. Without a baseline, continue under local rules and
-pause only dependent decisions. Start issues, PRs and documents from the templates in
-.github and docs/templates (use maintain-docs); they are permissive. After skill or
+pause only dependent decisions. Start issues, PRs and documents from the permissive
+templates in .github and docs/templates, else the shared starters (docs/templates.md);
+set up or refresh them with maintain-docs. After skill or
 routing changes run handbook:sync and handbook:entrypoints; preserve custom instructions.
 ```
 
@@ -87,7 +88,8 @@ npm run handbook:ready
 npm run handbook:entrypoints -- --source SNAPSHOT
 ```
 
-Repeat for explicit integration upgrades without duplicate documentation. Without
+Repeat for explicit integration upgrades without duplicate documentation. Re-copy the
+offline tool first: its core skill list decides which skills sync adds, such as maintain-docs. Without
 `--source`, sync updates Claude references from local Codex entrypoints. A committed
 snapshot source also updates consumer Codex references/metadata. It updates intact
 managed content and preserves appended custom content. Modified managed or unmanaged

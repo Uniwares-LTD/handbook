@@ -19,7 +19,8 @@ Where a local rule differs from shared guidance, say which one applies and why.
 
 Issue and PR templates live in `.github`, and document templates in `docs/templates`.
 They are permissive starting points: fill in what you know and skip, rename or delete
-any section. Use the maintain-docs skill to add or refresh them.
+any section. Use the maintain-docs skill to add or refresh them. When a
+template is missing here, use the shared starter (see the Handbook's docs/templates.md).
 
 ## Accepted exceptions
 

@@ -23,7 +23,7 @@ shows where a repository keeps its copy.
 
 | Starter | Local copy | Use for |
 | --- | --- | --- |
-| `github/ISSUE_TEMPLATE/{bug,feature,task,initiative}.yml` | `.github/ISSUE_TEMPLATE/` | Issue forms, and the section order of agent-drafted issues |
+| `github/ISSUE_TEMPLATE/{bug,feature,task,initiative}.yml`, `config.yml` | `.github/ISSUE_TEMPLATE/` | Issue forms (blank issues stay enabled), and the section order of agent-drafted issues |
 | `github/PULL_REQUEST_TEMPLATE.md` | `.github/PULL_REQUEST_TEMPLATE.md` | PR descriptions |
 | `docs/source-map.md` | `sourceMap` in handbook.json | Repository navigation |
 | `docs/repository-adapter.md` | `guidance` in handbook.json | Local guidance for agents and contributors |
@@ -37,7 +37,7 @@ The lessons-learned template stays with the capture-project-learnings skill.
 ## Finding and using a template
 
 1. Use the repository's local copy when one exists. The repository guidance lists its
-   template locations.
+   template locations; for an issue body that is the matching `.github` form.
 2. Otherwise read the shared starter at the task's Handbook revision, for example
    `git -C PATH show REVISION:.agents/templates/docs/how-to.md`, or open it in the
    resources snapshot.

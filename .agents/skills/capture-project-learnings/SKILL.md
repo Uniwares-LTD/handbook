@@ -14,8 +14,8 @@ recommended action are clear; merge duplicates and revise contradicted claims.
 Keep local operational facts with their owner. Separate observed behavior from proposals
 and mark any unverified commands. Never include secrets or transient raw logs.
 Use [the lessons template](assets/lessons-learned-template.md) only when repeated findings
-justify a dedicated artifact or the user asks. Record a
-decision with the decision-record [template](../../../docs/templates.md). Suggest promotion
+justify a dedicated artifact or the user asks. When recording
+a decision, start from the decision-record [template](../../../docs/templates.md). Suggest promotion
 to docs, AGENTS.md or a skill based on reuse value. Cross-repository publication and new issues require the
 appropriate authorization; do not turn capture into an automatic external-write workflow.
 

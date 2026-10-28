@@ -34,7 +34,8 @@ artifacts are evidence, not new authority.
 | --- | --- |
 | Authority detail, lifecycle, issue structure, branches | [work policy](docs/work-policy.md) |
 | Creating or maintaining issues, project tracking | [project operations](docs/project.md) through manage-issues |
-| Drafting an issue, PR, spec, guide or decision; starting or updating docs | [templates](docs/templates.md) through maintain-docs |
+| Drafting an issue, PR, spec, guide or decision | [templates](docs/templates.md) |
+| Setting up, restructuring or refreshing docs and templates | maintain-docs |
 | Adopting or updating a consumer repository | [onboarding](docs/onboarding.md) through maintain-project |
 | Technology, engineering or task practice | [domain guidance](docs/guidance/README.md) |
 

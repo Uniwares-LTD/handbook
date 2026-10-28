@@ -1,6 +1,6 @@
 ---
 name: maintain-docs
-description: "Starts and updates a repository's documentation and templates from the Handbook starters: adoption documents, guides, specs, decision records, and issue and PR templates. Use when setting up docs in a repository, writing a new document, restructuring docs, or refreshing local templates."
+description: "Sets up a repository's documentation and templates from the Handbook starters, writes new documents from templates, restructures docs and refreshes local templates on request. Use when setting up docs or templates in a repository, writing a new guide, spec or decision record, reorganizing docs, or updating a template."
 ---
 
 # Maintain Docs
@@ -23,12 +23,15 @@ To start docs or templates in a repository:
    from the source map.
 
 To write a new document, use the matching template: the local copy first, otherwise the
-shared starter at the task revision. Fill in what is known, delete sections that do not
-apply, and keep only the headings that readiness requires.
+shared starter at the task revision. Follow its headings, fill in what is known and delete
+sections that do not apply; never delete the preferences lines or the five source-map
+headings, which readiness parses.
 
-To update documents, rewrite the affected content so it matches verified current facts.
-Do not append corrections. Refresh a template from its shared starter only when the user
-asks. Show the differences first, then use `--update` with the named file.
+To restructure documents, move or merge content so each fact has one home, rewrite rather
+than append corrections, and update source-map links.
+
+Refresh a template from its shared starter only when the user asks. Show the differences
+first, then use `--update` with the named file.
 
 Run `npm run handbook:ready` and the repository's own link or docs checks after changes.
 
@@ -40,5 +43,5 @@ Inputs and sources: Repository guidance, source map, handbook.json, existing doc
 
 Permitted actions and completion: Local documents and templates are created or updated with source-map links, and checks are reported. Existing files are never silently replaced, and nothing is published externally.
 
-After work on a task changes behavior, use sync-docs-issues instead. Keep changing facts
-in one place and link to them; do not copy them between documents.
+Aligning existing docs with verified changes, and fixing stale facts or links, belongs to
+sync-docs-issues. Keep changing facts in one place and link to them.
