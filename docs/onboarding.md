@@ -24,6 +24,7 @@ not adopt policy, migrate queues or change permissions.
 5. Run setup, retain path/revision, and materialize resources at that revision. Pass the
    returned resourcePath to explicit sync. Inspect changes and conflicts; reconcile
    unmanaged/modified wrappers manually, retaining their adaptations in local guidance.
+   Offer the [starter templates](#starter-templates); copying them is optional.
 6. Run offline readiness and drift checks. Read shared policy/relevant domains at the
    task revision plus local sources. Report changes, checks, unknowns and limitations.
 7. Optionally, with separate authorization, inventory and set up the organization's
@@ -56,7 +57,8 @@ Add these package commands:
   "handbook:doctor": "node scripts/handbook.mjs doctor",
   "handbook:ready": "node scripts/handbook-integration.mjs check",
   "handbook:sync": "node scripts/handbook-integration.mjs sync",
-  "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints"
+  "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints",
+  "handbook:templates": "node scripts/handbook-integration.mjs templates"
 }
 ```
 
@@ -82,6 +84,26 @@ npm run handbook:sync -- --source SNAPSHOT
 npm run handbook:ready
 npm run handbook:entrypoints -- --source SNAPSHOT
 ```
+
+## Starter templates
+
+[`.agents/templates`](../.agents/templates) holds permissive starters: issue forms with one
+required field, a PR template, the adoption documents (source map, repository guidance,
+preferences) and feature-spec, decision-record and how-to pages. Each one says to skip,
+rename or delete any section. Triage, not the form, confirms outcome, scope and acceptance.
+
+```text
+npm run handbook:templates -- --source SNAPSHOT            # preview: missing, same or differs
+npm run handbook:templates -- --source SNAPSHOT --write    # copy missing files only
+npm run handbook:templates -- --source SNAPSHOT --update .github/PULL_REQUEST_TEMPLATE.md
+```
+
+Issue and PR templates go to `.github`. The adoption documents go to the `sourceMap`,
+`guidance` and `preferences` paths in handbook.json and are skipped when that path is
+unset or names an anchor. The other pages go to `docs/templates`. The consumer owns every
+copy: sync never overwrites or deletes one, and `--update` replaces only the named files,
+when a developer chooses to take a newer shared version. Labels and placeholders are
+English; translate local copies freely.
 
 Repeat for explicit integration upgrades without duplicate documentation. Without
 `--source`, sync updates Claude references from local Codex entrypoints. A committed

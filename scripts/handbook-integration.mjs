@@ -270,17 +270,57 @@ function syncGates(root, { write, source, warnings, changed }) {
   }
 }
 
+export const templatesDir = '.agents/templates';
+// Starter templates are copied once and then owned by the consumer: --write adds only
+// missing files, and --update replaces only the named differing files.
+export function syncTemplates(root, { source = root, write = false, update = [] } = {}) {
+  root = path.resolve(root);
+  const base = path.join(path.resolve(source), templatesDir);
+  if (!existsSync(base)) throw new Error(`No ${templatesDir} under the source; check --source.`);
+  let config = {};
+  try { config = configAt(root); } catch {}
+  const adoption = { 'source-map.md': config.sourceMap, 'repository-adapter.md': config.guidance, 'repository.md': config.preferences };
+  const destination = file => {
+    if (file.startsWith('github/')) return `.github/${file.slice('github/'.length)}`;
+    const name = file.slice('docs/'.length);
+    if (!(name in adoption)) return `docs/templates/${name}`;
+    const reference = adoption[name];
+    return typeof reference === 'string' && reference && !reference.includes('#') ? reference : undefined;
+  };
+  const walk = dir => readdirSync(path.join(base, dir), { withFileTypes: true }).flatMap(item => item.isDirectory() ? walk(`${dir}${item.name}/`) : [`${dir}${item.name}`]);
+  const templates = [], changed = [], skipped = [];
+  for (const file of walk('').sort()) {
+    const relative = destination(file);
+    if (!relative) { skipped.push(`${templatesDir}/${file}`); continue; }
+    const { target } = local(root, relative);
+    const wanted = read(path.join(base, file));
+    const status = !existsSync(target) ? 'missing' : read(target) === wanted ? 'same' : 'differs';
+    templates.push({ template: `${templatesDir}/${file}`, path: relative, status });
+    if ((write && status === 'missing') || (status === 'differs' && update.includes(relative))) {
+      mkdirSync(path.dirname(target), { recursive: true });
+      writeFileSync(target, wanted);
+      changed.push(relative);
+    }
+  }
+  return { templates, changed, skipped };
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
     const [command, ...args] = process.argv.slice(2);
-    let root = process.cwd(), source;
+    let root = process.cwd(), source, write = false;
+    const update = [];
     for (let i = 0; i < args.length; i++) {
       if (args[i] === '--root' && args[i + 1]) root = args[++i];
       else if (args[i] === '--source' && args[i + 1]) source = args[++i];
-      else throw new Error('Use --root PATH and optional --source SNAPSHOT.');
+      else if (command === 'templates' && args[i] === '--write') write = true;
+      else if (command === 'templates' && args[i] === '--update' && args[i + 1]) update.push(args[++i].replace(/\\/g, '/'));
+      else throw new Error('Use --root PATH and optional --source SNAPSHOT; templates also takes --write and --update PATH.');
     }
-    if (!['check', 'sync', 'check-entrypoints'].includes(command)) throw new Error('Use check, sync or check-entrypoints.');
-    const result = command === 'check' ? checkReadiness(root) : syncEntrypoints(root, { source, write: command === 'sync' });
+    if (!['check', 'sync', 'check-entrypoints', 'templates'].includes(command)) throw new Error('Use check, sync, check-entrypoints or templates.');
+    const result = command === 'check' ? checkReadiness(root)
+      : command === 'templates' ? syncTemplates(root, { source, write, update })
+      : syncEntrypoints(root, { source, write: command === 'sync' });
     console.log(JSON.stringify(result, null, 2));
     // Structural readiness and drift are advisory. Runtime/usage failures still fail.
   } catch (error) { console.error(error.message); process.exitCode = 1; }

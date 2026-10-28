@@ -25,6 +25,8 @@ and application facts belong in their owner repositories.
 - [Work policy](docs/work-policy.md): ownership, readiness, agent authority, completion.
 - [Project operations](docs/project.md): fields, views, workflows, enrollment.
 - [Examples](docs/examples.md): issue writing and evidence handoffs.
+- [Starter templates](.agents/templates): permissive issue forms, a PR template and
+  docs starters that consumers copy once and then own; see [onboarding](docs/onboarding.md#starter-templates).
 - [Provenance](PROVENANCE.md).
 - [Bootstrap](docs/bootstrap.md), [Handbook source map](docs/source-map.md), and
   [client acceptance](docs/clients.md).

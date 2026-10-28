@@ -14,6 +14,7 @@
     "handbook:doctor": "node scripts/handbook.mjs doctor --path .",
     "handbook:ready": "node scripts/handbook-integration.mjs check",
     "handbook:sync": "node scripts/handbook-integration.mjs sync",
-    "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints"
+    "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints",
+    "handbook:templates": "node scripts/handbook-integration.mjs templates"
   }
 }

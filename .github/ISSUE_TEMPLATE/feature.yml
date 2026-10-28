@@ -1,13 +1,20 @@
 {
   "name": "Feature",
-  "description": "Propose a bounded feature for human triage.",
+  "description": "A new capability or a change to an existing one.",
   "type": "Feature",
   "body": [
+    {
+      "type": "markdown",
+      "attributes": {
+        "value": "Fill in what you know; skip, rename or delete any section. Triage completes the rest."
+      }
+    },
     {
       "type": "textarea",
       "id": "outcome",
       "attributes": {
-        "label": "Problem and intended outcome"
+        "label": "Outcome",
+        "placeholder": "Who needs what, and why?"
       },
       "validations": {
         "required": true
@@ -17,27 +24,30 @@
       "type": "textarea",
       "id": "scope",
       "attributes": {
-        "label": "Scope and exclusions"
+        "label": "Scope",
+        "placeholder": "In scope: ...\nOut of scope: ..."
       },
       "validations": {
-        "required": true
+        "required": false
       }
     },
     {
       "type": "textarea",
       "id": "acceptance",
       "attributes": {
-        "label": "Observable acceptance criteria"
+        "label": "Done when",
+        "placeholder": "Observable result that shows this is finished."
       },
       "validations": {
-        "required": true
+        "required": false
       }
     },
     {
       "type": "textarea",
       "id": "context",
       "attributes": {
-        "label": "Context, dependencies, and evidence"
+        "label": "Context / links",
+        "placeholder": "Related issues, docs, designs, constraints."
       },
       "validations": {
         "required": false

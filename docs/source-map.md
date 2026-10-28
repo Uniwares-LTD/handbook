@@ -9,6 +9,7 @@
 - [Issue creation helper](../scripts/create-issue.mjs): approved issue creation with project enrollment.
 - [Access check](../scripts/org-access.mjs): read-only organization team and permission gap report.
 - [Shared skills](../.agents/skills): canonical procedures and imported resources.
+- [Starter templates](../.agents/templates): issue/PR forms and docs starters copied once by consumers.
 
 ## Documentation
 
@@ -22,6 +23,8 @@ default teams and permissions; [local operations](uniwares-project.md) describe 
 ## Commands
 
 [package.json](../package.json) owns check/test/validate and Handbook integration commands.
+Handbook's own [issue forms](../.github/ISSUE_TEMPLATE) mirror the shared starters; its PR
+template adds the policy approval section.
 [Tests](../test) use disposable repositories and fixtures; no production services.
 
 ## Generated areas

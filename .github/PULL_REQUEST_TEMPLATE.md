@@ -1,14 +1,17 @@
+<!-- Fill in what you know; delete sections that don't apply. -->
+
 ## Outcome
 
-Describe the change and link related work using ordinary references (no closing keywords).
+What changed and why. Link related work with ordinary references (for example
+"Related to #123"), not closing keywords.
 
 ## Verification
 
-Checks, read-only review, documentation impact, and limitations.
+Checks run, read-only review, documentation impact and known limitations.
 
 ## Deployment
 
-Before deployment: steps, migrations or configuration needed, or "None".
+Before deployment: steps, migrations or configuration, or "None".
 After deployment: checks that confirm the live outcome, or "None". Merging is not deployment.
 
 ## Policy approval

@@ -89,7 +89,9 @@ Prefer native Task, Bug and Feature types where supported; preserve or explicitl
 label and native sub-issues. `documentation`, `research`, and `operations` classify
 Tasks; do not duplicate lifecycle/priority in labels. Cross-repository coordination
 lives in the consumer organization's explicitly chosen coordination repository; implementation
-lives in the responsible repository. Handbook is not a universal issue destination. Search for
+lives in the responsible repository. Handbook is not a universal issue destination. Issue forms are
+permissive starting points: only the outcome is required, and triage confirms scope and
+acceptance. Search for
 duplicates before proposing or creating work. Use sub-issues for independently owned
 outcomes and checklists for small steps. Size is optional relative effort, not a deadline.
 Priority (when to do it) and severity (how bad the impact is) are separate; never derive
