@@ -49,3 +49,13 @@ project operations is met; otherwise report it as partial. Preserve custom conte
 existing items and legacy queues. No demonstration issues or implicit migration.
 Before a local workflow override, assess promoting the improvement to shared guidance;
 record a local rationale when specialization is necessary. Shared publication is separate.
+
+## Organization access
+
+For team and permission inventory or setup, follow
+[organization access](../../../docs/organization-access.md). Run its read-only access
+check and report unknowns from missing Owner access or token scope. Present the gaps and an exact change
+list; apply only the authorized list, read back by repeating the inventory and disclose
+browser-only steps and partial setup. Report memberships but never add, remove or
+promote people unless the human named them in the authorized list. Record the result
+and exceptions where organization access directs.

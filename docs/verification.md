@@ -1,5 +1,56 @@
 # Bootstrap verification
 
+## Organization access scope — 2026-10-28
+
+The model is applied to Uniwares-LTD and karpishe-org only. The user explicitly excluded
+VOXR-MAIN, VOXR-AI-OL, karpishe-experiments, briteat-org and Jason-Richter-Enterprises:
+do not inventory, propose or apply access changes there unless the user lifts the
+exclusion. allwares was skipped as inactive.
+
+## Organization access for karpishe-org — 2026-10-28
+
+No Handbook-adopted repository, so this entry is the access record. Applied under session
+authorization by Owner sinasava (promoted manually by the user): `leads` renamed to Admin
+(`admin`, already holding all_repo_admin); `dev` all_repo_write and `support`
+all_repo_triage assigned; per-repository `admin`/`dev` grants on labs removed; member
+direct grants removed (crowdfunding: Amir-Ahani, sinasava, karpishe; labs: karpishe;
+ParhamBeik on Parham_Playground, dotnet_core, angular_core, corepishe, pishkar); outside
+collaborators Mrz6990 (admin) and mr-ebadipour-it (maintain), both crowdfunding-only,
+removed from the organization; base permission read → none. Member repository creation
+unchanged (enabled). Readback: effective access is admin for Amir-Ahani and uniwares-uk,
+write for ParhamBeik and zinabkaviani, triage for shaghayegha on sampled repositories;
+the access check reports only the pending items below.
+
+Pending: 2FA requirement (minahatamia73, ParhamBeik, shaghayegha, zinabkaviani lack 2FA);
+Admin members Amir-Ahani and uniwares-uk are not Owners (Owners: karpishe, sinasava; no
+Owner change by human choice); Mehdi-varm's pending invitation left untouched.
+Project #2 Karpishe access, confirmed by the user's browser screenshot: Admin Admin, dev
+Write, support Write. Open deviations there: base role Write (model: No access or Read)
+and a redundant individual Admin entry for uniwares-uk, who is in Admin.
+
+## Organization access for Uniwares-LTD — 2026-10-28
+
+Applied under session authorization per [organization access](organization-access.md):
+Admins renamed to Admin (`admin`), Devs to Dev (`dev`), Support (`support`) created
+(visible; its creator sinasava remains maintainer). Predefined organization roles are
+available on this Free organization and were assigned: `admin` all_repo_admin (8136),
+`dev` all_repo_write (8134), `support` all_repo_triage (8133). Base repository
+permission changed from read to none; member repository creation stays enabled by
+local choice. Readback: role-team lists show each team once; effective permissions
+for ParhamBeik and AmirMahdiDavoudiKia8 are write and for Amir-Ahani admin on handbook,
+unibase, infrastructure and unitale-mockup; no direct or outside collaborators; Owners
+Amir-Ahani, sinasava and uniwares-uk equal Admin. The redundant per-repository `admin`
+and `dev` grants on handbook and unitale-mockup were then removed under authorization;
+team repository lists are empty and effective access was unchanged on readback. Dev
+memberships, including Owners sinasava and uniwares-uk, were kept by human choice.
+`node scripts/org-access.mjs --org Uniwares-LTD` reports only `two-factor` and
+`members-without-2fa` (ParhamBeik).
+
+Pending: 2FA requirement (ParhamBeik has no 2FA; enforcing would remove them).
+Project #2 Uniwares access, confirmed by the user's browser screenshot: base role Read,
+Admin Admin, Dev Write, Support Write; a redundant individual Admin entry for
+uniwares-uk, who is in Admin, remains.
+
 ## Branch review before merge — 2026-10-27
 
 A fresh-context review of the full branch diff (a delegated read-only agent given only

@@ -12,7 +12,7 @@
     ".agents/skills/capture-project-learnings/assets/lessons-learned-template.md": "bfde5451de0dd602d6214e2b164935ab8801e9f15c1863bf2ee86d7ea8771a33",
     ".agents/skills/compile-feature-spec/SKILL.md": "bf05df72bb61807e8aa0289dfefe1a6295f640954d0db909143e37f944b495da",
     ".agents/skills/compile-feature-spec/agents/openai.yaml": "4294ee2e6f4fa0ea97df363330f9dee8b07c490d5679477224c7acf97aa869a9",
-    ".agents/skills/maintain-project/SKILL.md": "66c2079abd6190247b45864bf193c3f6c13f8ba7eb8528db2ddba9d7e9a57484",
+    ".agents/skills/maintain-project/SKILL.md": "29137c28b150db67f12b512a4f7bffdc50f5bf76548cc4575c8d48f6357156a2",
     ".agents/skills/manage-issues/SKILL.md": "d30d124c2d4dec9810384b99b5b9b0923ef2ba0ecc638965a9a1131a32d24ca8",
     ".agents/skills/manage-issues/references/triage-and-review.md": "37272a29e1665028196284972c83f68ca1bc6e1e7375c4a48a475a42e31ee9a2",
     ".agents/skills/next-best-practices/SKILL.md": "420887e3fe236c43246fe174712ab755277a73aff90eafbe4ff1a5c7e112a95c",

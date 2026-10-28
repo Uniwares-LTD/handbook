@@ -25,8 +25,9 @@ be untracked. Use one issue per meaningful outcome, not per file or commit.
 | Done | Human accepted completion and closed the issue as completed |
 | Cancelled | Human closed without completion; retain not-planned/duplicate reason and references |
 
-Local governance identifies who triages, prioritizes, assigns and accepts work; no team
-names or permission model are implied. Keep one accountable human, allowing additional
+Local governance identifies who triages, prioritizes, assigns and accepts work. The default
+`admin`, `dev` and `support` teams and their permissions are defined in
+[organization access](organization-access.md). Keep one accountable human, allowing additional
 contributors. Coordinate ownership changes. The authorized human accepts/cancels and closes. Reopened work returns to Backlog.
 No automatic issue closure or Done transition on PR merge is permitted by default.
 Use ordinary `Related to OWNER/REPO#NUMBER` references, not closing keywords in commits
@@ -135,8 +136,9 @@ Use shared workflows by default. Before tailoring one, assess whether the improv
 applies to shared guidance and propose that change first. Record project-specific
 overrides with rationale and authoritative local references. A shared proposal neither
 authorizes external publication nor blocks independently authorized local work.
-No universal local/shared winner replaces explicit conflict resolution. Team names,
-project identities, capability limits and organization governance remain local facts.
+No universal local/shared winner replaces explicit conflict resolution. Actual team
+memberships, access exceptions, project identities, capability limits and organization
+governance remain local facts.
 
 Generated guidance names the command that generates it and is never edited by hand.
 Any temporary rule names an owner and a checkable removal trigger. Archived documents

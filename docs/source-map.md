@@ -7,6 +7,7 @@
 - [Integration tooling](../scripts/handbook-integration.mjs): offline readiness and explicit entrypoint sync.
 - [Enrollment helper](../scripts/enroll.mjs): existing assigned issue enrollment.
 - [Issue creation helper](../scripts/create-issue.mjs): approved issue creation with project enrollment.
+- [Access check](../scripts/org-access.mjs): read-only organization team and permission gap report.
 - [Shared skills](../.agents/skills): canonical procedures and imported resources.
 
 ## Documentation
@@ -14,7 +15,8 @@
 [Repository preferences](../.agents/repository.md) record the issue language.
 [README](../README.md) routes adoption. [Bootstrap](bootstrap.md) defines task context;
 [work policy](work-policy.md) defines authority; [project operations](project.md) defines
-shared project procedures; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance.
+shared project procedures; [organization access](organization-access.md) defines the
+default teams and permissions; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance.
 [Onboarding](onboarding.md) defines integration; [provenance](../PROVENANCE.md) records imports.
 
 ## Commands

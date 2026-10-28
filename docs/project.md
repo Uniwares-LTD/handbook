@@ -13,7 +13,9 @@ Inventory accessible organization projects, linked repositories, fields/options,
 views/workflows, permissions, open issues and accepted local queues. Paginate results.
 An access error is not an empty inventory; hidden projects cannot be ruled out even
 after complete pagination. Personal-account projects and other trackers are recognized
-but not migrated by these tools. Preserve their existing workflows.
+but not migrated by these tools. Preserve their existing workflows. Teams, members and
+repository/project access are inventoried and set up under
+[organization access](organization-access.md), never by the tracking helpers.
 
 During first project and workflow setup, also ask which language issues and comments
 should use: English (the default) or Persian. Record the answer as the issue language in

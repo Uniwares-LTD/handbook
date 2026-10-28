@@ -4,7 +4,9 @@ Use the [common contract](../bootstrap.md), [work policy](../work-policy.md) and
 [project operations](../project.md). Local project setup and Handbook integration are
 distinct from external project creation, enrollment, credentials and access changes.
 
-Use maintain-project for local initialization/reconciliation and organization-owned tracking inventory, choice and authorized setup. Optional external proposals
+Use maintain-project for local initialization/reconciliation and organization-owned tracking inventory, choice and authorized setup.
+It also covers team and permission inventory and authorized setup under
+[organization access](../organization-access.md). Optional external proposals
 may identify destination, scope and required authority; they are never mandatory setup.
 Use manage-issues for intake and assigned task maintenance: scope, human ownership,
 acceptance, dependencies, readiness, nonterminal status, blockers, evidence and handoff.
