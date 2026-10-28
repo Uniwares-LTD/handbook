@@ -90,7 +90,8 @@ label and native sub-issues. `documentation`, `research`, and `operations` class
 Tasks; do not duplicate lifecycle/priority in labels. Cross-repository coordination
 lives in the consumer organization's explicitly chosen coordination repository; implementation
 lives in the responsible repository. Handbook is not a universal issue destination. Issue forms are
-permissive starting points: only the outcome is required, and triage confirms scope and
+permissive starting points: only one field (the outcome or
+problem) is required, and triage confirms scope and
 acceptance. Search for
 duplicates before proposing or creating work. Use sub-issues for independently owned
 outcomes and checklists for small steps. Size is optional relative effort, not a deadline.

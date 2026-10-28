@@ -45,6 +45,8 @@ for (const dir of ['.github/ISSUE_TEMPLATE', '.agents/templates/github/ISSUE_TEM
   }
   JSON.parse(readFileSync(path.join(root, dir, 'config.yml'), 'utf8'));
 }
+const lf = file => text(file).replace(/\r\n/g, '\n');
+for (const name of ['bug.yml','feature.yml','task.yml','initiative.yml','config.yml']) assert.equal(lf(`.github/ISSUE_TEMPLATE/${name}`), lf(`.agents/templates/github/ISSUE_TEMPLATE/${name}`), `Handbook issue form ${name} must match its shared starter`);
 const config = JSON.parse(readFileSync(path.join(root, 'project.json'), 'utf8'));
 validateTracking(config);
 const hashes = Object.fromEntries(walk('.agents').sort().map(file => {
