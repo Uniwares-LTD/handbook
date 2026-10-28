@@ -1,6 +1,6 @@
 ---
 name: manage-issues
-description: Prepare approved issues and maintain assigned issue/project tracking in the consumer organization under human-controlled acceptance.
+description: Drafts and creates human-approved issues and keeps status, blockers and evidence current on assigned issues in the recorded tracking project. Use when creating, triaging, enrolling or updating issues, reviewing the board, or recommending the next issue.
 ---
 
 # Manage Issues

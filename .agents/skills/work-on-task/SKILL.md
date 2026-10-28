@@ -1,6 +1,6 @@
 ---
 name: work-on-task
-description: Implement and verify bounded repository work, then perform a separate read-only review and evidence handoff.
+description: Implements and verifies bounded repository work on a work branch, then runs a separate read-only review and hands off evidence. Use when asked to implement, fix, build or change something for an issue or task, or to work on an issue number.
 ---
 
 # Work On Task
@@ -20,9 +20,12 @@ Use sync-docs-issues for canonical documentation and authorized evidence updates
 Do not make advisory quality warnings release gates. After two consecutive review rounds
 with Blocking findings, stop patching: diagnose the shared cause (missed defects, defects
 introduced by fixes, or new evidence) and ask the user how to proceed.
-Report real build/operational failures. Stop at In review for member acceptance.
+Report real build/operational failures. Before calling work done, run the checks that
+prove it and cite the command and result; an unrun check is reported as not run.
+Stop at In review for member acceptance.
 Use manage-issues only within the shared authority policy; never independently accept/cancel or close issues. Verified human closure
-may be mirrored by manage-issues under the shared policy. Commits, pushes, PRs, merges, deployments and releases need session authorization.
+may be mirrored by manage-issues under the shared policy. Commit on the work branch as
+needed; pushes, PRs, merges, deployments and releases need session authorization.
 
 ## Workflow contract
 

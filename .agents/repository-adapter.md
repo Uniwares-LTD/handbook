@@ -1,10 +1,9 @@
 # Handbook repository adapter
 
 Canonical policy: docs/work-policy.md. Project configuration: project.json and
-docs/uniwares-project.md. Shared procedures: docs/project.md. Setup: README.md and docs/onboarding.md. Evidence: docs/verification.md.
-Default branch: main. Initial bootstrap follows the accepted session plan and needs
-no artificial issue. Future substantial work uses issues; trivial low-risk changes
-may be untracked. No backlog migration is authorized by onboarding alone.
+docs/uniwares-project.md. Shared procedures: docs/project.md. Setup: README.md and docs/onboarding.md. Evidence lives in issues and PRs.
+Default branch: main. Substantial work uses issues; trivial low-risk changes may be
+untracked. No backlog migration is authorized by onboarding alone.
 
 Run `npm run validate` for changes to helpers, templates, links, or skills. Record
 actual failures: quality checks are advisory, while runtime/operational failures

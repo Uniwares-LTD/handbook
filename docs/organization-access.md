@@ -137,9 +137,9 @@ team membership to the people the human named (Settings → People and the team 
 
 An organization with a Handbook-adopted repository records its team slugs, project
 access, exceptions, pending steps and readback in that repository's local operations
-document, as Handbook does in [Uniwares operations](uniwares-project.md). Otherwise the
-readback is recorded as an evidence entry in Handbook's [verification](verification.md)
-until the organization adopts Handbook.
+document, as Handbook does in [Uniwares operations](uniwares-project.md). Otherwise post
+the readback as evidence on the issue that authorized the setup; the read-only access
+check reproduces the current state at any time.
 
 Setup is complete only when the readback check reports no gaps other than recorded,
 accepted exceptions, and project team access is verified in the browser. Any other open

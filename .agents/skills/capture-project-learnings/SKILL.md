@@ -1,6 +1,6 @@
 ---
 name: capture-project-learnings
-description: Capture verified reusable knowledge in canonical docs or skill proposals without creating redundant work logs.
+description: Records verified, reusable knowledge in canonical docs or proposes a skill change, without creating work logs. Use when a task revealed a reusable lesson, a guidance gap, or a conflict between guidance and practice.
 ---
 
 # Capture Project Learnings

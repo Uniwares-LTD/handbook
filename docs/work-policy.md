@@ -42,21 +42,20 @@ triaged; enrollment/triage explicitly sets Not blocked or Blocked.
 
 | Action | Authority |
 | --- | --- |
-| Read issue, inspect code, plan and verify | Within assigned task |
+| Read issue, inspect code, plan, verify, commit on the task's work branch | Within assigned task |
 | Enroll existing assigned issue, maintain nonterminal status and blocker metadata, post evidence | Within assigned task in an adopted repository |
 | Create issue or sub-issue | Suggest first; obtain human approval for concrete scope and destination, then create through the [issue helper](project.md#issue-maintenance-and-acceptance), which adds it to the recorded tracking project; a human links a sub-issue to its parent |
 | Assign a member, reprioritize, expand scope | Human decision; do not do independently |
 | Accept/cancel work, close/reopen issue | Human member action |
 | Mirror Done/Cancelled after verified human closure | Authorized maintenance with closure reason and decision evidence; never independent acceptance |
 | Create/configure/link external projects | Explicit authorization of a concrete preview; no implied access changes |
-| Commit, push, publish PR, merge, deploy, release, change access | Separate explicit session authorization |
+| Push, publish PR, merge, deploy, release, change access | Separate explicit session authorization |
 
 Actions the table reserves for explicit session authorization need the user's explicit
-instruction for that action. These do not grant commit, push, publication or other
-such authority: accepting a plan,
-"go ahead" on a plan, answering a tool permission prompt, plan or auto modes, selecting
-an issue, or a review `Pass`. Track implementation, commit and publication authority
-separately and note where each came from. A "recommend the next issue" result authorizes
+instruction for that action. These do not grant push, publication or other such
+authority: accepting a plan, "go ahead" on a plan, answering a tool permission prompt,
+plan or auto modes, selecting an issue, or a review `Pass`. Track implementation and
+publication authority separately and note where each came from. A "recommend the next issue" result authorizes
 read-only validation and planning only. Tool permission prompts and gated-command rules
 are a safety backstop, not a security boundary: prefix rules can be bypassed (for
 example `gh api`, `git -C` or shell wrappers), so never rely on them in place of authority.

@@ -1,6 +1,6 @@
 ---
 name: maintain-project
-description: Initialize or reconcile a project's Handbook integration, local guidance, source map and selected shared skills; use for adoption or project maintenance.
+description: "Adopts the Handbook in a repository or reconciles an existing integration: local guidance, source map, selected skills, tracking setup and organization access. Use when onboarding a repository, updating its Handbook integration, or setting up project tracking or team access."
 ---
 
 # Maintain Project

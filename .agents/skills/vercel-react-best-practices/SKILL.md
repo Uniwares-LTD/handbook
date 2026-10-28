@@ -155,9 +155,7 @@ Each rule file contains:
 - Correct code example with explanation
 - Additional context and references
 
-## Full Compiled Document
-
-For the complete guide with all rules expanded: `AGENTS.md`
+## Localized pages
 
 For localized pages, inspect dictionary payloads and RSC navigation together. A
 persistent root provider must not retain only the previous page's messages. Keep

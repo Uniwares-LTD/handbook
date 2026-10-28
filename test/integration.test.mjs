@@ -118,6 +118,23 @@ test('gated commands merge add-only into the local list and Claude settings', t 
   assert.equal(JSON.parse(readFileSync(path.join(root, '.claude/settings.json'), 'utf8')).permissions.ask, 'all');
 });
 
+test('retired shared gates leave consumer lists and Claude settings', t => {
+  const root = fixture(t);
+  mkdirSync(path.join(root, '.claude'));
+  const custom = ['Bash(make deploy *)', 'Bash(git commit --amend *)'];
+  writeFileSync(path.join(root, '.claude/settings.json'), JSON.stringify({ permissions: { ask: [...custom, 'Bash(git commit *)', 'PowerShell(git commit)'] } }));
+  writeFileSync(path.join(root, gatesFile), JSON.stringify({ ask: [['make', 'deploy'], ['git', 'commit']], denyRead: [] }));
+  const result = syncEntrypoints(root, { source, write: true });
+  assert(result.changed.includes(gatesFile) && result.changed.includes('.claude/settings.json'));
+  const gates = JSON.parse(readFileSync(path.join(root, gatesFile), 'utf8'));
+  assert(!gates.ask.some(c => c.join(' ') === 'git commit') && gates.ask.some(c => c.join(' ') === 'make deploy'));
+  assert(gates.retired.some(c => c.join(' ') === 'git commit'));
+  const ask = JSON.parse(readFileSync(path.join(root, '.claude/settings.json'), 'utf8')).permissions.ask;
+  assert(custom.every(e => ask.includes(e)) && !ask.some(e => /\(git commit( \*)?\)$/.test(e)));
+  assert(ask.includes('Bash(git push *)'));
+  assert.deepEqual(syncEntrypoints(root, { source }).warnings, []);
+});
+
 test('sync refuses an empty skill tree instead of reporting every wrapper as orphaned', t => {
   const root = fixture(t);
   assert.throws(() => syncEntrypoints(root), /No skills found under \.agents\/skills/);

@@ -1,6 +1,6 @@
 ---
 name: sync-docs-issues
-description: Reconcile canonical documentation and issue evidence with verified work; do not create issues or accept completion.
+description: Updates canonical documentation, the source map and issue evidence to match verified work. Use after a change is implemented and reviewed, or when docs, links or issue evidence are out of date.
 ---
 
 # Sync Docs Issues

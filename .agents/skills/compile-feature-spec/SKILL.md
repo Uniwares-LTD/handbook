@@ -1,6 +1,6 @@
 ---
 name: compile-feature-spec
-description: Turn an unclear feature or documentation outcome into a bounded implementation-ready specification; stay read-only.
+description: Turns an unclear feature, documentation or integration request into a bounded, implementation-ready specification without changing code. Use when a request is vague, before building a feature, or when asked to scope, spec or plan work.
 ---
 
 # Compile Feature Spec

@@ -55,3 +55,28 @@ source text, scripts or skills were copied.
 | Exact-phrase contract lint | Reject | Edit friction |
 | Status digest skill | Defer | Revisit when a team asks for recurring updates |
 | Product, support, analytics, stack-specific and release-topology guidance | Reject | Business-specific |
+
+### Codex and Claude Code best-practice review (2026-10-28)
+
+Checked against official Codex and Claude Code documentation, the agentskills.io
+specification and widely used public skill collections. Four skills are imported directly
+from their upstream repositories at pinned revisions with their MIT licenses; the
+[technology import record](provenance/technology-imports.json) keeps the pre-adaptation hashes.
+
+| Practice or skill | Decision | Where |
+| --- | --- | --- |
+| Small always-on instructions, conditional reads through skills | Adopt | AGENTS.md, docs/bootstrap.md |
+| Permission prompts only for irreversible or outward actions | Adopt | .agents/gated-commands.json (`retired`), docs/work-policy.md |
+| Descriptions state what a skill does and when to use it | Adopt | shared SKILL.md descriptions, guidance lint |
+| SKILL.md under 500 lines, name matches folder, no nested AGENTS.md in skills | Adopt | scripts/check.mjs |
+| Read-only reviewer subagent | Adapt (optional, generated) | .agents/agents/reviewer.md, handbook:sync |
+| DietrichGebert/ponytail `ponytail` at 09c434ab73ca | Adapt: lite by default, task-scoped, narrower triggers, one-line description; no hooks or plugin | .agents/skills/ponytail |
+| danyuchn/asd-ste100-skill at 8da6b6340aa2 | Adopt; the ASD standard and dictionary are not redistributed | .agents/skills/asd-ste100 |
+| mattpocock/skills `grilling` at 59db609eb1e1 | Adapt: sub-agent lookup optional | .agents/skills/grilling |
+| mattpocock/skills `diagnosing-bugs` at 59db609eb1e1 | Adopt | .agents/skills/diagnosing-bugs |
+| `grill-me` alias | Reject | Calls `grilling` through one client's tool; grilling is used directly |
+| superpowers `verification-before-completion` | Adapt as one rule | work-on-task |
+| Vendor compiled AGENTS.md inside vercel-react-best-practices | Reject | Duplicates `rules/`; removed |
+| Full superpowers and addyosmani bundles, find-skills | Reject | Mandatory gates, session hooks or unreviewed installs add friction |
+| tdd, handoff, writing-guidelines, skill-creator, webapp-testing, mcp-builder, trailofbits review skills, ponytail-review | Defer | Revisit when a project selects one; listed in docs/guidance/README.md |
+| Generated Codex `.rules` from the gate list | Defer | Revisit once a consumer runs Codex with project rules trusted |
