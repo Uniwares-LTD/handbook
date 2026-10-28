@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const sha = text => createHash('sha256').update(text.replace(/\r\n/g, '\n')).digest('hex');
 const read = file => readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
-const core = ['capture-project-learnings', 'compile-feature-spec', 'manage-issues', 'maintain-project', 'review-change', 'sync-docs-issues', 'work-on-task'];
+const core = ['capture-project-learnings', 'compile-feature-spec', 'manage-issues', 'maintain-docs', 'maintain-project', 'review-change', 'sync-docs-issues', 'work-on-task'];
 export const mapSections = ['Components', 'Documentation', 'Commands', 'Generated areas', 'Ownership'];
 export const languages = ['English', 'Persian'];
 export const integrationBranches = ['main', 'dev'];

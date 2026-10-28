@@ -17,7 +17,8 @@ and comments in its issue language (English when none is recorded); keep labels,
 fields and status names in English.
 
 For intake, search duplicates and draft destination, title, type, outcome, scope and
-acceptance. Obtain human approval before creating any issue or sub-issue. Preserve
+acceptance. Shape the body after the matching issue form ([templates](../../../docs/templates.md));
+only the outcome is needed to start, and empty sections are left out. Obtain human approval before creating any issue or sub-issue. Preserve
 agreed scope. Use the selected local coordination repository for coordination and the owning repository for implementation.
 Create only through `create-issue.mjs` per project operations, never bare `gh issue create`:
 write the agreed spec, show the read-only preview and its duplicate candidates, obtain

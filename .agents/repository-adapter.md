@@ -17,5 +17,7 @@ Handbook's own source map is docs/source-map.md; it contains no consumer source 
 Shared authority is docs/work-policy.md. Domain guidance supplies reusable procedures;
 this adapter owns Handbook commands and local constraints. Resolve real conflicts
 explicitly without silently weakening shared authority or accepted local exceptions.
+Templates: issue forms and the PR template in .github mirror the shared starters in
+.agents/templates (see docs/templates.md); they are permissive, so override freely.
 Integration selection is handbook.json. Run npm run handbook:sync after changing skill
 metadata, then npm run handbook:entrypoints. Reconcile customized wrappers manually.

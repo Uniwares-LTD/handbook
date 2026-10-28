@@ -18,7 +18,8 @@ For authorized assigned work in an adopted repository, re-fetch the issue and pu
 concise evidence without overwriting human edits or duplicating comments. State outcome,
 checks, documentation, reviewed revision and remaining acceptance. Do not rewrite scope,
 create follow-ups, accept/cancel or close issues. Verified closure mirroring belongs to manage-issues. New issue proposals require human approval.
-Use capture-project-learnings only for useful verified reusable knowledge.
+Use capture-project-learnings only for useful verified reusable knowledge. Use
+maintain-docs to start a new document or refresh templates.
 
 For user-facing guides, write from what actually shipped. When a decision changes,
 rewrite the affected journey instead of adding a correction. Leave out abandoned

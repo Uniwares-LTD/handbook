@@ -15,8 +15,8 @@ not adopt policy, migrate queues or change permissions.
    or dedicated. Creating or linking a project is separately authorized. Ask the issue
    language (English by default, or Persian) and confirm the durable branches (integration
    `main` or `dev`, optional `_<environment>` deployment branches), then record both in the
-   [repository preferences](project-guidance.md#repository-preferences). A repository
-   without these documents can start from the [starter templates](#starter-templates).
+   [repository preferences](project-guidance.md#repository-preferences). Use maintain-docs to start
+   any of these documents from the [starter templates](templates.md).
 3. Copy [the launcher](../scripts/handbook.mjs) and [offline tool](../scripts/handbook-integration.mjs)
    to the consumer's scripts directory. Reconcile existing copies through reviewed edits.
    Add commands below. No dependency installation or global installation is required.
@@ -25,7 +25,7 @@ not adopt policy, migrate queues or change permissions.
 5. Run setup, retain path/revision, and materialize resources at that revision. Pass the
    returned resourcePath to explicit sync. Inspect changes and conflicts; reconcile
    unmanaged/modified wrappers manually, retaining their adaptations in local guidance.
-   Offer the issue, PR and docs [starter templates](#starter-templates); copying is optional.
+   Offer the issue, PR and docs [starter templates](templates.md) through maintain-docs.
 6. Run offline readiness and drift checks. Read shared policy/relevant domains at the
    task revision plus local sources. Report changes, checks, unknowns and limitations.
 7. Optionally, with separate authorization, inventory and set up the organization's
@@ -71,8 +71,9 @@ or handed-off work keep its path and revision as docs/bootstrap.md describes. Lo
 guidance: .agents/repository-adapter.md and docs/architecture.md#source-map. Read the
 shared work policy when an action depends on authority, lifecycle or branches. Skills
 are selected in handbook.json. Without a baseline, continue under local rules and
-pause only dependent decisions. After skill or routing changes run handbook:sync and
-handbook:entrypoints; preserve custom instructions.
+pause only dependent decisions. Start issues, PRs and documents from the templates in
+.github and docs/templates (use maintain-docs); they are permissive. After skill or
+routing changes run handbook:sync and handbook:entrypoints; preserve custom instructions.
 ```
 
 Run the following with PATH/SHA/SNAPSHOT from setup/resources (not values to commit).
@@ -94,26 +95,9 @@ files require manual reconciliation; orphans are reported, never deleted. Check 
 
 ## Starter templates
 
-[`.agents/templates`](../.agents/templates) holds permissive starters: issue forms with one
-required field, a PR template, the adoption documents (source map, repository guidance,
-preferences) and feature-spec, decision-record and how-to pages. Each says to skip,
-rename or delete sections, except where readiness checks need them: the preferences
-lines and the five source-map headings. Triage, not the form, confirms outcome, scope
-and acceptance.
-
-```text
-npm run handbook:templates -- --source SNAPSHOT            # preview: missing, same or differs
-npm run handbook:templates -- --source SNAPSHOT --write    # copy missing files only
-npm run handbook:templates -- --source SNAPSHOT --update .github/PULL_REQUEST_TEMPLATE.md
-```
-
-Issue and PR templates go to `.github`. The adoption documents go to the `sourceMap`,
-`guidance` and `preferences` paths in handbook.json and are skipped when that path is
-unset, names an anchor or names AGENTS.md or CLAUDE.md; the result lists each skipped
-template and the reason. The other pages go to `docs/templates`. The consumer owns every
-copy: sync never overwrites or deletes one, and `--update` replaces only the named files,
-when a developer chooses to take a newer shared version; names that match nothing are
-reported. Labels and placeholders are English; translate local copies freely.
+Permissive issue, PR and docs starters are described in [templates](templates.md). Use
+maintain-docs to copy them once; the repository owns every copy, and later updates are
+opt-in per file.
 
 ## Refresh, provenance and result contract
 

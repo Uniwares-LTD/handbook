@@ -1,0 +1,4 @@
+interface:
+  display_name: Maintain Docs
+  short_description: Start and update repository docs and templates
+  default_prompt: Use $maintain-docs to set up or update this repository's documentation.

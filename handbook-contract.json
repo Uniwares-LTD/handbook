@@ -18,12 +18,14 @@
     "scripts/reconcile-status.mjs",
     "scripts/create-issue.mjs",
     "scripts/org-access.mjs",
-    "docs/organization-access.md"
+    "docs/organization-access.md",
+    "docs/templates.md"
   ],
   "skills": [
     "capture-project-learnings",
     "compile-feature-spec",
     "manage-issues",
+    "maintain-docs",
     "maintain-project",
     "review-change",
     "sync-docs-issues",

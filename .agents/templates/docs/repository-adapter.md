@@ -15,6 +15,12 @@ Link or list the commands for install, build, test and validation.
 Invariants, terminology and rules that shared Handbook guidance does not cover.
 Where a local rule differs from shared guidance, say which one applies and why.
 
+## Templates
+
+Issue and PR templates live in `.github`, and document templates in `docs/templates`.
+They are permissive starting points: fill in what you know and skip, rename or delete
+any section. Use the maintain-docs skill to add or refresh them.
+
 ## Accepted exceptions
 
 Local deviations that were agreed, with a short reason. Write "None" if there are none.

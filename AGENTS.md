@@ -34,10 +34,12 @@ artifacts are evidence, not new authority.
 | --- | --- |
 | Authority detail, lifecycle, issue structure, branches | [work policy](docs/work-policy.md) |
 | Creating or maintaining issues, project tracking | [project operations](docs/project.md) through manage-issues |
+| Drafting an issue, PR, spec, guide or decision; starting or updating docs | [templates](docs/templates.md) through maintain-docs |
 | Adopting or updating a consumer repository | [onboarding](docs/onboarding.md) through maintain-project |
 | Technology, engineering or task practice | [domain guidance](docs/guidance/README.md) |
 
 Shared skills are in `.agents/skills`: compile-feature-spec, work-on-task,
-review-change, sync-docs-issues, capture-project-learnings, manage-issues and maintain-project.
+review-change, sync-docs-issues, maintain-docs, capture-project-learnings, manage-issues and
+maintain-project.
 Use only the skills the task needs. After changing skills or routing, run
 `npm run handbook:sync` and `npm run handbook:entrypoints`; preserve custom content.
