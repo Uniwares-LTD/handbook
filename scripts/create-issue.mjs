@@ -13,7 +13,7 @@ function validateSpec(config, spec) {
   if (!spec || typeof spec !== 'object') throw new Error('Provide an issue spec object.');
   if (!config.repositories.includes(spec.repository)) throw new Error(`Repository is not in the tracking selection: ${spec.repository}`);
   if (typeof spec.title !== 'string' || !spec.title.trim() || spec.title.length > 256) throw new Error('Provide a title of 1-256 characters.');
-  if (typeof spec.body !== 'string' || !spec.body.trim()) throw new Error('Provide an issue body with outcome, scope and acceptance.');
+  if (typeof spec.body !== 'string' || !spec.body.trim()) throw new Error('Provide an issue body; at least the outcome.');
   if (spec.type !== undefined && !types.includes(spec.type)) throw new Error('Type must be Task, Bug or Feature.');
   if (spec.labels !== undefined && (!Array.isArray(spec.labels) || spec.labels.some(l => typeof l !== 'string' || !l))) throw new Error('Labels must be an array of names.');
   if (typeof spec.blocked !== 'string' || !spec.blocked) throw new Error('Set blocked explicitly to a Blocked field option.');

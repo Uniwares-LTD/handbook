@@ -1,33 +1,20 @@
 {
   "name": "Bug",
-  "description": "Propose a bounded bug for human triage.",
+  "description": "Something is broken or behaves unexpectedly.",
   "type": "Bug",
   "body": [
     {
-      "type": "textarea",
-      "id": "outcome",
+      "type": "markdown",
       "attributes": {
-        "label": "Problem and intended outcome"
-      },
-      "validations": {
-        "required": true
+        "value": "Fill in what you know; skip, rename or delete any section. Triage completes the rest."
       }
     },
     {
       "type": "textarea",
-      "id": "scope",
+      "id": "problem",
       "attributes": {
-        "label": "Scope and exclusions"
-      },
-      "validations": {
-        "required": true
-      }
-    },
-    {
-      "type": "textarea",
-      "id": "acceptance",
-      "attributes": {
-        "label": "Observable acceptance criteria"
+        "label": "What's wrong",
+        "placeholder": "What happened, and where?"
       },
       "validations": {
         "required": true
@@ -37,27 +24,41 @@
       "type": "textarea",
       "id": "reproduction",
       "attributes": {
-        "label": "Reproduction steps"
+        "label": "Steps to reproduce",
+        "placeholder": "1. ...\n2. ..."
       },
       "validations": {
-        "required": true
+        "required": false
       }
     },
     {
       "type": "textarea",
-      "id": "behavior",
+      "id": "expected",
       "attributes": {
-        "label": "Expected and actual behavior"
+        "label": "Expected behavior",
+        "placeholder": "What should have happened instead?"
       },
       "validations": {
-        "required": true
+        "required": false
+      }
+    },
+    {
+      "type": "textarea",
+      "id": "acceptance",
+      "attributes": {
+        "label": "Done when",
+        "placeholder": "Observable result that shows this is finished."
+      },
+      "validations": {
+        "required": false
       }
     },
     {
       "type": "textarea",
       "id": "context",
       "attributes": {
-        "label": "Context, dependencies, and evidence"
+        "label": "Context / environment",
+        "placeholder": "Version, environment, logs, screenshots, links."
       },
       "validations": {
         "required": false

@@ -34,13 +34,19 @@ for (const file of ['AGENTS.md', 'CLAUDE.md']) errors.push(...alwaysLoaded(file,
 errors.push(...catalogParity({ skills: names, imported, agents: text('AGENTS.md'), domains: text('docs/guidance/README.md') }));
 const canonical = files.filter(file => file.endsWith('.md') && !imported.some(name => file.startsWith(`.agents/skills/${name}/`)));
 errors.push(...toolNeutral(Object.fromEntries(canonical.map(file => [file, text(file)]))));
-for (const name of ['bug','feature','task','initiative']) {
-  const form = JSON.parse(readFileSync(path.join(root, `.github/ISSUE_TEMPLATE/${name}.yml`), 'utf8'));
-  assert(form.name && form.description && ['Task','Bug','Feature'].includes(form.type));
-  assert.equal(new Set(form.body.map(field => field.id)).size, form.body.length);
-  for (const field of form.body) assert(field.type === 'textarea' && field.attributes.label && typeof field.validations.required === 'boolean');
+// Forms stay permissive: markdown hints plus optional fields; validate shape, not content.
+for (const dir of ['.github/ISSUE_TEMPLATE', '.agents/templates/github/ISSUE_TEMPLATE']) {
+  for (const name of ['bug','feature','task','initiative']) {
+    const form = JSON.parse(readFileSync(path.join(root, dir, `${name}.yml`), 'utf8'));
+    assert(form.name && form.description && ['Task','Bug','Feature'].includes(form.type), `Invalid form: ${dir}/${name}.yml`);
+    const ids = form.body.filter(field => field.id).map(field => field.id);
+    assert.equal(new Set(ids).size, ids.length, `Duplicate field id: ${dir}/${name}.yml`);
+    for (const field of form.body) assert(['markdown','textarea','input','dropdown'].includes(field.type) && (field.type === 'markdown' ? field.attributes?.value : field.id && field.attributes?.label) && (field.validations === undefined || typeof field.validations.required === 'boolean'), `Invalid field in ${dir}/${name}.yml`);
+  }
+  JSON.parse(readFileSync(path.join(root, dir, 'config.yml'), 'utf8'));
 }
-JSON.parse(readFileSync(path.join(root, '.github/ISSUE_TEMPLATE/config.yml'), 'utf8'));
+const lf = file => text(file).replace(/\r\n/g, '\n');
+for (const name of ['bug.yml','feature.yml','task.yml','initiative.yml','config.yml']) assert.equal(lf(`.github/ISSUE_TEMPLATE/${name}`), lf(`.agents/templates/github/ISSUE_TEMPLATE/${name}`), `Handbook issue form ${name} must match its shared starter`);
 const config = JSON.parse(readFileSync(path.join(root, 'project.json'), 'utf8'));
 validateTracking(config);
 const hashes = Object.fromEntries(walk('.agents').sort().map(file => {
@@ -52,4 +58,4 @@ const lock = path.join(root, 'skills-lock.json');
 if (process.argv.includes('--write-lock')) writeFileSync(lock, JSON.stringify({ version: 2, hashFormat: 'sha256 LF-normalized text, raw binary', files: hashes }, null, 2) + '\n');
 else assert.deepEqual(JSON.parse(readFileSync(lock, 'utf8')).files, hashes, 'Review changes before refreshing skill integrity hashes');
 assert.deepEqual(errors, []);
-console.log(`Verified ${names.length} skills, local Markdown targets, four JSON-compatible YAML forms, skill catalogs, tool-neutral wording, description budgets, skill shape, always-loaded size and integrity hashes.`);
+console.log(`Verified ${names.length} skills, local Markdown targets, own and shared JSON-compatible YAML issue forms, skill catalogs, tool-neutral wording, description budgets, skill shape, always-loaded size and integrity hashes.`);

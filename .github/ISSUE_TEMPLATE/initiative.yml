@@ -1,13 +1,23 @@
 {
   "name": "Initiative",
-  "description": "Propose a bounded initiative for human triage.",
+  "description": "A larger outcome coordinated across several issues.",
   "type": "Task",
+  "labels": [
+    "initiative"
+  ],
   "body": [
+    {
+      "type": "markdown",
+      "attributes": {
+        "value": "Fill in what you know; skip, rename or delete any section. Triage completes the rest."
+      }
+    },
     {
       "type": "textarea",
       "id": "outcome",
       "attributes": {
-        "label": "Problem and intended outcome"
+        "label": "Outcome",
+        "placeholder": "What measurable result should the initiative deliver, and why?"
       },
       "validations": {
         "required": true
@@ -15,36 +25,36 @@
     },
     {
       "type": "textarea",
-      "id": "scope",
+      "id": "children",
       "attributes": {
-        "label": "Scope and exclusions"
+        "label": "Planned child issues",
+        "placeholder": "- [ ] owner/repo: short outcome\n- [ ] ..."
       },
       "validations": {
-        "required": true
+        "required": false
       }
     },
     {
       "type": "textarea",
       "id": "acceptance",
       "attributes": {
-        "label": "Observable acceptance criteria"
+        "label": "Done when",
+        "placeholder": "Observable result that shows this is finished."
       },
       "validations": {
-        "required": true
+        "required": false
       }
     },
     {
       "type": "textarea",
       "id": "context",
       "attributes": {
-        "label": "Context, dependencies, and evidence"
+        "label": "Context / links",
+        "placeholder": "Dependencies, related work, constraints."
       },
       "validations": {
         "required": false
       }
     }
-  ],
-  "labels": [
-    "initiative"
   ]
 }

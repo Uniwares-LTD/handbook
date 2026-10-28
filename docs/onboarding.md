@@ -15,7 +15,8 @@ not adopt policy, migrate queues or change permissions.
    or dedicated. Creating or linking a project is separately authorized. Ask the issue
    language (English by default, or Persian) and confirm the durable branches (integration
    `main` or `dev`, optional `_<environment>` deployment branches), then record both in the
-   [repository preferences](project-guidance.md#repository-preferences).
+   [repository preferences](project-guidance.md#repository-preferences). Use maintain-docs to start
+   any of these documents from the [starter templates](templates.md).
 3. Copy [the launcher](../scripts/handbook.mjs) and [offline tool](../scripts/handbook-integration.mjs)
    to the consumer's scripts directory. Reconcile existing copies through reviewed edits.
    Add commands below. No dependency installation or global installation is required.
@@ -24,6 +25,7 @@ not adopt policy, migrate queues or change permissions.
 5. Run setup, retain path/revision, and materialize resources at that revision. Pass the
    returned resourcePath to explicit sync. Inspect changes and conflicts; reconcile
    unmanaged/modified wrappers manually, retaining their adaptations in local guidance.
+   Offer the issue, PR and docs [starter templates](templates.md) through maintain-docs.
 6. Run offline readiness and drift checks. Read shared policy/relevant domains at the
    task revision plus local sources. Report changes, checks, unknowns and limitations.
 7. Optionally, with separate authorization, inventory and set up the organization's
@@ -56,7 +58,8 @@ Add these package commands:
   "handbook:doctor": "node scripts/handbook.mjs doctor",
   "handbook:ready": "node scripts/handbook-integration.mjs check",
   "handbook:sync": "node scripts/handbook-integration.mjs sync",
-  "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints"
+  "handbook:entrypoints": "node scripts/handbook-integration.mjs check-entrypoints",
+  "handbook:templates": "node scripts/handbook-integration.mjs templates"
 }
 ```
 
@@ -68,8 +71,10 @@ or handed-off work keep its path and revision as docs/bootstrap.md describes. Lo
 guidance: .agents/repository-adapter.md and docs/architecture.md#source-map. Read the
 shared work policy when an action depends on authority, lifecycle or branches. Skills
 are selected in handbook.json. Without a baseline, continue under local rules and
-pause only dependent decisions. After skill or routing changes run handbook:sync and
-handbook:entrypoints; preserve custom instructions.
+pause only dependent decisions. Start issues, PRs and documents from the permissive
+templates in .github and docs/templates, else the shared starters (docs/templates.md);
+set up or refresh them with maintain-docs. After skill or
+routing changes run handbook:sync and handbook:entrypoints; preserve custom instructions.
 ```
 
 Run the following with PATH/SHA/SNAPSHOT from setup/resources (not values to commit).
@@ -83,11 +88,18 @@ npm run handbook:ready
 npm run handbook:entrypoints -- --source SNAPSHOT
 ```
 
-Repeat for explicit integration upgrades without duplicate documentation. Without
+Repeat for explicit integration upgrades without duplicate documentation. Re-copy the
+offline tool first: its core skill list decides which skills sync adds, such as maintain-docs. Without
 `--source`, sync updates Claude references from local Codex entrypoints. A committed
 snapshot source also updates consumer Codex references/metadata. It updates intact
 managed content and preserves appended custom content. Modified managed or unmanaged
 files require manual reconciliation; orphans are reported, never deleted. Check after sync.
+
+## Starter templates
+
+Permissive issue, PR and docs starters are described in [templates](templates.md). Use
+maintain-docs to copy them once; the repository owns every copy, and later updates are
+opt-in per file.
 
 ## Refresh, provenance and result contract
 

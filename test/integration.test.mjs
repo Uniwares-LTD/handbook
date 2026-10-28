@@ -4,7 +4,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, cpSync } f
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { checkReadiness, syncEntrypoints, mapSections, permissionEntries, gatesFile, branchWarnings } from '../scripts/handbook-integration.mjs';
+import { checkReadiness, syncEntrypoints, syncTemplates, mapSections, permissionEntries, gatesFile, branchWarnings } from '../scripts/handbook-integration.mjs';
 
 const source = fileURLToPath(new URL('..', import.meta.url));
 const branches = '## Branches\n\n- Integration branch: dev\n- Deployment branches: _staging (from dev), _production (from _staging)\n';
@@ -188,4 +188,38 @@ test('copied offline tool works independently of its original source tree', asyn
   const { pathToFileURL } = await import('node:url');
   const independent = await import(pathToFileURL(path.join(root, 'scripts/handbook-integration.mjs')).href);
   assert(independent.checkReadiness(root).ready);
+});
+
+test('starter templates are copied once, never overwritten unless named, and follow handbook.json paths', t => {
+  const root = fixture(t);
+  const preview = syncTemplates(root, { source });
+  assert.deepEqual(preview.changed, []);
+  const status = Object.fromEntries(preview.templates.map(item => [item.path, item.status]));
+  assert.equal(status['.github/ISSUE_TEMPLATE/bug.yml'], 'missing');
+  assert.equal(status['docs/templates/feature-spec.md'], 'missing');
+  assert.equal(status['docs/local.md'], 'differs');
+  assert.equal(status['.agents/repository.md'], 'differs');
+  // An anchored source map is part of a larger document, so it is never copied over.
+  assert.deepEqual(preview.skipped.map(item => item.template), ['.agents/templates/docs/source-map.md']);
+  mkdirSync(path.join(root, '.github'));
+  writeFileSync(path.join(root, '.github/PULL_REQUEST_TEMPLATE.md'), '# Ours\n');
+  const first = syncTemplates(root, { source, write: true });
+  assert(first.changed.includes('.github/ISSUE_TEMPLATE/bug.yml') && first.changed.includes('docs/templates/how-to.md'));
+  assert(!first.changed.includes('docs/local.md') && !first.changed.includes('.github/PULL_REQUEST_TEMPLATE.md'));
+  assert.equal(readFileSync(path.join(root, '.github/PULL_REQUEST_TEMPLATE.md'), 'utf8'), '# Ours\n');
+  assert.deepEqual(syncTemplates(root, { source, write: true }).changed, []);
+  const updated = syncTemplates(root, { source, update: ['./.github/PULL_REQUEST_TEMPLATE.md', 'docs/typo.md'] });
+  assert.deepEqual(updated.changed, ['.github/PULL_REQUEST_TEMPLATE.md']);
+  assert.deepEqual(updated.warnings, ['--update docs/typo.md: no template targets this path.']);
+  assert.match(readFileSync(path.join(root, '.github/PULL_REQUEST_TEMPLATE.md'), 'utf8'), /## Verification/);
+  assert.match(readFileSync(path.join(root, 'docs/local.md'), 'utf8'), /^# Local/);
+  syncEntrypoints(root, { source, write: true });
+  assert.deepEqual(checkReadiness(root), { ready: true, warnings: [] });
+  // Entrypoints and escaping paths are skipped with a reason; the other templates still run.
+  const config = JSON.parse(readFileSync(path.join(root, 'handbook.json'), 'utf8'));
+  writeFileSync(path.join(root, 'handbook.json'), JSON.stringify({ ...config, guidance: 'AGENTS.md', preferences: '../outside.md' }));
+  const guarded = syncTemplates(root, { source, write: true, update: ['AGENTS.md'] });
+  assert.deepEqual(guarded.skipped.map(item => item.template).sort(), ['.agents/templates/docs/repository-adapter.md', '.agents/templates/docs/repository.md', '.agents/templates/docs/source-map.md']);
+  assert(guarded.templates.some(item => item.path === '.github/ISSUE_TEMPLATE/bug.yml'));
+  assert.doesNotMatch(readFileSync(path.join(root, 'AGENTS.md'), 'utf8'), /Repository guidance/);
 });

@@ -16,8 +16,9 @@ Load the repository preferences declared in handbook.json. Draft issue titles, b
 and comments in its issue language (English when none is recorded); keep labels, types,
 fields and status names in English.
 
-For intake, search duplicates and draft destination, title, type, outcome, scope and
-acceptance. Obtain human approval before creating any issue or sub-issue. Preserve
+For intake, search duplicates and draft destination, title, type and outcome, with scope
+and acceptance when known; triage completes them. Shape the body after the matching issue
+form ([templates](../../../docs/templates.md)) and leave out empty sections. Obtain human approval before creating any issue or sub-issue. Preserve
 agreed scope. Use the selected local coordination repository for coordination and the owning repository for implementation.
 Create only through `create-issue.mjs` per project operations, never bare `gh issue create`:
 write the agreed spec, show the read-only preview and its duplicate candidates, obtain

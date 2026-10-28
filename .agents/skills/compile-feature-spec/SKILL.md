@@ -11,7 +11,8 @@ then relevant [domain guidance](../../../docs/guidance/README.md).
 Read the consumer adapter, relevant code/docs, live issue and shared work policy.
 Resolve discoverable facts before asking consequential intent questions. Describe the
 outcome, scope/exclusions, affected interfaces, acceptance, validation, documentation
-impact and unresolved risks proportionally. Preserve accepted history and compatibility.
+impact and unresolved risks proportionally, following the feature-spec
+[template](../../../docs/templates.md) and dropping sections that do not apply. Preserve accepted history and compatibility.
 Do not implement or mutate GitHub. If an issue is needed, return an issue-ready proposal
 for human approval; a specification never grants publication or deployment authority.
 

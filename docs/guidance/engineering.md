@@ -6,7 +6,9 @@ is unclear; otherwise implement proportional changes with meaningful verificatio
 Review the final diff in a separate read-only pass and distinguish same-agent review
 from independent review. Retest affected behavior after corrections.
 
-Keep canonical docs and source-map references aligned with changed behavior. Preserve
+Keep canonical docs and source-map references aligned with changed behavior. Start new
+documents, issues and PR descriptions from the permissive [templates](../templates.md)
+and override them freely. Preserve
 historical evidence without presenting it as current acceptance. Route reusable lessons
 to shared procedures, technology specifics to relevant skills, and local facts to the
 project. Explicitly reconcile conflicting guidance and accepted exceptions.

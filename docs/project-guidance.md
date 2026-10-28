@@ -19,6 +19,8 @@ nonempty headings, with explicit unknowns where evidence is unavailable:
 - **Ownership:** verified owners, constraints and evidence locations.
 
 It may be a standalone document or a section (for example `docs/architecture.md#source-map`).
+The [starter templates](templates.md) include a source map, guidance and
+preferences file to begin from.
 Update it when navigation or boundaries change, not on every file edit.
 
 Optionally add a task routing table so agents load only what a task needs:

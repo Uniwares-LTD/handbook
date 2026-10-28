@@ -17,6 +17,8 @@ compare intended boundaries, acceptance and risks with the final changed surface
 Run affected checks after the last relevant change, then use review-change in a separate
 read-only pass. Correct actionable in-scope defects and revalidate affected behavior.
 Use sync-docs-issues for canonical documentation and authorized evidence updates.
+When a PR is authorized, write its description from the repository's PR template
+([templates](../../../docs/templates.md)) and drop sections that do not apply.
 Do not make advisory quality warnings release gates. After two consecutive review rounds
 with Blocking findings, stop patching: diagnose the shared cause (missed defects, defects
 introduced by fixes, or new evidence) and ask the user how to proceed.
