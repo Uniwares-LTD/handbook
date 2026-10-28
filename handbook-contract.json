@@ -16,7 +16,9 @@
     "scripts/project-management.mjs",
     "scripts/enroll.mjs",
     "scripts/reconcile-status.mjs",
-    "scripts/create-issue.mjs"
+    "scripts/create-issue.mjs",
+    "scripts/org-access.mjs",
+    "docs/organization-access.md"
   ],
   "skills": [
     "capture-project-learnings",

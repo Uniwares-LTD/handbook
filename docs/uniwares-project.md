@@ -5,11 +5,20 @@ for the actual URL, IDs, fields and enrolled repositories. Existing project #1 i
 
 ## Access
 
-| Resource | Organization members | Admins | Devs |
-| --- | --- | --- | --- |
-| Uniwares project | Read | Admin | Write |
-| handbook repository | Read | Admin | Write |
-| Existing repositories | Unchanged | Unchanged | Unchanged |
+Uniwares-LTD follows the shared [organization access](organization-access.md) model,
+applied and read back on 2026-10-28 (see [verification](verification.md)):
+
+| Resource | Organization members | `admin` | `dev` | `support` |
+| --- | --- | --- | --- | --- |
+| All repositories (organization roles) | No permission | Admin (all_repo_admin) | Write (all_repo_write) | Triage (all_repo_triage) |
+| Uniwares project #2 | Read | Admin | Write | Write |
+
+Owners Amir-Ahani, sinasava and uniwares-uk form `admin`. Local choices: members may
+create repositories; `dev` keeps sinasava and uniwares-uk; `support` keeps its creator.
+No per-repository team grants or direct collaborators exist.
+Project #2 team access was confirmed in the browser on 2026-10-28; a redundant individual
+Admin entry for uniwares-uk remains. Pending: 2FA requirement after ParhamBeik enables
+2FA. Project #1 is unchanged.
 
 Project access does not expose private repository issues to people lacking repository
 access. Organization owners retain administrative capabilities. Admin approval for

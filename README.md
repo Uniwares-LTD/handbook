@@ -50,8 +50,8 @@ repository's CI workflow, which belongs to the handbook only.
 ## Contribution
 
 Every change uses a work branch named per the work policy and a PR; nothing is committed, merged or
-fast-forwarded into a durable branch directly. Request review from the Admins team;
-Admin approval is a team procedure, not enforced branch protection on private GitHub
-Free. Devs have write access but must follow that procedure. Never store credentials,
+fast-forwarded into a durable branch directly. Request review from the `admin` team
+([access](docs/uniwares-project.md#access)); admin approval is a team procedure, not enforced branch protection on private GitHub
+Free. Developers have write access but must follow that procedure. Never store credentials,
 raw private logs, personal tokens, or machine-specific configuration here.
 Operator intervention: none. There is no deployment, service, or scheduled automation.

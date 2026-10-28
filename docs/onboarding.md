@@ -26,6 +26,8 @@ not adopt policy, migrate queues or change permissions.
    unmanaged/modified wrappers manually, retaining their adaptations in local guidance.
 6. Run offline readiness and drift checks. Read shared policy/relevant domains at the
    task revision plus local sources. Report changes, checks, unknowns and limitations.
+7. Optionally, with separate authorization, inventory and set up the organization's
+   teams and permissions per [organization access](organization-access.md).
 
 Example `handbook.json` (use actual canonical document references):
 
