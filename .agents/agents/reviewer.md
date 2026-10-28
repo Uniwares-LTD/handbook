@@ -1,3 +1,7 @@
+---
+name: reviewer
+description: Reviews a proposed diff read-only against its task contract, acceptance and evidence, and reports verified findings. Use for a fresh-context review pass from review-change when the session authorizes delegation.
+---
 # Reviewer role
 
 Review the complete proposed diff against its intended base without editing it.

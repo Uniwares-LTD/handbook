@@ -130,10 +130,11 @@ function metadata(text, name) {
     return raw.startsWith('"') ? JSON.parse(raw) : raw.replace(/^'|'$/g, '');
   };
   if (scalar('name') !== name) throw new Error('Skill identity does not match directory.');
-  return { name, description: scalar('description'), userInvocable: front.match(/^user-invocable: (true|false)$/m)?.[1] };
+  const hint = front.match(/^argument-hint: (.+)$/m)?.[1];
+  return { name, description: scalar('description'), userInvocable: front.match(/^user-invocable: (true|false)$/m)?.[1], argumentHint: hint && (hint.startsWith('"') ? JSON.parse(hint) : hint) };
 }
 function entry(meta, body) {
-  const text = `---\nname: ${meta.name}\ndescription: ${JSON.stringify(meta.description)}\n${meta.userInvocable ? `user-invocable: ${meta.userInvocable}\n` : ''}---\n\n${body}\n`;
+  const text = `---\nname: ${meta.name}\ndescription: ${JSON.stringify(meta.description)}\n${meta.argumentHint ? `argument-hint: ${JSON.stringify(meta.argumentHint)}\n` : ''}${meta.userInvocable ? `user-invocable: ${meta.userInvocable}\n` : ''}---\n\n${body}\n`;
   return text + `<!-- handbook-managed:${sha(text)} -->\n`;
 }
 function sharedEntry(meta) {
@@ -141,6 +142,10 @@ function sharedEntry(meta) {
 }
 function claudeEntry(meta) {
   return entry(meta, `Read and follow the canonical local entrypoint\n[${meta.name}](../../../.agents/skills/${meta.name}/SKILL.md).\nResolve its relative references from that canonical file, not this wrapper.\nFor shared guidance, retain the task's Handbook revision through continuation.\nThis reference grants no hooks, tools, permissions, or delegation authority.`);
+}
+function agentEntry(meta) {
+  const text = `---\nname: ${meta.name}\ndescription: ${JSON.stringify(meta.description)}\ntools: Read, Grep, Glob, Bash\n---\n\nFollow the canonical role [${meta.name}](../../.agents/agents/${meta.name}.md).\nStay read-only: run only inspection commands; never edit files, commit, push, comment or\nchange issues or project metadata. This reference grants no permissions or authority.\n`;
+  return text + `<!-- handbook-managed:${sha(text)} -->\n`;
 }
 export function syncEntrypoints(root, { write = false, source } = {}) {
   root = path.resolve(root);
@@ -186,6 +191,16 @@ export function syncEntrypoints(root, { write = false, source } = {}) {
     } catch (error) { warnings.push(`${item.name}: ${error.message}`); continue; }
     put(`.claude/skills/${item.name}/SKILL.md`, claudeEntry(meta));
   }
+  // Roles with frontmatter become optional read-only Claude subagents; others stay links.
+  const roles = local(root, '.agents/agents').target;
+  if (existsSync(roles)) for (const item of readdirSync(roles, { withFileTypes: true })) {
+    if (!item.isFile() || !item.name.endsWith('.md')) continue;
+    const text = read(path.join(roles, item.name));
+    if (!text.startsWith('---\n')) continue;
+    let meta;
+    try { meta = metadata(text, item.name.slice(0, -3)); } catch (error) { warnings.push(`${item.name}: ${error.message}`); continue; }
+    put(`.claude/agents/${meta.name}.md`, agentEntry(meta));
+  }
   const claudeDir = local(root, '.claude/skills').target;
   if (existsSync(claudeDir)) for (const item of readdirSync(claudeDir, { withFileTypes: true })) {
     if (item.isDirectory() && !existsSync(local(root, `.agents/skills/${item.name}/SKILL.md`).target)) warnings.push(`Orphan Claude entrypoint: ${item.name}; review removal manually.`);
@@ -201,10 +216,11 @@ export function syncEntrypoints(root, { write = false, source } = {}) {
 }
 
 export const gatesFile = '.agents/gated-commands.json';
+const commandList = list => Array.isArray(list) && !list.some(c => !Array.isArray(c) || !c.length || c.some(p => typeof p !== 'string' || !/^[\w.:/=-]+$/.test(p)));
 function readGates(file) {
   const gates = JSON.parse(read(file));
-  if (!Array.isArray(gates.ask) || gates.ask.some(c => !Array.isArray(c) || !c.length || c.some(p => typeof p !== 'string' || !/^[\w.:/=-]+$/.test(p))) ||
-      !Array.isArray(gates.denyRead) || gates.denyRead.some(p => typeof p !== 'string' || !p || /[()]/.test(p))) throw new Error(`${gatesFile}: expected ask (command word lists) and denyRead (path patterns).`);
+  if (!commandList(gates.ask) || (gates.retired !== undefined && !commandList(gates.retired)) ||
+      !Array.isArray(gates.denyRead) || gates.denyRead.some(p => typeof p !== 'string' || !p || /[()]/.test(p))) throw new Error(`${gatesFile}: expected ask and optional retired (command word lists) and denyRead (path patterns).`);
   return gates;
 }
 // Each gated command becomes ask rules for both shell tools, with and without arguments,
@@ -215,18 +231,24 @@ export function permissionEntries(gates) {
 const union = (current, extra, key = v => v) => [...current, ...extra.filter(v => !current.some(c => key(c) === key(v)))];
 function syncGates(root, { write, source, warnings, changed }) {
   const localGates = local(root, gatesFile).target;
-  // Consumer upgrades merge the shared list add-only, keeping project-specific entries.
+  // Consumer upgrades merge the shared list add-only, keeping project-specific entries;
+  // only commands the shared list explicitly retires are removed.
   if (source && existsSync(path.join(source, gatesFile))) {
     const shared = readGates(path.join(source, gatesFile));
     const current = existsSync(localGates) ? readGates(localGates) : { ask: [], denyRead: [] };
-    const merged = { ...current, description: shared.description, ask: union(current.ask, shared.ask, c => c.join(' ')), denyRead: union(current.denyRead, shared.denyRead) };
+    const retired = new Set((shared.retired ?? []).map(c => c.join(' ')));
+    const kept = current.ask.filter(c => !retired.has(c.join(' ')));
+    const merged = { ...current, description: shared.description, ask: union(kept, shared.ask, c => c.join(' ')), denyRead: union(current.denyRead, shared.denyRead) };
+    if (shared.retired) merged.retired = union(current.retired ?? [], shared.retired, c => c.join(' '));
     if (JSON.stringify(merged) !== JSON.stringify(current)) {
       warnings.push(`Gate list drift: ${gatesFile}`);
       if (write) { mkdirSync(path.dirname(localGates), { recursive: true }); writeFileSync(localGates, JSON.stringify(merged, null, 2) + '\n'); changed.push(gatesFile); }
     }
   }
   if (!existsSync(localGates)) return;
-  const wanted = permissionEntries(readGates(localGates));
+  const gates = readGates(localGates), wanted = permissionEntries(gates);
+  // Remove only the exact rules generated for retired commands that are not still gated.
+  const stale = new Set(permissionEntries({ ask: gates.retired ?? [], denyRead: [] }).ask.filter(e => !wanted.ask.includes(e)));
   const settingsFile = local(root, '.claude/settings.json').target;
   const settings = existsSync(settingsFile) ? JSON.parse(read(settingsFile)) : {};
   const permissions = settings.permissions ?? {};
@@ -234,10 +256,13 @@ function syncGates(root, { write, source, warnings, changed }) {
     warnings.push('.claude/settings.json: permissions.ask and permissions.deny must be lists; reconcile manually.');
     return;
   }
-  const ask = union(permissions.ask ?? [], wanted.ask), deny = union(permissions.deny ?? [], wanted.deny);
-  const missing = ask.length - (permissions.ask?.length ?? 0) + deny.length - (permissions.deny?.length ?? 0);
-  if (!missing) return;
-  warnings.push(`.claude/settings.json: ${missing} gated permission entries missing.`);
+  const current = (permissions.ask ?? []).filter(e => !stale.has(e));
+  const removed = (permissions.ask?.length ?? 0) - current.length;
+  const ask = union(current, wanted.ask), deny = union(permissions.deny ?? [], wanted.deny);
+  const missing = ask.length - current.length + deny.length - (permissions.deny?.length ?? 0);
+  if (!missing && !removed) return;
+  if (missing) warnings.push(`.claude/settings.json: ${missing} gated permission entries missing.`);
+  if (removed) warnings.push(`.claude/settings.json: ${removed} retired gated permission entries present.`);
   if (write) {
     mkdirSync(path.dirname(settingsFile), { recursive: true });
     writeFileSync(settingsFile, JSON.stringify({ ...settings, permissions: { ...permissions, ask, deny } }, null, 2) + '\n');

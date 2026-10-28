@@ -38,9 +38,14 @@ Example `handbook.json` (use actual canonical document references):
   "guidance": ".agents/repository-adapter.md",
   "sourceMap": "docs/architecture.md#source-map",
   "preferences": ".agents/repository.md",
-  "technologySkills": ["next-best-practices", "vercel-react-best-practices", "web-design-guidelines", "playwright"]
+  "technologySkills": ["grilling", "diagnosing-bugs", "ponytail", "asd-ste100", "next-best-practices", "playwright"]
 }
 ```
+
+`technologySkills` selects every non-core skill. The practice skills grilling,
+diagnosing-bugs, ponytail and asd-ste100 suit most projects; add stack skills only on
+stack evidence. Each selected skill adds its description to agent context, so select
+only what the project uses.
 
 Add these package commands:
 
@@ -58,15 +63,13 @@ Add these package commands:
 AGENTS.md snippet (adjust local references):
 
 ```markdown
-At task start run npm run handbook:check. Retain its path and full revision for
-subsequent skills, handoffs and compaction/resume. Read docs/bootstrap.md and
-docs/work-policy.md with git show at that revision. Read local guidance at
-.agents/repository-adapter.md and docs/architecture.md#source-map. Use handbook.json
-for selected technology skills. Without a baseline, continue under local rules and
-pause only dependent decisions; setup/repair remain allowed. Recover a lost revision
-from context before explicitly establishing a new baseline and reporting discontinuity.
-After skill or routing changes run handbook:sync and handbook:entrypoints; preserve
-custom instructions. Normal refresh never rewrites wrappers.
+At task start run npm run handbook:check; cached guidance is fine. For multi-session
+or handed-off work keep its path and revision as docs/bootstrap.md describes. Local
+guidance: .agents/repository-adapter.md and docs/architecture.md#source-map. Read the
+shared work policy when an action depends on authority, lifecycle or branches. Skills
+are selected in handbook.json. Without a baseline, continue under local rules and
+pause only dependent decisions. After skill or routing changes run handbook:sync and
+handbook:entrypoints; preserve custom instructions.
 ```
 
 Run the following with PATH/SHA/SNAPSHOT from setup/resources (not values to commit).
@@ -143,11 +146,15 @@ does not register hooks, subagents, permissions or dependencies. Preserve legiti
 client-specific content; see [client acceptance](clients.md).
 
 Command gates live in [`.agents/gated-commands.json`](../.agents/gated-commands.json): commands
-a client must confirm with the user and files it must not read. Sync with `--source`
-merges the shared list into the consumer's copy add-only, so project entries stay. Sync
+a client must confirm with the user and files it must not read. Gate only irreversible or
+outward-facing actions; a prompt on routine authorized work is friction, not safety. Sync
+with `--source` merges the shared list into the consumer's copy add-only, so project
+entries stay, except commands the shared list marks `retired`, which sync removes. Sync
 then adds the matching `Bash(...)`/`PowerShell(...)` ask rules and `Read(...)` deny rules
-to `.claude/settings.json`, keeping every other setting; `handbook:entrypoints` reports
-missing entries. Codex rules are configured by hand until their format is verified.
+to `.claude/settings.json`, removes the exact rules generated for retired commands, and
+keeps every other setting; `handbook:entrypoints` reports missing or retired entries.
+Roles in `.agents/agents` with frontmatter also become managed, read-only
+`.claude/agents` subagents. Codex rules are configured by hand until their format is verified.
 Gates are a backstop, not authority, and prefix rules can be bypassed (see
 [work policy](work-policy.md#agent-authority)).
 

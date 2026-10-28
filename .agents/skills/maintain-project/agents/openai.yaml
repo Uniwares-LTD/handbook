@@ -1,0 +1,6 @@
+interface:
+  display_name: Maintain Project
+  short_description: Adopt or update Handbook integration in a repository
+  default_prompt: Use $maintain-project to reconcile this repository's Handbook integration.
+policy:
+  allow_implicit_invocation: false

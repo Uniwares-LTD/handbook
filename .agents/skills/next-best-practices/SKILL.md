@@ -1,6 +1,6 @@
 ---
 name: next-best-practices
-description: Next.js best practices - file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization, bundling
+description: Next.js best practices for file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization and bundling. Use when writing, reviewing or debugging Next.js App Router code.
 user-invocable: false
 ---
 

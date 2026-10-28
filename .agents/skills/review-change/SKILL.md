@@ -1,6 +1,6 @@
 ---
 name: review-change
-description: Review a proposed code or documentation diff read-only against its contract, acceptance and verification evidence.
+description: Reviews a code or documentation diff read-only against its task contract, acceptance criteria and verification evidence. Use when asked to review a change, branch, PR or diff, or after implementing and before handoff.
 ---
 
 # Review Change
@@ -19,7 +19,8 @@ a separate pass by the same agent from genuinely independent-agent review.
 
 When the client supports it and the session authorizes delegation, collect raw findings
 in a fresh context given only the diff, base and acceptance criteria, without the
-implementation summary, plan or earlier findings; otherwise label the result
+implementation summary, plan or earlier findings; the generated read-only `reviewer`
+subagent serves this where the client supports subagents. Otherwise label the result
 "cold-review fallback". Then verify each finding
 against the code and give it one verdict (Confirmed, Plausible, Pre-existing, Not
 confirmed) and one tier (Blocking, Medium, Informational) as the reviewer contract

@@ -1,0 +1,4 @@
+interface:
+  display_name: Manage Issues
+  short_description: Create approved issues and keep assigned issues current
+  default_prompt: Use $manage-issues to draft or update the issue for this work.

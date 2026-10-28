@@ -159,6 +159,73 @@
         ".agents/skills/playwright/references/workflows.md": "a2b5835a00ebee3906c146adf7f764f7718ea3f89a8702d86eaa135dfe0fc8c2",
         ".agents/skills/playwright/scripts/playwright_cli.sh": "aa3fdff5d0e4556177f4dfd5f04117e772aa54f94b6a2e34b6c0edf629c6b9b5"
       }
+    },
+    "ponytail": {
+      "source": "DietrichGebert/ponytail",
+      "sourceRef": "09c434ab73ca43761c5d8b0c5d341926c2fba710",
+      "sourcePath": "skills/ponytail",
+      "upstream": {
+        "source": "DietrichGebert/ponytail",
+        "sourceType": "github",
+        "skillPath": "skills/ponytail/SKILL.md",
+        "computedHash": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509"
+      },
+      "files": {
+        ".agents/skills/ponytail/SKILL.md": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509",
+        ".agents/skills/ponytail/LICENSE.txt": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab"
+      }
+    },
+    "asd-ste100": {
+      "source": "danyuchn/asd-ste100-skill",
+      "sourceRef": "8da6b6340aa22faf46fd07db8efbdea010cd38d9",
+      "sourcePath": ".",
+      "upstream": {
+        "source": "danyuchn/asd-ste100-skill",
+        "sourceType": "github",
+        "skillPath": "SKILL.md",
+        "computedHash": "39940a0db3d185416edfd757eff4c971006d8f59ad39715295b150b552344342"
+      },
+      "files": {
+        ".agents/skills/asd-ste100/SKILL.md": "39940a0db3d185416edfd757eff4c971006d8f59ad39715295b150b552344342",
+        ".agents/skills/asd-ste100/LICENSE.txt": "d3c674e8592076c9021a59b55177adbcba6fd7e1710082becb922522b22ec672",
+        ".agents/skills/asd-ste100/references/writing-rules.md": "4b92c86bf803f9f54e069767d34dc7356fbb95fb52a3f28476093917c608c102",
+        ".agents/skills/asd-ste100/examples/before-after.md": "78cb9afd26000c6f76bda5669e331d6539db499d102a3afabdfb1d21cd903128",
+        ".agents/skills/asd-ste100/examples/linter-edge-cases.md": "b6cc08af876014453b0c72d26ee4bfaeed1e9a154b5046947392752911ce1774",
+        ".agents/skills/asd-ste100/scripts/ste-lint.py": "fff04bf85c1e8bd8dc69dcedc63a5d88ed513dfa24e505f9cb8318a4596c99cd"
+      }
+    },
+    "grilling": {
+      "source": "mattpocock/skills",
+      "sourceRef": "59db609eb1e18aaf59b63284d0e52255aff0c63c",
+      "sourcePath": "skills/productivity/grilling",
+      "upstream": {
+        "source": "mattpocock/skills",
+        "sourceType": "github",
+        "skillPath": "skills/productivity/grilling/SKILL.md",
+        "computedHash": "befdff1e27a1dfe2a294d5871169ac1afe16d983911daa4f32627514a48c1e15"
+      },
+      "files": {
+        ".agents/skills/grilling/SKILL.md": "befdff1e27a1dfe2a294d5871169ac1afe16d983911daa4f32627514a48c1e15",
+        ".agents/skills/grilling/agents/openai.yaml": "1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b",
+        ".agents/skills/grilling/LICENSE.txt": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
+      }
+    },
+    "diagnosing-bugs": {
+      "source": "mattpocock/skills",
+      "sourceRef": "59db609eb1e18aaf59b63284d0e52255aff0c63c",
+      "sourcePath": "skills/engineering/diagnosing-bugs",
+      "upstream": {
+        "source": "mattpocock/skills",
+        "sourceType": "github",
+        "skillPath": "skills/engineering/diagnosing-bugs/SKILL.md",
+        "computedHash": "849198df88cdb65fd0d97236604c1fca7ff2f22d2f705f9724a800d0266b118d"
+      },
+      "files": {
+        ".agents/skills/diagnosing-bugs/SKILL.md": "849198df88cdb65fd0d97236604c1fca7ff2f22d2f705f9724a800d0266b118d",
+        ".agents/skills/diagnosing-bugs/agents/openai.yaml": "3e430dbe4334a87597488c060cb3dc3786bb00c9182877d6f5ec41f62490e90b",
+        ".agents/skills/diagnosing-bugs/scripts/hitl-loop.template.sh": "35103539fc36873eea36074769ad454f9379d6fc8b2dc0e26ce987fd3bfe5503",
+        ".agents/skills/diagnosing-bugs/LICENSE.txt": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
+      }
     }
   },
   "launcher": "scripts/handbook.mjs"

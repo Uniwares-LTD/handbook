@@ -6,7 +6,7 @@ for the actual URL, IDs, fields and enrolled repositories. Existing project #1 i
 ## Access
 
 Uniwares-LTD follows the shared [organization access](organization-access.md) model,
-applied and read back on 2026-10-28 (see [verification](verification.md)):
+applied and read back on 2026-10-28; see [open checks](#open-checks):
 
 | Resource | Organization members | `admin` | `dev` | `support` |
 | --- | --- | --- | --- | --- |
@@ -47,13 +47,14 @@ remains visible in Active work.
 Target configuration: two workflows enabled, item added to Backlog and item reopened to
 Backlog. Auto-add to project, the unconditional item closed to Done workflow, and all
 auto-close, auto-add sub-issues, archive, merge and review-driven workflows disabled.
-Auto-add to project is still enabled live until a human turns it off; see verification. Closure is a human
+Auto-add to project is still enabled live until a human turns it off; see open checks. Closure is a human
 decision under policy. Agents may mirror verified human completion to Done or
 not-planned closure to Cancelled, preserving reasons and duplicate links.
 
 Agent-created issues in adopted repositories reach the project through
 `create-issue.mjs`; issues people create in the GitHub UI are added with the enrollment
-helper. [Verification](verification.md) records the live workflow state.
+helper. The first issue created this way, Uniwares-LTD/handbook#8 on 2026-10-28, landed
+in Backlog with Blocked set, which satisfies the first-real-issue setup check.
 
 Handbook is the default repository when creating an issue from the project. Select
 the owning repository for application work. Project drafts are not the work queue;
@@ -84,4 +85,11 @@ This file records Handbook's local configuration, not a consumer destination.
 The migration applied on 2026-10-27 added Cancelled, disabled unconditional closed-to-Done and
 configured Active work, Triage, My items, Blocked, Review and History, with By repository
 for this organization-wide project. Existing optional Priority/Roadmap views may remain.
-Live migration evidence is recorded in [verification](verification.md). Preserve project #1 and access.
+Migration evidence is in Git history (`docs/verification.md`, removed after #8). Preserve project #1 and access.
+
+## Open checks
+
+- A human turns off the live Auto-add to project workflow (browser only).
+- The 2FA requirement is not yet enforced in Uniwares-LTD or karpishe-org. The read-only
+  access check lists members without 2FA; enforcing it removes them, so a human decides.
+- Claude Code runtime acceptance remains pending; see [client acceptance](clients.md).

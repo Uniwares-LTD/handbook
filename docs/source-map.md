@@ -39,5 +39,5 @@ live under Git metadata and are never committed.
 
 Handbook Admins review policy under [local governance](../README.md#contribution); project ownership remains
 with each consumer. No application or deployment is owned here. Individual task ownership
-comes from the assignment, not credentials. [Verification](verification.md) records evidence
-and pending checks. Consumer code maps and application operational facts belong elsewhere.
+comes from the assignment, not credentials. Evidence lives in issues and PRs; Handbook's
+[open checks](uniwares-project.md#open-checks) are tracked with its local operations. Consumer code maps and application operational facts belong elsewhere.

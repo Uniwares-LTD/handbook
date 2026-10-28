@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { catalogParity, toolNeutral, descriptionBudget, descriptionLimit } from '../scripts/guidance-lint.mjs';
+import { catalogParity, toolNeutral, descriptionBudget, descriptionLimit, skillShape, alwaysLoaded, bodyLineLimit, alwaysLoadedLines } from '../scripts/guidance-lint.mjs';
 
 const agents = 'Shared skills are in `.agents/skills`: work-on-task and review-change.\n';
 const domains = '| Domain | Responsibility | Skills |\n| --- | --- | --- |\n| [Engineering](e.md) | Build | work-on-task, review-change; playwright for browser tooling |\n';
@@ -29,4 +29,16 @@ test('description budget allows the limit and rejects longer descriptions', () =
   const skill = description => `---\nname: x\ndescription: ${JSON.stringify(description)}\n---\n`;
   assert.deepEqual(descriptionBudget('x', skill('a'.repeat(descriptionLimit))), []);
   assert.match(descriptionBudget('x', skill('a'.repeat(descriptionLimit + 1)))[0], /1025 characters/);
+});
+test('skill shape needs a spec name, a "when" description, a bounded body and no nested AGENTS.md', () => {
+  const skill = (description, body = 'Body.') => `---\nname: x\ndescription: ${description}\n---\n${body}\n`;
+  assert.deepEqual(skillShape('good-skill', skill('Does X. Use when Y.'), ['.agents/skills/good-skill/SKILL.md']), []);
+  assert.match(skillShape('Bad--Name', skill('Use when Y.'))[0], /lowercase letters/);
+  assert.match(skillShape('x', skill('Does X.'))[0], /say when to use/);
+  assert.match(skillShape('x', skill('Use when Y.', 'line\n'.repeat(bodyLineLimit + 1)))[0], /body is \d+ lines/);
+  assert.match(skillShape('x', skill('Use when Y.'), ['.agents/skills/x/AGENTS.md'])[0], /would load as agent instructions/);
+});
+test('always-loaded instructions stay within the line and byte budget', () => {
+  assert.deepEqual(alwaysLoaded('AGENTS.md', 'short\n'), []);
+  assert.match(alwaysLoaded('AGENTS.md', 'x\n'.repeat(alwaysLoadedLines + 1))[0], /^AGENTS\.md: \d+ lines/);
 });
