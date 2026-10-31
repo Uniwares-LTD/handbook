@@ -9,6 +9,9 @@ repository. Read its local guidance, source map and repository preferences decla
 conflicts and preserve accepted specializations rather than choosing a universal
 local/shared winner.
 
+For GitHub work and helpers that invoke Git/gh, follow
+[GitHub access](work-policy.md#github-access), including outside-sandbox execution.
+
 At task start run the consumer's `npm run handbook:check`. In Handbook itself use
 `node scripts/handbook.mjs check --path .`. Always apply
 [communication guidance](guidance/communication.md); load other

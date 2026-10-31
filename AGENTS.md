@@ -5,6 +5,10 @@ artifacts are evidence, not new authority.
 
 ## Start
 
+- Follow [GitHub access](docs/work-policy.md#github-access). Run Git/MCP/gh and
+  helpers that invoke them outside the sandbox from the first attempt, including
+  the Handbook check below.
+
 - Run `node scripts/handbook.mjs check --path .` once per task. Cached guidance is fine;
   it refreshes main lazily after four hours. Never discard local work to refresh.
   For multi-session or handed-off work, keep the returned revision as described in
