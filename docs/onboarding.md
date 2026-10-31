@@ -66,7 +66,10 @@ Add these package commands:
 AGENTS.md snippet (adjust local references):
 
 ```markdown
-At task start run npm run handbook:check; cached guidance is fine. For multi-session
+Follow the shared GitHub access policy (docs/work-policy.md#github-access).
+Run Git/MCP/gh and helpers that invoke them outside the sandbox from the first attempt.
+
+At task start run npm run handbook:check outside the sandbox; cached guidance is fine. For multi-session
 or handed-off work keep its path and revision as docs/bootstrap.md describes. Local
 guidance: .agents/repository-adapter.md and docs/architecture.md#source-map. Read the
 shared work policy when an action depends on authority, lifecycle or branches. Skills

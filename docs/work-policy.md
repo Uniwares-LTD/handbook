@@ -67,6 +67,30 @@ without claiming unverified results. Do not rewrite agreed scope through a statu
 Authenticated credentials do not prove the agent represents the issue's assignee;
 resolve the acting member from the assignment, not from the token username.
 
+## GitHub access
+
+Use the first capable route in this order:
+
+1. **Plain Git** for operations Git supports.
+2. **GitHub MCP** when configured, working and capable of the action.
+3. **GitHub CLI (`gh`)** otherwise. If missing, unconfigured or without access,
+   stop the GitHub operation and guide installation, authentication or access repair;
+   verify with a read-only check before continuing. Never request secrets in chat
+   or bypass missing CLI access through the browser.
+4. **Chrome plugin** only for rare actions unsupported by all three routes. Present
+   the exact action and destination, explain why those routes cannot perform it,
+   and obtain explicit approval for that browser action before proceeding.
+
+Invoke Git, GitHub MCP and gh outside the execution sandbox from the first attempt,
+including read-only calls and helpers/tests that spawn Git or gh. Use supported
+external/elevated execution; if unavailable, stop and explain the limitation.
+Connected MCP calls use the external connector, not a sandboxed shell process.
+Offline tools without these subprocesses can run normally.
+
+Preserve required helper workflows, validation, preview and readback when choosing
+a route. Tool access does not change [action authority](#agent-authority), and manual
+browser instructions elsewhere do not authorize agents to use the Chrome fallback.
+
 ## Acceptance and review
 
 Meet the issue's acceptance criteria; record relevant tests, documentation changes,
