@@ -17,7 +17,7 @@
 [README](../README.md) routes adoption. [Bootstrap](bootstrap.md) defines task context;
 [work policy](work-policy.md) defines authority and [GitHub access order](work-policy.md#github-access); [project operations](project.md) defines
 shared project procedures; [organization access](organization-access.md) defines the
-default teams and permissions; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance.
+default teams and permissions; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance; engineering owns operational handoff/evidence principles and communication owns operator instruction format.
 [Templates](templates.md) define permissive starters and their use.
 [Onboarding](onboarding.md) defines integration; [provenance](../PROVENANCE.md) records imports.
 

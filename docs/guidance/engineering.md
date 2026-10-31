@@ -38,6 +38,25 @@ and live acceptance are separate outcomes governed by shared authority.
 | A cache or longer timeout as the first fix | Removing the slow work |
 | Speedup claims from toy data | Measurements at realistic size |
 
+## Operational handoffs
+
+Before an authorized operation, verify the prerequisite capability the next step
+actually needs. A package import or executable's presence does not prove that a
+complete environment can be created or that the required operation is permitted.
+Use a disposable probe where practical and report what it establishes.
+
+Bind a reviewed handoff to immutable source/artifact identities and the expected
+prior state. Distinguish preview, application and readback. After interruption,
+inspect checkpoints and the selected state before retrying; preserve predecessors
+and distinguish failed, completed and unknown outcomes. A preview does not grant
+authority to apply, and a successful installation does not prove live acceptance.
+
+Keep procedures separate from changing observations. State whether evidence is
+configured, source-reviewed, tested, observed or accepted; date observations and
+identify the owner of each canonical fact. Link to that owner instead of copying
+changing values. Historical evidence and one-time exceptions must not silently
+become current instructions or permanent defaults.
+
 ## Validation cadence
 
 Choose checks from the changed behavior and its risks: focused checks while iterating,

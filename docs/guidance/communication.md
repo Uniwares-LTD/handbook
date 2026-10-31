@@ -23,6 +23,21 @@ Silence never expands scope. Combine related questions and offer a recommended o
 
 Brevity never hides an external write, a skipped or failed check, a risk or a required decision.
 
+## Operator instructions
+
+Resolve discoverable non-secret inputs from configuration, owner documentation and
+verified evidence before asking the user. Group genuinely missing inputs. State the
+execution location and shell, what the command changes, expected results and when
+to stop or inspect state before resuming. Use complete commands for known values;
+label outputs that must be obtained from a preceding step instead of guessing them.
+Never request secret values in chat or print private configuration for troubleshooting.
+
+Honor authority already established for the same scope; ask again only when the next
+action needs authority not yet granted or the scope materially changes. Report
+implementation, publication, installation, deployment and live acceptance separately
+when those stages apply. A documentation correction must not instruct operators to
+repeat a completed installation.
+
 ## Plain technical writing
 
 Lead with the result. One idea per sentence; active voice; define acronyms on first use;
