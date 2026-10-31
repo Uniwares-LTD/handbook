@@ -22,6 +22,15 @@ client proof. Retain revision A while another fixture task advances the baseline
 invoke another skill, read same-revision resources and carry A through handoff/resume.
 Exercise lost-context recovery without claiming continuity after a new baseline.
 
+Use this compact checklist for a new client session, including macOS:
+
+- Confirm native discovery and activate one relevant skill; verify local guidance and source-map reads.
+- Run setup/check/doctor and the offline readiness and entrypoint checks with the client's actual filesystem access.
+- Retain the full Handbook revision and materialize resources from it; verify actual refresh separately from cache reuse.
+- Resume the task and confirm the retained revision. Record any lost-context recovery or new baseline explicitly.
+
+Record the client, environment, revision, observed results, and checks still pending. Existing-session activation does not prove fresh-session discovery.
+
 Claude runtime acceptance is explicitly deferred. Remaining check: in Claude Code confirm
 CLAUDE.md import, skill discovery/activation, canonical routing, local reads, retained
 revision, resources and refresh under actual permissions. Static tests do not prove this.

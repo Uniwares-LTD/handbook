@@ -98,6 +98,18 @@ snapshot source also updates consumer Codex references/metadata. It updates inta
 managed content and preserves appended custom content. Modified managed or unmanaged
 files require manual reconciliation; orphans are reported, never deleted. Check after sync.
 
+## macOS setup considerations
+
+Use a Node runtime compatible with Handbook tooling (Node 22+), independently of the application's runtime.
+Use the default sibling checkout or the supported local `--path` / `UNIWARES_HANDBOOK_PATH` override.
+Keep machine paths, credentials, and task revision pins out of committed consumer configuration.
+
+Follow the setup and resources commands above. Retain the returned path and revision for work that spans sessions.
+Run doctor, readiness, and snapshot-based entrypoint checks before recording setup as verified.
+A client may need permission to read the checkout and resource cache outside the project workspace.
+Configure that access through the client's supported controls; do not infer it from terminal access.
+Then run the [client acceptance checklist](clients.md#acceptance-procedure). Terminal checks do not establish native skill discovery.
+
 ## Starter templates
 
 Permissive issue, PR and docs starters are described in [templates](templates.md). Use
