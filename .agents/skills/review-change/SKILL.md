@@ -12,19 +12,26 @@ Read the consumer adapter, complete diff against its intended base, live accepta
 criteria, relevant implementation and current evidence. Follow [the reviewer contract](../../agents/reviewer.md).
 Report actionable correctness, compatibility, scope, security, documentation and stale
 verification defects with precise evidence and bounded corrections. Keep preferences
-non-blocking. Return Pass when no actionable defect remains; missing evidence still
-limits the claim. For risky/cross-cutting work compare actual surfaces with the plan.
+non-blocking. Return Pass when no confirmed Blocking findings remain and required
+verification is current; otherwise report Blocking findings or incomplete verification.
+For risky/cross-cutting work compare actual surfaces with the plan.
 Remain read-only: no edits, comments, publication or project/issue mutations. Distinguish
 a separate pass by the same agent from genuinely independent-agent review.
 
 When the client supports it and the session authorizes delegation, collect raw findings
-in a fresh context given only the diff, base and acceptance criteria, without the
-implementation summary, plan or earlier findings; the generated read-only `reviewer`
-subagent serves this where the client supports subagents. Otherwise label the result
-"cold-review fallback". Then verify each finding
+in a fresh context given the diff, base, acceptance criteria, repository guidance and
+access to relevant source, without the implementation summary, plan or earlier findings.
+The generated read-only `reviewer` subagent serves this where supported. Otherwise label
+the result "cold-review fallback". After raw collection, read the plan and verification
+evidence to check scope and acceptance; this second phase is part of the same review
+pass, not a second clean review. Then verify each finding
 against the code and give it one verdict (Confirmed, Plausible, Pre-existing, Not
 confirmed) and one tier (Blocking, Medium, Informational) as the reviewer contract
 defines. Report Not confirmed findings only as discarded.
+
+The [workflow](../../../docs/guidance/engineering.md#review-completion) determines
+the required pass count. Review stays read-only; return findings to implementation for
+fixes. Record the reviewed state and evidence without creating extra issue comments.
 
 ## Workflow contract
 
@@ -32,4 +39,4 @@ Trigger: Reviewing a proposed change against its contract.
 
 Inputs and sources: Final diff, acceptance, local guidance/source map and verification evidence. Shared authority is [work policy](../../../docs/work-policy.md); project facts remain in local canonical sources.
 
-Permitted actions and completion: Actionable findings or an explicit no-findings result with verification limits; no implementation changes during review.
+Permitted actions and completion: Verified findings and Pass or incomplete/blocked review with verification limits; no implementation changes during review.

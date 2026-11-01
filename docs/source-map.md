@@ -18,7 +18,9 @@
 [work policy](work-policy.md) defines authority and [GitHub access order](work-policy.md#github-access); [project operations](project.md) defines
 shared project procedures; [organization access](organization-access.md) defines the
 default teams and permissions; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance; engineering owns operational handoff/evidence principles and communication owns operator instruction format.
-[Templates](templates.md) define permissive starters and their use.
+[Engineering](guidance/engineering.md#choose-the-workflow) owns proportional routing and
+review completion; [large-issue delivery](guidance/large-issues.md) supplies the conditional
+interview, PRD and checkpoint procedure. [Templates](templates.md) define permissive starters and their use.
 [Onboarding](onboarding.md) defines integration; [provenance](../PROVENANCE.md) records imports.
 
 ## Commands

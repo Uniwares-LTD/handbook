@@ -1,8 +1,8 @@
 # Engineering guidance
 
 Use the [common contract](../bootstrap.md). Start with local architecture, source map,
-commands and the accepted outcome. Compile a bounded spec when consequential intent
-is unclear; otherwise implement proportional changes with meaningful verification.
+commands and the accepted outcome. Choose the proportional workflow below; compile a
+bounded spec when consequential intent is unclear.
 Review the final diff in a separate read-only pass and distinguish same-agent review
 from independent review. Retest affected behavior after corrections.
 
@@ -16,6 +16,59 @@ project. Explicitly reconcile conflicting guidance and accepted exceptions.
 Report actual tests and limitations, respecting local advisory validation policy.
 Compilation/runtime failures remain failures. Implementation, publication, deployment
 and live acceptance are separate outcomes governed by shared authority.
+
+## Choose the workflow
+
+Assess effort, uncertainty, affected behavior and risk when drafting an issue or loading
+it for triage, planning or implementation. This is a default route, not a new approval
+gate; honor explicit user overrides within existing authority and evidence rules.
+
+| Route | Typical work | Stages |
+| --- | --- | --- |
+| Small | Understood, localized, low-risk change that fits one session | Implement, validate, separate review |
+| Medium | Related paths and edge cases, bounded to one session | Plan mode, implementation with Plan mode off, separate review |
+| Large | Multiple components, contracts or user flows, or many consequential decisions | Interview, PRD, implementation plan, checkpoint implementation and review |
+
+Size is not a file count or deadline. A small but high-risk change needs at least the
+medium route; unresolved cross-cutting decisions can require the large route. With
+insufficient evidence, mark the assessment provisional and inspect the relevant code.
+Reassess on material new evidence, without restarting completed work unnecessarily.
+
+Keep the small path quiet. Casual questions and read-only lookups do not start a delivery
+workflow. For obvious small work, assess silently and proceed within authorization: no
+sizing announcement, routing question, standalone plan, PRD, checkpoint record or extra
+issue comment. Include validation and review in the normal concise handoff. Do not
+invoke compile-feature-spec solely because a small change adds a feature.
+
+For medium or large work, briefly explain the route and rationale, including uncertainty
+or an override when relevant. Reuse the issue draft, plan or existing evidence summary;
+do not repeat the assessment on every load or post a comment only to record sizing.
+Reading an issue does not authorize writes. Workflow size does not set the project's
+optional Size field, priority, ownership or lifecycle status.
+
+A medium plan defines scope, affected behavior and interfaces, acceptance, validation
+and consequential decisions. Keep it in the conversation unless persistence is needed
+for a handoff or requested. Only large work needs the
+[large-issue procedure](large-issues.md) and its PRD/checkpoint artifacts.
+
+Use the client's actual planning controls when available. If unavailable, use a clearly
+read-only planning phase. Do not claim to switch modes or models without confirmation;
+when the active mode forbids writes, return drafts and wait for the mode change.
+
+## Review completion
+
+Use review-change for separate read-only passes. Small and medium work need one clean
+review; large work follows the checkpoint review count in the large-issue procedure.
+A clean review has no confirmed Blocking findings and has current required verification.
+Nonblocking notes do not restart implementation. Missing required evidence prevents a
+clean completion claim; advisory warnings do not.
+
+Fix confirmed in-scope blockers between passes and rerun affected checks. Return to
+planning for a blocker requiring a material decision outside the accepted contract.
+Do not stop merely because two rounds found different blockers. If the same blocker
+survives two correction attempts, or fixes repeatedly recreate the same failure,
+diagnose the common cause and ask for direction before further patching. Report the
+remaining blocker and attempted corrections; do not broaden scope to force a pass.
 
 ## Design and change rules
 
