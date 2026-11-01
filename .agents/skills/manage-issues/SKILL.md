@@ -17,7 +17,13 @@ and comments in its issue language (English when none is recorded); keep labels,
 fields and status names in English.
 
 For intake, search duplicates and draft destination, title, type and outcome, with scope
-and acceptance when known; triage completes them. Shape the body after the matching issue
+and acceptance when known; triage completes them. Assess the
+[proportional workflow](../../../docs/guidance/engineering.md#choose-the-workflow)
+at drafting and substantive issue load. Keep obvious small assessments silent; explain
+medium/large recommendations briefly in the draft or normal response. Reuse existing
+assessment unless evidence changes; do not add sizing-only comments, mandatory fields,
+or project Size updates. A casual issue lookup needs no delivery workflow.
+Shape the body after the matching issue
 form ([templates](../../../docs/templates.md)) and leave out empty sections. Obtain human approval before creating any issue or sub-issue. Preserve
 agreed scope. Use the selected local coordination repository for coordination and the owning repository for implementation.
 Create only through `create-issue.mjs` per project operations, never bare `gh issue create`:

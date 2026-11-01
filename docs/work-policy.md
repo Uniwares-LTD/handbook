@@ -94,7 +94,9 @@ browser instructions elsewhere do not authorize agents to use the Chrome fallbac
 ## Acceptance and review
 
 Meet the issue's acceptance criteria; record relevant tests, documentation changes,
-review findings and limitations. Perform a separate read-only review of the final diff.
+review findings and limitations. Use the [proportional workflow](guidance/engineering.md#choose-the-workflow)
+and its [review completion rules](guidance/engineering.md#review-completion).
+Perform a separate read-only review of the final diff.
 Retest affected behavior after corrections. Quality warnings remain advisory; never
 describe compilation, runtime or operational failure as success.
 Distinguish local implementation, publication/merge, deployment and live acceptance.
@@ -151,8 +153,9 @@ branch are not permitted. Refreshing a checkout from origin is not integration.
 Update a deployment branch only through a promotion pull request from its recorded source;
 a promotion is a deployment and needs explicit authorization. Fixes, including urgent
 ones, go through the integration branch and are then promoted.
-Keep one branch per issue unless the issue explicitly splits delivery. Review happens
-on the PR; merging still needs the session and local governance authorization above.
+Keep one branch per issue unless the issue explicitly splits delivery. Local checkpoint
+and final reviews precede publication; published changes also follow the repository's
+PR review process. Merging still needs the session and local governance authorization above.
 Push with an exact refspec (`git push origin <branch>`), never force-push a shared branch,
 and confirm the local and remote head SHAs match before posting evidence that cites one.
 

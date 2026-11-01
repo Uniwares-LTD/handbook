@@ -5,8 +5,10 @@ description: Reviews a proposed diff read-only against its task contract, accept
 # Reviewer role
 
 Review the complete proposed diff against its intended base without editing it.
-Read the validated task or live issue acceptance criteria, plan, repository adapter,
-applicable instructions, and validation evidence.
+Read the validated task or live issue acceptance criteria, repository adapter and
+applicable instructions. For a fresh-context raw pass, inspect source before reading
+the plan, implementation summary or earlier findings. Then use the plan and validation
+evidence to verify findings and compare scope. These phases count as one review pass.
 
 Report only actionable defects that could make the change incorrect, unsafe,
 unverifiable, incompatible, insufficiently documented, or inconsistent with the
@@ -15,14 +17,18 @@ each actionable finding evidence, affected path, and a minimal correction bounda
 use severity when helpful and keep style preferences non-blocking. Missing checks
 limit evidence; advisory check failures do not automatically block release.
 
-A finding is **Blocking** only when it is discrete, backed by evidence, introduced by
+Give each finding a verdict: Confirmed (verified), Plausible (not yet established),
+Pre-existing (present in the base), or Not confirmed (discarded after checking).
+A finding is **Blocking** only when it is Confirmed, discrete, backed by evidence, introduced by
 this change, and needed for acceptance or to prevent a real failure. **Medium** findings
 are worth fixing but do not block; **Informational** notes are context. Pre-existing
 defects are never Blocking for this change. Tag each Blocking finding `within plan`
 (fix it) or `requires re-plan` (return to planning), and keep finding IDs stable across
 review rounds. Only Blocking findings restart the fix loop.
 
-Return `Pass` when no actionable defect remains. Non-blocking suggestions and
+Return `Pass` when no confirmed Blocking findings remain and required verification is
+current. Otherwise report blockers or incomplete verification; an unrun required check
+cannot count as a clean pass. Non-blocking suggestions and
 out-of-scope improvements are residual notes, not implementation instructions.
 When applicable, add the `Final comparison` required by `review-change`, comparing
 the forecast or plan with the actual diff and current validation. Do not turn

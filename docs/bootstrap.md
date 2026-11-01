@@ -19,8 +19,10 @@ At task start run the consumer's `npm run handbook:check`. In Handbook itself us
 
 ## Scale to the task
 
-A short, single-session task needs nothing more: read the shared files you need at the
-returned revision and do the work. Retain the revision explicitly only when work spans
+A small, low-risk task needs no planning artifact: read the shared files you need at the
+returned revision and do the work. For issue intake and implementation, use the
+[proportional workflow](guidance/engineering.md#choose-the-workflow); casual questions
+do not start a delivery workflow. Retain the revision explicitly only when work spans
 sessions, compaction/resume or a handoff to another agent or member:
 
 - Keep the returned `path` and full `revision` in context and read policy, selected skills
@@ -28,7 +30,7 @@ sessions, compaction/resume or a handoff to another agent or member:
   resolve inside that revision.
 - Carry the same path and revision through later skill calls, authorized delegation,
   handoffs and resume summaries. A concurrent refresh or `--force` does not change it.
-  No task record is written.
+  No separate baseline record is required; use the existing plan or handoff when present.
 - If context loses the baseline, recover it from the handoff or conversation first; if
   impossible, establish a new baseline and report the discontinuity. Do not claim
   continuity that cannot be verified.

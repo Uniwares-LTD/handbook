@@ -10,6 +10,9 @@ It also covers team and permission inventory and authorized setup under
 may identify destination, scope and required authority; they are never mandatory setup.
 Use manage-issues for intake and assigned task maintenance: scope, human ownership,
 acceptance, dependencies, readiness, nonterminal status, blockers, evidence and handoff.
+At intake or substantive issue load, use the
+[proportional workflow](engineering.md#choose-the-workflow); do not add process to casual
+lookups or obvious small tasks. Workflow stages do not replace project lifecycle states.
 Preserve owning-repository and accepted legacy queues; avoid duplicate issues and bulk
 migration. Human acceptance/closure remains controlling; agents may mirror verified human closure
 into Done/Cancelled with evidence, never independently accept or cancel work.

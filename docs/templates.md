@@ -29,6 +29,7 @@ shows where a repository keeps its copy.
 | `docs/repository-adapter.md` | `guidance` in handbook.json | Local guidance for agents and contributors |
 | `docs/repository.md` | `preferences` in handbook.json | Issue language and durable branches |
 | `docs/feature-spec.md` | `docs/templates/` | Specs from compile-feature-spec |
+| `docs/prd.md`, `docs/implementation-plan.md` | `docs/templates/` | Large-work requirements and checkpoint plans from compile-feature-spec |
 | `docs/decision-record.md` | `docs/templates/` | Decisions and their consequences |
 | `docs/how-to.md` | `docs/templates/` | Task guides and runbooks |
 
@@ -49,11 +50,16 @@ The lessons-learned template stays with the capture-project-learnings skill.
 | Draft an issue | Matching issue form | manage-issues |
 | Describe a PR | PR template | work-on-task |
 | Write a spec | Feature spec | compile-feature-spec |
+| Plan large work | PRD and implementation plan | compile-feature-spec |
 | Record a decision | Decision record | capture-project-learnings, maintain-docs |
 | Write a guide or runbook | How-to | maintain-docs |
 | Start repository docs | Source map, guidance, preferences | maintain-docs |
 
 ## Copying and updating
+
+These are starters, not required artifacts for every task. Small work needs none;
+medium plans can stay in the conversation. For large work, use existing canonical
+locations or the defaults in [large-issue delivery](guidance/large-issues.md).
 
 The maintain-docs skill starts and updates a repository's docs and templates. It uses
 this offline command, run from the consumer root with the resources snapshot as source:

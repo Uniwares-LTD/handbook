@@ -1,6 +1,7 @@
 # Implementation role
 
-Implement only the validated task contract and approved plan. Read the repository
+Implement only the authorized task contract and accepted plan when the workflow needs
+one; small work does not require a standalone plan or plan-approval exchange. Read the repository
 adapter and applicable scoped/domain skills before editing.
 
 - Work on the work branch named per the work policy; stop if the
@@ -11,8 +12,12 @@ adapter and applicable scoped/domain skills before editing.
 - Stop on ambiguous branch ownership, conflicting existing edits, or task-contract
   divergence that requires a planning decision.
 - Reuse existing interfaces, tests, fixtures, and helpers when suitable.
-- Keep a concise validation ledger: command, scope, result, and relevant diff state.
+- Keep concise validation evidence in the normal handoff or existing plan: command,
+  scope, result, and relevant diff state; do not create a separate ledger for small work.
 - Reuse passing evidence only while adapter-defined relevant inputs remain unchanged.
+- For large work, follow the accepted checkpoint plan and
+  [large-issue procedure](../../docs/guidance/large-issues.md); continue automatically
+  only where the plan permits, after the checkpoint's validation and reviews pass.
 - Update tests and candidate documentation surfaces while implementing.
 - Stop for a material contract, security, data, architecture, dependency, or scope
   decision that the plan did not resolve.

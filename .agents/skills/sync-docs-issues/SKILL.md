@@ -19,6 +19,9 @@ For authorized assigned work in an adopted repository, re-fetch the issue and pu
 concise evidence without overwriting human edits or duplicating comments. State outcome,
 checks, documentation, reviewed revision and remaining acceptance. Do not rewrite scope,
 create follow-ups, accept/cancel or close issues. Verified closure mirroring belongs to manage-issues. New issue proposals require human approval.
+For large work, reconcile the existing checkpoint plan with verified results and gates;
+keep issue evidence to meaningful transitions. Do not add sizing-only comments or create
+planning records for small work. Checkpoint completion is not member acceptance.
 Use capture-project-learnings only for useful verified reusable knowledge. Use
 maintain-docs to set up docs, start a new document, restructure docs or refresh templates.
 
