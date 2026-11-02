@@ -78,6 +78,18 @@ pause only dependent decisions. Start issues, PRs and documents from the permiss
 templates in .github and docs/templates, else the shared starters (docs/templates.md);
 set up or refresh them with maintain-docs. After skill or
 routing changes run handbook:sync and handbook:entrypoints; preserve custom instructions.
+
+If the check reports HANDBOOK_SETUP_REQUIRED, ask once for this task:
+"This repo uses Handbook for shared agent guidance. Clone Uniwares-LTD/handbook
+into <resolved path>? This sets up this device; the repo is already adopted."
+Use the reported destination. An explicit setup request already grants approval.
+After approval run npm run handbook:setup with -- --path set to that destination,
+quoted for the shell, outside the sandbox. Retain the returned path/revision and
+resume the original task. Do not rerun adoption, sync templates or change tracking.
+If declined, do not ask again during this task. If setup fails, explain the actual
+access, network or filesystem failure and next action; do not repeatedly retry.
+In either case continue under local guidance and pause only dependent decisions.
+Client permission prompts may still be required.
 ```
 
 Run the following with PATH/SHA/SNAPSHOT from setup/resources (not values to commit).
@@ -97,6 +109,34 @@ offline tool first: its core skill list decides which skills sync adds, such as 
 snapshot source also updates consumer Codex references/metadata. It updates intact
 managed content and preserves appended custom content. Modified managed or unmanaged
 files require manual reconciliation; orphans are reported, never deleted. Check after sync.
+
+## First use on another device
+
+Repository adoption is committed once; cloning that consumer on another device does
+not repeat adoption. The agent runs `handbook:check`, which never clones Handbook.
+If the checkout is absent, `HANDBOOK_SETUP_REQUIRED` reports its origin and resolved
+destination. The consumer's local instructions and generated skill entrypoints ask
+for one confirmation, then run `handbook:setup` and resume the original task using
+its returned baseline. A direct setup request already supplies that confirmation.
+
+Setup retains the default `../handbook` location and `--path` /
+`UNIWARES_HANDBOOK_PATH` overrides. Consumers resolving to an existing valid checkout
+reuse it without another setup prompt. Deleting the checkout requires confirmation
+before cloning again. There is no consent registry or background installer; normal
+checks retain their four-hour refresh behavior. Setup does not rewrite consumer
+files, sync templates or change tracking. Client permissions for network and access
+outside the workspace may still require a separate prompt.
+
+If setup is declined, do not ask again during the task. If it fails, report the
+actual failure and next action: restore network connectivity, repair GitHub read
+access to the private repository, or choose a writable destination as appropriate.
+Do not repeatedly retry, delete an existing checkout or rerun adoption. Continue
+under local instructions and pause only decisions requiring unavailable guidance.
+
+Existing consumers receive this flow through an explicit integration update:
+reconcile both copied scripts and the AGENTS.md snippet above, then regenerate
+managed entrypoints from the accepted snapshot. A normal guidance refresh cannot
+update a consumer's launcher or committed instructions. Preserve custom content.
 
 ## macOS setup considerations
 

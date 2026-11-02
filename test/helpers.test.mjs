@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync, readFileSync, rmSync, readdirSync, mkdirSync, cpSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readFileSync, rmSync, readdirSync, mkdirSync, cpSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { execFileSync, spawn } from 'node:child_process';
@@ -136,6 +136,54 @@ test('task A resources stay at A through refresh to B and a resumed handoff', as
   assert.deepEqual(readFileSync(path.join(a.resourcePath, 'assets/image.bin')), Buffer.from([0, 255, 128, 7]));
   writeFileSync(path.join(a.resourcePath, 'policy.md'), 'tampered');
   assert.throws(() => materialize(resumed.path, resumed.revision, { origin: f.remote }), /Modified resource/);
+});
+
+test('missing checkout reports setup details without creating a directory', async t => {
+  const root = mkdtempSync(path.join(tmpdir(), 'handbook-missing-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const directory = path.join(root, 'absent parent', 'handbook');
+  for (const command of ['check', 'doctor', 'resources']) {
+    await assert.rejects(runHandbook(command, { root, directory }), error => {
+      assert.equal(error.code, 'HANDBOOK_SETUP_REQUIRED');
+      assert.equal(error.path, directory);
+      assert.equal(error.origin, 'https://github.com/Uniwares-LTD/handbook.git');
+      assert(error.message.includes(directory));
+      assert(error.message.includes(error.origin));
+      assert.match(error.message, /After approval, run npm run handbook:setup/);
+      return true;
+    });
+    assert(!existsSync(path.dirname(directory)));
+  }
+  assert.throws(() => execFileSync(process.execPath,
+    ['scripts/handbook.mjs', 'check', '--path', directory], { encoding: 'utf8', stdio: 'pipe' }), error => {
+    assert.equal(error.status, 1);
+    assert.match(error.stderr, /HANDBOOK_SETUP_REQUIRED/);
+    assert(error.stderr.includes(directory));
+    return true;
+  });
+});
+
+test('setup baseline is reused by another consumer and deletion requires setup again', async t => {
+  const f = fixture(t), directory = path.join(f.root, 'shared handbook');
+  const first = await runHandbook('setup', { directory, origin: f.remote });
+  const second = await runHandbook('check', { root: path.join(f.root, 'another-consumer'), directory, origin: f.remote });
+  assert.equal(second.revision, first.revision);
+  assert.equal(second.path, first.path);
+  rmSync(directory, { recursive: true, force: true });
+  await assert.rejects(runHandbook('check', { directory, origin: f.remote }), { code: 'HANDBOOK_SETUP_REQUIRED' });
+  assert(!existsSync(directory));
+});
+
+test('failed first clone reports failure without claiming a baseline', async t => {
+  const root = mkdtempSync(path.join(tmpdir(), 'handbook-failed-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const directory = path.join(root, 'handbook');
+  await assert.rejects(runHandbook('setup', { directory, origin: path.join(root, 'unavailable.git') }), /git clone/);
+  assert(!existsSync(path.join(directory, '.git', 'uniwares-handbook-baseline.json')));
+  const blockedParent = path.join(root, 'blocked');
+  writeFileSync(blockedParent, 'preserve');
+  await assert.rejects(runHandbook('setup', { directory: path.join(blockedParent, 'handbook') }), /EEXIST|ENOTDIR/);
+  assert.equal(readFileSync(blockedParent, 'utf8'), 'preserve');
 });
 
 test('launcher setup repeats, ignores dirty helper code and rechecks cached origin', async t => {
