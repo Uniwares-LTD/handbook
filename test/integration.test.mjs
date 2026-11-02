@@ -34,6 +34,17 @@ test('consumer sync is idempotent and offline readiness needs no clone or creden
   const wrapper = readFileSync(path.join(root, '.agents/skills/playwright/SKILL.md'), 'utf8');
   assert.match(wrapper, /existing Handbook path and full revision/);
   assert.match(wrapper, /resources --revision SHA/);
+  // These instructions must be available before the private checkout exists.
+  for (const text of [wrapper, readFileSync(path.join(source, 'docs/onboarding.md'), 'utf8').split('```markdown')[1].split('```')[0]]) {
+    assert.match(text, /HANDBOOK_SETUP_REQUIRED/);
+    assert.match(text, /ask once for this task/);
+    assert.match(text, /explicit setup request already grants approval/);
+    assert.match(text, /-- --path set to that destination/);
+    assert.match(text, /resume the original task/);
+    assert.match(text, /If declined, do not ask again during this task/);
+    assert.match(text, /do not repeatedly retry/);
+    assert.match(text, /Client permission prompts may still be required/);
+  }
 });
 
 test('readiness reports broken references, absent map sections and invalid metadata', t => {
