@@ -150,6 +150,10 @@ Untracked low-risk fixes omit the number: `bug/<slug>` for a defect, otherwise `
 Integrate every change into the integration branch through a pull request that references
 its issue with `Related to` (an untracked fix has none to reference); direct pushes, local merges and fast-forwards into a durable
 branch are not permitted. Refreshing a checkout from origin is not integration.
+Prefer normal merge commits for pull requests. They preserve original commit identities
+and record the PR boundary, so merged work branches remain recognizable as merged.
+Use squash or rebase merges only when explicitly requested or required by repository
+policy. If the preferred method is unavailable, report the constraint before merging.
 Update a deployment branch only through a promotion pull request from its recorded source;
 a promotion is a deployment and needs explicit authorization. Fixes, including urgent
 ones, go through the integration branch and are then promoted.
