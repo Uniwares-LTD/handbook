@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, cpSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, cpSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { checkReadiness, syncEntrypoints, syncTemplates, mapSections, permissionEntries, gatesFile, branchWarnings } from '../scripts/handbook-integration.mjs';
 
@@ -32,10 +33,11 @@ test('consumer sync is idempotent and offline readiness needs no clone or creden
   assert.deepEqual(syncEntrypoints(root, { source }).warnings, []);
   assert.deepEqual(checkReadiness(root), { ready: true, warnings: [] });
   const wrapper = readFileSync(path.join(root, '.agents/skills/playwright/SKILL.md'), 'utf8');
-  assert.match(wrapper, /existing Handbook path and full revision/);
-  assert.match(wrapper, /resources --revision SHA/);
+  assert.match(wrapper, /Handbook bootstrap.*handbook.md/);
+  assert.match(wrapper, /retained Handbook path and full revision/);
+  assert.doesNotMatch(wrapper, /HANDBOOK_SETUP_REQUIRED/);
   // These instructions must be available before the private checkout exists.
-  for (const text of [wrapper, readFileSync(path.join(source, 'docs/onboarding.md'), 'utf8').split('```markdown')[1].split('```')[0]]) {
+  for (const text of [readFileSync(path.join(root, '.agents/handbook.md'), 'utf8')]) {
     assert.match(text, /HANDBOOK_SETUP_REQUIRED/);
     assert.match(text, /ask once for this task/);
     assert.match(text, /explicit setup request already grants approval/);
@@ -233,4 +235,96 @@ test('starter templates are copied once, never overwritten unless named, and fol
   assert.deepEqual(guarded.skipped.map(item => item.template).sort(), ['.agents/templates/docs/repository-adapter.md', '.agents/templates/docs/repository.md', '.agents/templates/docs/source-map.md']);
   assert(guarded.templates.some(item => item.path === '.github/ISSUE_TEMPLATE/bug.yml'));
   assert.doesNotMatch(readFileSync(path.join(root, 'AGENTS.md'), 'utf8'), /Repository guidance/);
+});
+
+function sourceFixture(t) {
+  const copy = mkdtempSync(path.join(tmpdir(), 'handbook-source-copy-'));
+  t.after(() => rmSync(copy, { recursive: true, force: true }));
+  for (const name of ['handbook-contract.json', '.agents/skills', 'docs/consumer-bootstrap.md']) {
+    mkdirSync(path.dirname(path.join(copy, name)), { recursive: true });
+    cpSync(path.join(source, name), path.join(copy, name), { recursive: true });
+  }
+  return copy;
+}
+
+test('bootstrap-only edits change one guide, preserve suffixes and leave wrappers stable', t => {
+  const root = fixture(t), copy = sourceFixture(t);
+  syncEntrypoints(root, { source: copy, write: true });
+  const guide = path.join(root, '.agents/handbook.md');
+  writeFileSync(guide, readFileSync(guide, 'utf8') + '\nLocal suffix.\n');
+  const shared = path.join(copy, 'docs/consumer-bootstrap.md');
+  writeFileSync(shared, readFileSync(shared, 'utf8') + '\nClarified shared bootstrap.\n');
+  assert.deepEqual(syncEntrypoints(root, { source: copy, write: true }).changed, ['.agents/handbook.md']);
+  assert(readFileSync(guide, 'utf8').endsWith('\nLocal suffix.\n'));
+  assert.deepEqual(syncEntrypoints(root, { source: copy, write: true }).changed, []);
+});
+
+test('procedure changes do not churn consumers; metadata edits affect only matching wrappers', t => {
+  const root = fixture(t), copy = sourceFixture(t);
+  syncEntrypoints(root, { source: copy, write: true });
+  const skill = path.join(copy, '.agents/skills/playwright/SKILL.md');
+  writeFileSync(skill, readFileSync(skill, 'utf8') + '\nChanged shared procedure.\n');
+  assert.deepEqual(syncEntrypoints(root, { source: copy, write: true }).changed, []);
+  writeFileSync(skill, readFileSync(skill, 'utf8').replace(/^description: .+$/m, 'description: "Use when testing new discovery metadata."'));
+  assert.deepEqual(syncEntrypoints(root, { source: copy, write: true }).changed,
+    ['.agents/skills/playwright/SKILL.md', '.claude/skills/playwright/SKILL.md']);
+});
+
+test('missing or customized bootstrap is diagnosed without overwriting user content', t => {
+  const root = fixture(t);
+  syncEntrypoints(root, { source, write: true });
+  const guide = path.join(root, '.agents/handbook.md');
+  rmSync(guide);
+  assert(checkReadiness(root).warnings.some(w => w.includes('Missing .agents/handbook.md')));
+  assert(syncEntrypoints(root).warnings.some(w => w.includes('Missing .agents/handbook.md')));
+  syncEntrypoints(root, { source, write: true });
+  writeFileSync(guide, '# Custom bootstrap\nKeep it.\n');
+  const before = readFileSync(guide, 'utf8');
+  const result = syncEntrypoints(root, { source, write: true });
+  assert(result.warnings.some(w => w.includes('migration deferred')));
+  assert(checkReadiness(root).warnings.some(w => w.includes('Customized/unmanaged')));
+  assert.equal(readFileSync(guide, 'utf8'), before);
+  assert.deepEqual(result.changed, []);
+});
+
+test('legacy consumers stay usable and migrate only after an intact bootstrap is available', t => {
+  const root = fixture(t);
+  syncEntrypoints(root, { source, write: true });
+  const skills = path.join(root, '.agents/skills');
+  for (const name of ['capture-project-learnings', 'compile-feature-spec', 'manage-issues', 'maintain-docs', 'maintain-project', 'review-change', 'sync-docs-issues', 'work-on-task', 'playwright']) {
+    const file = path.join(skills, name, 'SKILL.md');
+    const front = readFileSync(file, 'utf8').split('\n---\n')[0] + '\n---\n\n';
+    const old = front + 'Run handbook:check and read the shared skill at the retained revision.\n';
+    writeFileSync(file, old + '<!-- handbook-managed:' + createHash('sha256').update(old).digest('hex') + ' -->\n');
+  }
+  rmSync(path.join(root, '.agents/handbook.md'));
+  assert.deepEqual(checkReadiness(root).warnings, []);
+  assert.deepEqual(syncEntrypoints(root, { write: true }).changed, []);
+  writeFileSync(path.join(root, '.agents/handbook.md'), '# Existing customized bootstrap\n');
+  assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, []);
+  assert.doesNotMatch(readFileSync(path.join(skills, 'playwright/SKILL.md'), 'utf8'), /Handbook bootstrap/);
+  rmSync(path.join(root, '.agents/handbook.md'));
+  const migrated = syncEntrypoints(root, { source, write: true });
+  assert.equal(migrated.changed[0], '.agents/handbook.md');
+  assert.match(readFileSync(path.join(skills, 'playwright/SKILL.md'), 'utf8'), /Handbook bootstrap/);
+  assert.deepEqual(checkReadiness(root).warnings, []);
+});
+
+test('older snapshots without a bootstrap preserve existing consumer routes', t => {
+  const root = fixture(t), copy = sourceFixture(t);
+  syncEntrypoints(root, { source, write: true });
+  rmSync(path.join(copy, 'docs/consumer-bootstrap.md'));
+  const result = syncEntrypoints(root, { source: copy, write: true });
+  assert.deepEqual(result.changed, []);
+  assert(result.warnings.some(w => w.includes('Source lacks')));
+  assert(existsSync(path.join(root, '.agents/handbook.md')));
+});
+
+test('empty bootstrap source cannot install dependent wrappers', t => {
+  const root = fixture(t), copy = sourceFixture(t);
+  writeFileSync(path.join(copy, 'docs/consumer-bootstrap.md'), '  \n');
+  const result = syncEntrypoints(root, { source: copy, write: true });
+  assert(result.warnings.some(w => w.includes('Empty docs/consumer-bootstrap.md')));
+  assert(!existsSync(path.join(root, '.agents/handbook.md')));
+  assert(!existsSync(path.join(root, '.agents/skills/playwright/SKILL.md')));
 });

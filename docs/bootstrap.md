@@ -35,6 +35,11 @@ sessions, compaction/resume or a handoff to another agent or member:
   impossible, establish a new baseline and report the discontinuity. Do not claim
   continuity that cannot be verified.
 
+Reuse documents already read at the task revision. Skill entrypoints link directly to
+their owning domain; open the domain index only when choosing additional guidance.
+Consumer setup and recovery instructions live in the generated `.agents/handbook.md`;
+its shared source is [consumer bootstrap](consumer-bootstrap.md).
+
 For filesystem resources run `node scripts/handbook.mjs resources --path PATH --revision SHA`.
 Use its `resourcePath`, preserving relative dependencies. It materializes committed
 content under local Git metadata, rejects unsupported entries, and validates cached

@@ -4,6 +4,9 @@ description: "Use when English text must be parsed without a human to resolve am
 version: 0.4.0
 ---
 
+Follow [bootstrap](../../../docs/bootstrap.md) for task scope and local authority.
+Use this practice only for the selected task; it grants no delegation or external-write authority.
+
 # Simplified Technical English (ASD-STE100)
 
 ASD-STE100 is a controlled-language standard built by the aerospace and defense industry (ASD, the AeroSpace and Defense Industries Association of Europe) to stop maintenance technicians from misreading English instructions. The standard removes the two biggest sources of misreading: words with more than one meaning, and sentences with more than one possible structure.

@@ -5,8 +5,8 @@ description: Reviews a code or documentation diff read-only against its task con
 
 # Review Change
 
-Read [bootstrap](../../../docs/bootstrap.md) for the task baseline and authority,
-then relevant [domain guidance](../../../docs/guidance/README.md).
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[engineering guidance](../../../docs/guidance/engineering.md), reusing reads at the task revision.
 
 Read the consumer adapter, complete diff against its intended base, live acceptance
 criteria, relevant implementation and current evidence. Follow [the reviewer contract](../../agents/reviewer.md).

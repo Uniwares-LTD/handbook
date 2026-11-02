@@ -5,8 +5,8 @@ description: Produces bounded specs, PRDs and implementation plans without imple
 
 # Compile Feature Spec
 
-Read [bootstrap](../../../docs/bootstrap.md) for the task baseline and authority,
-then relevant [domain guidance](../../../docs/guidance/README.md).
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[engineering guidance](../../../docs/guidance/engineering.md), reusing reads at the task revision.
 
 Read the consumer adapter, relevant code/docs, live issue when applicable and shared work policy.
 Use the [proportional workflow](../../../docs/guidance/engineering.md#choose-the-workflow).
