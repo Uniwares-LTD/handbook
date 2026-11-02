@@ -114,10 +114,10 @@ const user = await getUser()
 ```
 
 ```tsx
-// Bad: Map/Set
+// Valid: Map/Set with serializable contents
 <ClientComponent items={new Map([['a', 1]])} />
 
-// Good: Convert to array/object
+// Optional: convert to array/object when the consumer DTO contract requires it
 <ClientComponent items={Object.fromEntries(map)} />
 <ClientComponent items={Array.from(set)} />
 ```

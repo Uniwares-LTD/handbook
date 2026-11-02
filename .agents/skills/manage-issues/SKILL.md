@@ -5,8 +5,8 @@ description: Drafts and creates human-approved issues and keeps status, blockers
 
 # Manage Issues
 
-Read [bootstrap](../../../docs/bootstrap.md) for the task baseline and authority,
-then relevant [domain guidance](../../../docs/guidance/README.md).
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[task-management guidance](../../../docs/guidance/task-management.md), reusing reads at the task revision.
 
 Read [work policy](../../../docs/work-policy.md), [project operations](../../../docs/project.md)
 and [examples](../../../docs/examples.md), plus the consumer adapter. Confirm adoption
@@ -55,13 +55,8 @@ Inputs and sources: Authorized scope, human ownership, queue/adoption rules, exi
 
 Permitted actions and completion: An issue-ready proposal, authorized nonterminal maintenance or verified closure mirroring with readback and handoff; acceptance remains with the member.
 
-Include dependencies, readiness gaps, accountable ownership and evidence locations
-in intake. Preserve explicitly accepted legacy queues; search before proposing a
-duplicate. External project proposals are optional, never a prerequisite to local work.
-
 Resolve the consumer's tracking reference in handbook.json before enrollment; never
-load Handbook's own project as a fallback. Reuse the recorded choice and local mappings.
-Inventory missing priority, accountable ownership, blocker decisions and acceptance gaps;
-view filters cannot certify prose. Keep In review through agreed deployment/live acceptance.
-Use report-first closure reconciliation with explicit human decision evidence. A merged
-PR, bot closure or authenticated account alone cannot authorize Done/Cancelled.
+load Handbook's own project as a fallback. Include dependencies, accountable ownership,
+priority, blocker decisions, acceptance gaps and evidence locations in intake; view
+filters cannot certify prose. Keep In review through agreed live acceptance.
+Preserve accepted legacy queues. A merged PR or bot closure cannot authorize Done.

@@ -3,6 +3,9 @@ name: diagnosing-bugs
 description: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow.
 ---
 
+Follow [bootstrap](../../../docs/bootstrap.md) for task scope and local authority.
+Use this practice only for the selected task; it grants no delegation or external-write authority.
+
 # Diagnosing Bugs
 
 A discipline for hard bugs. Skip phases only when explicitly justified.

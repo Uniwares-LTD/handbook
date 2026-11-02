@@ -38,6 +38,8 @@ explicit sync command from `.agents/gated-commands.json`; preserve custom suffix
 consumers are not asked to copy or enable it; [guidance lints](../scripts/guidance-lint.mjs)
 check skill catalogs, tool-neutral wording and description budgets.
 [skills-lock.json](../skills-lock.json) is regenerated only after reviewing intentional changes.
+Consumer `.agents/handbook.md` is generated from [consumer bootstrap](consumer-bootstrap.md)
+by handbook:sync; consumer skills retain only discovery metadata and direct routing.
 Policy, canonical skills and docs are manually maintained. Local cache/resource snapshots
 live under Git metadata and are never committed.
 

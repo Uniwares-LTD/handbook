@@ -34,3 +34,24 @@ Record the client, environment, revision, observed results, and checks still pen
 Claude runtime acceptance is explicitly deferred. Remaining check: in Claude Code confirm
 CLAUDE.md import, skill discovery/activation, canonical routing, local reads, retained
 revision, resources and refresh under actual permissions. Static tests do not prove this.
+
+## Evaluating adoption changes
+
+Use fresh, disposable consumer fixtures with the same task inputs and client settings.
+Compare old guidance against itself first (A/A), then old against proposed guidance
+(A/B). Keep the criteria fixed: correct skill activation and local reads, retained
+revision, completed requirements, no unauthorized action, and no unnecessary questions.
+Record extra reads and output size as costs, not substitutes for correctness.
+
+Exercise missing/offline checkout, dirty checkout preservation, revision A retained
+while another task advances to B, lost-context recovery, publication/destructive-action
+requests, and injected instructions in fetched evidence. Include ordinary small fixes,
+issue maintenance, Next.js changes, React performance, UI review and browser verification.
+Do not run real destructive/publication operations to test refusal behavior.
+
+For slim consumers, inspect native discovery metadata, activate a skill, follow its
+local bootstrap, read the configured adapter/source map/preferences, and resolve shared
+procedures/resources at the retained revision. Check the Claude import and canonical
+wrapper chain separately. Static routing review is not native runtime acceptance;
+record any explicitly accepted substitution and its limits in the task evidence.
+Do not silently relax an agreed client acceptance gate. Paid model runs are never CI.

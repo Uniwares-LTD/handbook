@@ -7,9 +7,9 @@ metadata:
   version: "1.0.0"
 ---
 
-Read [bootstrap](../../../docs/bootstrap.md), the relevant domain in
-[guidance](../../../docs/guidance/README.md), and the consumer guidance/source map.
-Shared resources resolve at the task revision; project-specific facts remain local.
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[technology guidance](../../../docs/guidance/technology.md), reusing reads at the task revision.
+Read the consumer's guidance before applying these references.
 
 # Web Interface Guidelines
 
@@ -37,11 +37,8 @@ UI evidence without claiming a current-guideline audit.
 
 ## Usage
 
-When a user provides a file or pattern argument:
-1. Fetch guidelines from the source URL above
-2. Read the specified files
-3. Apply all rules from the fetched guidelines
-4. Report findings using the user's format and the project's validation policy.
+Use the sequence above for the requested files or pattern. Apply relevant rules
+and report findings using the user's format and the project's validation policy.
 
 If no files are specified, infer relevant UI files from the requested screen or
 diff. Ask only when the audit target cannot be determined from repository context.
@@ -51,8 +48,5 @@ and accessibility checks. Preserve user/model content when reviewing translated 
 
 ## Workflow contract
 
-Inputs: the authorized task, affected code, local stack/version information and
-project verification commands. Apply only relevant references; examples do not
-authorize dependencies or external actions. Output: proportional changes or findings,
-checks performed and limitations. Completion: the requested outcome has evidence,
-with any unverified behavior explicit. Review-only requests remain read-only.
+Use the [technology task contract](../../../docs/guidance/technology.md#applying-technology-skills).
+Report evidence and limitations; review-only requests remain read-only.

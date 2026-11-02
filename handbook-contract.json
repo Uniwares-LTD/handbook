@@ -19,7 +19,8 @@
     "scripts/create-issue.mjs",
     "scripts/org-access.mjs",
     "docs/organization-access.md",
-    "docs/templates.md"
+    "docs/templates.md",
+    "docs/consumer-bootstrap.md"
   ],
   "skills": [
     "capture-project-learnings",

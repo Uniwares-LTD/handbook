@@ -5,8 +5,8 @@ description: Records verified, reusable knowledge in canonical docs or proposes 
 
 # Capture Project Learnings
 
-Read [bootstrap](../../../docs/bootstrap.md) for the task baseline and authority,
-then relevant [domain guidance](../../../docs/guidance/README.md).
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[engineering guidance](../../../docs/guidance/engineering.md), reusing reads at the task revision.
 
 Inspect implementation, checks, existing docs and the diff. Update the nearest canonical
 source for verified changes. Record reusable lessons only when evidence, context and

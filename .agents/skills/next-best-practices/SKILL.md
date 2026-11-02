@@ -4,9 +4,9 @@ description: Next.js best practices for file conventions, RSC boundaries, data p
 user-invocable: false
 ---
 
-Read [bootstrap](../../../docs/bootstrap.md), the relevant domain in
-[guidance](../../../docs/guidance/README.md), and the consumer guidance/source map.
-Shared resources resolve at the task revision; project-specific facts remain local.
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[technology guidance](../../../docs/guidance/technology.md), reusing reads at the task revision.
+Read the consumer's guidance before applying these references.
 
 # Next.js Best Practices
 
@@ -160,14 +160,10 @@ See [debug-tricks.md](./debug-tricks.md) for:
 - Rebuild specific routes with `--debug-build-paths`
 
 
-For this repository's localization and CSP, use the runtime-contract references in
-the repository adapter. Keep client dictionaries scoped to the shell/page and
+For localization and CSP, follow the consumer's runtime contracts and repository adapter. Keep client dictionaries scoped to the shell/page and
 available across RSC navigation; preserve the document nonce across refreshes.
 
 ## Workflow contract
 
-Inputs: the authorized task, affected code, local stack/version information and
-project verification commands. Apply only relevant references; examples do not
-authorize dependencies or external actions. Output: proportional changes or findings,
-checks performed and limitations. Completion: the requested outcome has evidence,
-with any unverified behavior explicit. Review-only requests remain read-only.
+Use the [technology task contract](../../../docs/guidance/technology.md#applying-technology-skills).
+Report evidence and limitations; review-only requests remain read-only.

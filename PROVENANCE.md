@@ -80,3 +80,16 @@ from their upstream repositories at pinned revisions with their MIT licenses; th
 | Full superpowers and addyosmani bundles, find-skills | Reject | Mandatory gates, session hooks or unreviewed installs add friction |
 | tdd, handoff, writing-guidelines, skill-creator, webapp-testing, mcp-builder, trailofbits review skills, ponytail-review | Defer | Revisit when a project selects one; listed in docs/guidance/README.md |
 | Generated Codex `.rules` from the gate list | Defer | Revisit once a consumer runs Codex with project rules trusted |
+
+### Maintainable adoption audit (2026-11-02)
+
+Reviewed against Handbook 71891a9031eeebee1ff8d2a66494bdeb10ad5d3f.
+Centralized consumer setup in one generated bootstrap and technology completion
+criteria in the technology domain. Retained direct safety reminders, technical examples,
+all licenses/notices and original import hashes. Workflow entrypoints route directly
+to their owning domains. Practice methods remain intact with local-authority reminders.
+The Next.js Map/Set example now agrees with its table and React's
+[serializable prop reference](https://react.dev/reference/rsc/use-client#serializable-types-returned-by-server-components),
+checked 2026-11-02; explicit DTO conversions remain consumer choices.
+See the [accepted maintenance plan](docs/features/maintainable-adoption/implementation-plan.md)
+for review scope and the distinction between structural and native-client evidence.

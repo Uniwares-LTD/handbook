@@ -4,9 +4,9 @@ description: "Use when the task requires automating a real browser from the term
 ---
 
 
-Read [bootstrap](../../../docs/bootstrap.md), the relevant domain in
-[guidance](../../../docs/guidance/README.md), and the consumer guidance/source map.
-Shared resources resolve at the task revision; project-specific facts remain local.
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[technology guidance](../../../docs/guidance/technology.md), reusing reads at the task revision.
+Read the consumer's guidance before applying these references.
 
 # Playwright CLI Skill
 
@@ -145,14 +145,11 @@ Open only what you need:
 - Re-snapshot when refs seem stale.
 - Prefer explicit commands over `eval` and `run-code` unless needed.
 - When you do not have a fresh snapshot, use placeholder refs like `eX` and say why; do not bypass refs with `run-code`.
-- Use `--headed` when a visual check will help.
+- Use `--headed` only when the user requests an interactive window; otherwise capture screenshots headlessly.
 - When capturing artifacts in this repo, use `output/playwright/` and avoid introducing new top-level artifact folders.
 - Default to CLI commands and workflows, not Playwright test specs.
 
 ## Workflow contract
 
-Inputs: the authorized task, affected code, local stack/version information and
-project verification commands. Apply only relevant references; examples do not
-authorize dependencies or external actions. Output: proportional changes or findings,
-checks performed and limitations. Completion: the requested outcome has evidence,
-with any unverified behavior explicit. Review-only requests remain read-only.
+Use the [technology task contract](../../../docs/guidance/technology.md#applying-technology-skills).
+Report evidence and limitations; review-only requests remain read-only.

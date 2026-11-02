@@ -5,8 +5,8 @@ description: Updates canonical documentation, the source map and issue evidence 
 
 # Sync Docs Issues
 
-Read [bootstrap](../../../docs/bootstrap.md) for the task baseline and authority,
-then relevant [domain guidance](../../../docs/guidance/README.md).
+Follow [bootstrap](../../../docs/bootstrap.md) and
+[engineering guidance](../../../docs/guidance/engineering.md), reusing reads at the task revision.
 
 Read the consumer adapter, final diff, review, acceptance criteria and validation.
 Update the nearest canonical documentation for changed behavior, setup, interfaces,
