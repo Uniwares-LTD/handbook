@@ -7,7 +7,7 @@ and practice skills in `handbook.json`; load only guidance relevant to the autho
 | --- | --- | --- |
 | [Communication](communication.md) | When to ask, output for its audience, plain writing, workflow adherence; applies to every task | all; asd-ste100 for text agents or other readers must parse without ambiguity |
 | [Technology](technology.md) | Language, framework, database, platform and tool practices | next-best-practices, vercel-react-best-practices; playwright for browser tooling |
-| [Engineering](engineering.md) | Design, implementation, testing, review, documentation and delivery | compile-feature-spec, work-on-task, review-change, sync-docs-issues, maintain-docs, capture-project-learnings; grilling to settle a plan, diagnosing-bugs for hard bugs, ponytail for the smallest complete change; web-design-guidelines and playwright when relevant |
+| [Engineering](engineering.md) | Design, implementation, testing, review, documentation and delivery | compile-feature-spec, work-on-task, review-change, sync-docs-issues, maintain-docs, capture-project-learnings; grilling to settle a plan, diagnosing-bugs for hard bugs, ponytail for focused simplification; web-design-guidelines and playwright when relevant |
 | [Task management](task-management.md) | Project/task creation and maintenance, readiness, ownership, acceptance and evidence | maintain-project, manage-issues |
 
 Skills stay under `.agents/skills` for discovery and compatibility. Domain membership

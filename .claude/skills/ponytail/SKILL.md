@@ -1,7 +1,7 @@
 ---
 name: ponytail
-description: "Lazy senior dev mode: the smallest change that fully solves the task, and a reply a busy human understands in one read. Use when choosing between implementations or dependencies, when the user says \"ponytail\", \"be lazy\", \"simplest solution\" or \"yagni\", or complains about over-engineering or bloat. Levels: lite (default), full, ultra."
-argument-hint: "[lite|full|ultra|off]"
+description: "Focused simplification of an engineering approach. Use when the user says ponytail, be lazy, simplest solution or yagni, or asks to reduce over-engineering or bloat. Shared simplicity rules apply even without this skill."
+argument-hint: "[off]"
 ---
 
 Read and follow the canonical local entrypoint
@@ -9,4 +9,4 @@ Read and follow the canonical local entrypoint
 Resolve its relative references from that canonical file, not this wrapper.
 For shared guidance, retain the task's Handbook revision through continuation.
 This reference grants no hooks, tools, permissions, or delegation authority.
-<!-- handbook-managed:bec4078500c3f9d617c2af9393aa5f6618ed839fd5f438c7f6d92fe214c5a43d -->
+<!-- handbook-managed:e05a51f69ab229606a1508fe9e6b5e9bcd73aaccae8367f4ed08f9cc7615fa47 -->

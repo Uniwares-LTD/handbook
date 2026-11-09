@@ -72,6 +72,41 @@ remaining blocker and attempted corrections; do not broaden scope to force a pas
 
 ## Design and change rules
 
+### Simplicity baseline
+
+Apply this baseline during planning, implementation and review, whether or not
+ponytail is available or invoked. Distinguish required outcomes and explicit accepted
+design commitments from open implementation details; incidental suggestions do not
+become mandatory architecture.
+
+For open decisions, inspect related callers, interfaces, configuration and flows,
+then choose the smallest complete approach supported by evidence. Before adding a
+dependency, custom integration or shared infrastructure layer, check existing project
+and platform capabilities. Compare total implementation and maintenance burden, not
+line or file counts; do not shift complexity elsewhere or remove required behavior,
+validation, error handling, security or accessibility. Necessary abstractions remain
+subject to the threshold below.
+
+Simplify routine implementation choices autonomously within accepted scope, interfaces
+and operational constraints. Explicit design commitments remain binding. If confidence
+is insufficient, retain the accepted approach; if none is settled and the unresolved
+choice is consequential, ask one combined question under communication guidance.
+Changes to scope, contracts, data, acceptance or authority still need the existing
+decision process. A simpler alternative does not grant redesign authority.
+
+Before introducing another layer and at existing checkpoints, compare supporting
+machinery with progress toward working user flows. Reassess material growth without
+adding checkpoints, arbitrary code budgets or approval gates. Keep routine checks
+silent; report meaningful choices, actual plan divergence and actionable findings in
+the existing handoff, without empty checklists or mandatory closing disclaimers.
+
+Review applies the [reviewer contract](../../.agents/agents/reviewer.md): a materially
+simpler supported alternative can establish unnecessary complexity in an open decision.
+Advice about accepted designs, uncertain alternatives and stylistic preferences does
+not block completion or authorize additional work.
+
+### Change safeguards
+
 - **Abstraction threshold:** add a helper or abstraction only to remove real duplication,
   hold non-trivial logic or isolate a boundary; easier testing alone is not enough.
   Prefer existing code, then the standard library, then a new dependency.
