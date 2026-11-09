@@ -7,7 +7,7 @@ Applies to every task, alongside [bootstrap and authority](../bootstrap.md).
 | Situation | Action |
 | --- | --- |
 | Fact discoverable from code, docs, issues or tools | Find it; do not ask |
-| Reversible, low-impact detail with a sensible default | Choose it and mention the choice |
+| Reversible, low-impact detail with a sensible default | Choose it; mention only meaningful choices in the normal handoff |
 | Optional addition nobody requested | Leave it out or offer it in one line |
 | Decision that changes scope, interfaces, data or acceptance | Ask one combined question before the dependent step; continue unrelated work |
 | Action needing authority (see work policy) | Request approval for that exact action |

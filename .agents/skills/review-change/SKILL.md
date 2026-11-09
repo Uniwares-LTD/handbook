@@ -10,6 +10,8 @@ Follow [bootstrap](../../../docs/bootstrap.md) and
 
 Read the consumer adapter, complete diff against its intended base, live acceptance
 criteria, relevant implementation and current evidence. Follow [the reviewer contract](../../agents/reviewer.md).
+Apply its simplicity acceptance rule even without ponytail; distinguish open
+implementation decisions from explicit accepted design commitments before grading.
 Report actionable correctness, compatibility, scope, security, documentation and stale
 verification defects with precise evidence and bounded corrections. Keep preferences
 non-blocking. Return Pass when no confirmed Blocking findings remain and required

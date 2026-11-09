@@ -26,6 +26,20 @@ defects are never Blocking for this change. Tag each Blocking finding `within pl
 (fix it) or `requires re-plan` (return to planning), and keep finding IDs stable across
 review rounds. Only Blocking findings restart the fix loop.
 
+The [simplicity baseline](../../docs/guidance/engineering.md#simplicity-baseline) is
+part of acceptance. To block unnecessary complexity, identify an open implementation
+decision introduced by this change and a concrete, materially simpler alternative
+that meets the same requirements. Cite the affected code and evidence from related
+paths, flows and relevant platform capabilities, including checked downstream effects.
+Compare total implementation and maintenance burden; fewer lines or moving complexity
+elsewhere is not proof. Bound the correction to authorized work.
+
+Keep simplification findings advisory when they challenge an explicit accepted design,
+depend on unverified capabilities, offer minor improvements or express stylistic
+preferences. This does not downgrade correctness or security defects in that design.
+Advice never authorizes redesign or adjacent cleanup. Do not repeat resolved advice
+without new evidence or add an empty simplicity checklist to the report.
+
 Return `Pass` when no confirmed Blocking findings remain and required verification is
 current. Otherwise report blockers or incomplete verification; an unrun required check
 cannot count as a clean pass. Non-blocking suggestions and

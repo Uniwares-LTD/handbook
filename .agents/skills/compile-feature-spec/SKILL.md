@@ -11,6 +11,9 @@ Follow [bootstrap](../../../docs/bootstrap.md) and
 Read the consumer adapter, relevant code/docs, live issue when applicable and shared work policy.
 Use the [proportional workflow](../../../docs/guidance/engineering.md#choose-the-workflow).
 Resolve discoverable facts before asking consequential intent questions. Describe the
+required outcomes and explicit design commitments separately from open implementation
+details. Apply the [simplicity baseline](../../../docs/guidance/engineering.md#simplicity-baseline);
+do not turn incidental suggestions into mandatory architecture. Describe the
 outcome, scope/exclusions, affected interfaces, acceptance, validation, documentation
 impact and unresolved risks proportionally, following the feature-spec
 [template](../../../docs/templates.md) and dropping sections that do not apply. Preserve accepted history and compatibility.

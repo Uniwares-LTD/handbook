@@ -70,7 +70,7 @@ from their upstream repositories at pinned revisions with their MIT licenses; th
 | Descriptions state what a skill does and when to use it | Adopt | shared SKILL.md descriptions, guidance lint |
 | SKILL.md under 500 lines, name matches folder, no nested AGENTS.md in skills | Adopt | scripts/check.mjs |
 | Read-only reviewer subagent | Adapt (optional, generated) | .agents/agents/reviewer.md, handbook:sync |
-| DietrichGebert/ponytail `ponytail` at 09c434ab73ca | Adapt: lite by default, task-scoped, narrower triggers, one-line description; no hooks or plugin | .agents/skills/ponytail |
+| DietrichGebert/ponytail `ponytail` at 09c434ab73ca | Adapt: one task-scoped simplification behavior; legacy levels are aliases, off ends the skill only; shared engineering owns the mandatory baseline; no hooks or plugin | .agents/skills/ponytail |
 | danyuchn/asd-ste100-skill at 8da6b6340aa2 | Adopt; the ASD standard and dictionary are not redistributed | .agents/skills/asd-ste100 |
 | mattpocock/skills `grilling` at 59db609eb1e1 | Adapt: sub-agent lookup optional | .agents/skills/grilling |
 | mattpocock/skills `diagnosing-bugs` at 59db609eb1e1 | Adopt | .agents/skills/diagnosing-bugs |
