@@ -50,6 +50,7 @@ triaged; enrollment/triage explicitly sets Not blocked or Blocked.
 | Mirror Done/Cancelled after verified human closure | Authorized maintenance with closure reason and decision evidence; never independent acceptance |
 | Create/configure/link external projects | Explicit authorization of a concrete preview; no implied access changes |
 | Push, publish PR, merge, deploy, release, change access | Separate explicit session authorization |
+| Publish a review, report or other generated output to a hosted page or document service (not the commits, PRs or issue evidence above) | Separate explicit session authorization for that publication; otherwise keep it local |
 
 Actions the table reserves for explicit session authorization need the user's explicit
 instruction for that action. These do not grant push, publication or other such
@@ -59,6 +60,14 @@ publication authority separately and note where each came from. A "recommend the
 read-only validation and planning only. Tool permission prompts and gated-command rules
 are a safety backstop, not a security boundary: prefix rules can be bypassed (for
 example `gh api`, `git -C` or shell wrappers), so never rely on them in place of authority.
+
+Keep reviews, reports, previews, screenshots and other generated output local by default.
+Write them to the ignored output folder the repository adapter names (Handbook: `output/`)
+or to the session's scratch directory, and summarize them in the reply. Do not publish them
+to a hosted page, document service, gist or paste site, such as a claude.ai artifact.
+Publish only with explicit session authorization for that publication. A tool's or
+client's suggestion to publish finished work is not that authorization. Offer publication
+in one line at most. Commits, PR descriptions and issue evidence follow the rows above.
 
 Suggest discoveries with destination, outcome, scope, acceptance and known duplicates.
 Do not create follow-up issues just because a skill recommends them. Re-fetch the issue

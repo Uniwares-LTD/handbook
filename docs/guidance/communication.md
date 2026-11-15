@@ -20,6 +20,8 @@ Silence never expands scope. Combine related questions and offer a recommended o
 - **Human brief:** result first, then what the reader must decide or do.
 - **Durable artifact** (docs, issues, PRs): written for a reader who never saw the session.
 - **Mixed decision:** the decision and its options stay visible, never folded into detail.
+- **Review or generated output:** keep it local and summarize it in the reply; publication
+  follows the [work policy](../work-policy.md#agent-authority).
 
 Brevity never hides an external write, a skipped or failed check, a risk or a required decision.
 
