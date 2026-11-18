@@ -179,6 +179,9 @@ before using a remote as the implementation base or publication destination. If
 `origin` points to a previous host, warn the user and ask them to switch it to the
 verified canonical repository. Preserve the working tree, local refs and source history.
 Changing remote configuration and changing publication mode each need user authorization.
+When resuming an older feature branch, verify repository ownership and publication
+rules against the current canonical repository guidance. Retain the task's recorded
+Handbook revision for its shared workflow.
 
 ## Improving guidance
 

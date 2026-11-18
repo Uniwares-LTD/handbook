@@ -169,6 +169,11 @@ inspect checkpoints and the selected state before retrying; preserve predecessor
 and distinguish failed, completed and unknown outcomes. A preview does not grant
 authority to apply, and a successful installation does not prove live acceptance.
 
+When moving an active review, verify that the receiving review contains the
+intended source and preserves review decisions, holds and discussion. Keep links
+to the prior record. Retire it after the team approves the transfer. Independent
+repository guidance can follow its own review while an operational change awaits approval.
+
 Keep procedures separate from changing observations. State whether evidence is
 configured, source-reviewed, tested, observed or accepted; date observations and
 identify the owner of each canonical fact. Link to that owner instead of copying
