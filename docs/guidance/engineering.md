@@ -85,18 +85,21 @@ and review:
    shared impact of proposed additions before treating them as release scope.
 2. **Trace the existing counterpart first.** For each journey, identify the production
    route, component, API, role and operational screen to reuse. Record necessary domain
-   differences. Check payments, callbacks, account controls, navigation and responsive
-   behavior together; matching markup alone does not establish integration.
+   differences. Check the payments, callbacks, account controls, navigation and
+   responsive behavior that apply to the product contract together. Matching markup
+   alone does not establish integration.
 3. **Bound the change.** Establish affected files and shared boundaries before editing.
    Compare the whole branch with its intended base at checkpoints. A local overflow,
    accessibility or styling defect does not authorize a global redesign. Honor agreed
    allowlists; obtain the existing decision owner's approval for an exception. Agents
    must not widen their own allowlists to accommodate an implementation.
-4. **Validate the real journeys.** Compare rendered pages with the production reference
-   at the agreed phone and desktop widths, including hover, focus, headers and Back
-   behavior. Use representative content and assets in isolated data. Test visitor,
-   ordinary owner and staff sessions separately, including pagination, failures and
-   payment returns. Compilation and test counts cannot replace this evidence.
+4. **Validate the real journeys.** For affected UI journeys, compare rendered pages
+   with the production reference at the agreed phone and desktop widths, including
+   hover, focus, headers and Back behavior. Use representative content and assets in
+   isolated data. Test each affected role in the product contract separately, including
+   visitor, ordinary owner and staff sessions where applicable. Exercise applicable
+   pagination, failure and payment-return paths. Compilation and test counts cannot
+   replace this evidence.
 5. **Correct the common cause.** When fixes repeatedly grow the shared diff or recreate
    integration failures, revisit the accepted scope and existing path before patching
    more callers. Preserve security and accessibility requirements while seeking the
