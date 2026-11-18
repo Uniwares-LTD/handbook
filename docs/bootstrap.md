@@ -9,6 +9,7 @@ repository. Read its local guidance, source map and repository preferences decla
 conflicts and preserve accepted specializations rather than choosing a universal
 local/shared winner.
 
+At checkout, apply the consumer's [hosting and migration rules](work-policy.md#repository-hosting-and-migration).
 For GitHub work and helpers that invoke Git/gh, follow
 [GitHub access](work-policy.md#github-access), including outside-sandbox execution.
 

@@ -28,6 +28,8 @@ Client permission prompts may still be required.
 Read this project's guidance, source map and preferences declared in `handbook.json`.
 Read shared `docs/bootstrap.md`, `docs/guidance/communication.md` and the selected
 skill with `git -C PATH show REVISION:FILE`. The skill supplies its exact shared path.
+At checkout, before publication, and when using migration or post-merge tooling,
+apply the consumer's hosting decision and `docs/work-policy.md#repository-hosting-and-migration`.
 Read `docs/work-policy.md` when authority, lifecycle or branches matter, then only
 the relevant domain and skill references. Reuse guidance already read at this revision.
 

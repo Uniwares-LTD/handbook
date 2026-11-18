@@ -174,14 +174,49 @@ PR review process. Merging still needs the session and local governance authoriz
 Push with an exact refspec (`git push origin <branch>`), never force-push a shared branch,
 and confirm the local and remote head SHAs match before posting evidence that cites one.
 
-Verify the owner, repository and host of the configured fetch and push destinations
-before using a remote as the implementation base or publication destination. If
-`origin` points to a previous host, warn the user and ask them to switch it to the
-verified canonical repository. Preserve the working tree, local refs and source history.
-Changing remote configuration and changing publication mode each need user authorization.
-When resuming an older feature branch, verify repository ownership and publication
-rules against the current canonical repository guidance. Retain the task's recorded
-Handbook revision for its shared workflow.
+## Repository hosting and migration
+
+Use the consumer's current repository guidance to identify the canonical host, owner
+and repository. Verify `origin`'s configured and effective fetch and push destinations,
+including push URL overrides and URL rewrites, before using it for integration or
+publication. Compare the configured `remote.origin.url` and `remote.origin.pushurl`
+values with `git remote get-url --all origin` and `git remote get-url --push --all origin`.
+If `origin` points to a previous host, warn the user and ask them to switch
+it to the verified canonical repository. Preserve the working tree, local refs and
+source history. Changing remote configuration and changing publication mode each need
+user authorization. Recheck current repository guidance when resuming older work or
+using migration tooling. Retain the task's recorded Handbook revision for its shared
+workflow; older instructions do not restore a retired publication path.
+
+### Karpishe consumer decision
+
+For Karpishe repositories covered by the migration, the owning repository in
+`karpishe-org` on GitHub is the sole active host for commits, branches, pull requests,
+issues and CI. This applies to older checkouts and resumed tasks. Other consumers follow
+their own documented hosting decisions.
+
+- **At checkout:** If any configured or effective `origin` fetch or push URL points
+  to Azure, stop work in that checkout. Report the checkout and Azure destination,
+  ask the user to switch to the verified GitHub repository, and resume only after
+  verifying the GitHub destination. Preserve local files, commits, refs and history.
+- **During routine work and after merges:** End Azure-to-GitHub and GitHub-to-Azure
+  synchronization. This includes after-merge mirroring, scheduled jobs, manual sync,
+  and automated or agent-run pushes. Refresh only from the actual GitHub merge target
+  when doing post-merge work, and advance a local branch only when safe. Routine agents
+  have no Azure write authority. A legacy helper, alternate remote, direct Azure URL, API
+  or pipeline must never be used to bypass the cutoff.
+- **During an outage:** Keep Azure's current retained snapshot and expect it to age.
+  Preserve its repositories, history and existing pipeline definitions. If GitHub
+  is unavailable, stop the affected operation and report it. Switching to Azure is
+  a separate, explicitly authorized human operation. The human operator must ensure
+  only one active publisher per environment. A GitHub failure does not trigger
+  an automatic switch, mirror or replay.
+
+The owning repositories document their operational procedures. The
+[cutover issue](https://github.com/karpishe-org/Parham_Playground/issues/1) tracks that
+work, and [#163](https://github.com/karpishe-org/Parham_Playground/issues/163) tracks shared
+guidance adoption. Earlier mirroring instructions in the cutover issue and legacy tools
+are historical.
 
 ## Improving guidance
 

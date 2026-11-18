@@ -17,6 +17,8 @@ verification defects with precise evidence and bounded corrections. Keep prefere
 non-blocking. Return Pass when no confirmed Blocking findings remain and required
 verification is current; otherwise report Blocking findings or incomplete verification.
 For risky/cross-cutting work compare actual surfaces with the plan.
+For hosting or migration changes, check setup, tooling and post-merge instructions
+against the consumer's [hosting and fallback rules](../../../docs/work-policy.md#repository-hosting-and-migration).
 Remain read-only: no edits, comments, publication or project/issue mutations. Distinguish
 a separate pass by the same agent from genuinely independent-agent review.
 
