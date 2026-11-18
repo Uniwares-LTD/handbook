@@ -177,52 +177,37 @@ and confirm the local and remote head SHAs match before posting evidence that ci
 ## Repository hosting and migration
 
 Use the consumer's current repository guidance to identify the canonical host, owner
-and repository. Verify `origin`'s configured and effective fetch and push destinations,
-including push URL overrides and URL rewrites, before using it for integration or
-publication. Compare the configured `remote.origin.url` and `remote.origin.pushurl`
-values with `git remote get-url --all origin` and `git remote get-url --push --all origin`.
-If `origin` points to a previous host, warn the user and ask them to switch
-it to the verified canonical repository. Preserve the working tree, local refs and
-source history. Changing remote configuration and changing publication mode each need
-user authorization. Recheck current repository guidance when resuming older work or
-using migration tooling. Retain the task's recorded Handbook revision for its shared
-workflow; older instructions do not restore a retired publication path.
+and repository. Check `origin` at checkout, on resume, and before using it for
+integration or publication. Compare configured `remote.origin.url` and
+`remote.origin.pushurl` with `git remote get-url --all origin` and
+`git remote get-url --push --all origin` to account for push overrides and URL rewrites.
+If any destination points outside the approved repository, pause work in that checkout.
+Report the checkout path and expected repository. Ask the user to select or approve
+a switch to the verified checkout, then verify both directions before resuming. Keep
+the index, working files, local refs and history intact. Changing remote configuration
+and changing publication mode each need user authorization. Use the recorded Handbook
+revision and the owner's current migration guidance when resuming older work.
+
+After an approved merge, identify its actual target on the canonical host. Refresh
+that target and advance its matching local branch only when safe and authorized.
+Preserve feature branches, changed files and divergent or separately checked-out targets.
 
 ### Karpishe consumer decision
 
-For Karpishe repositories covered by the migration, the owning repository in
-`karpishe-org` on GitHub is the sole active host for commits, branches, pull requests,
-issues and CI. This applies to older checkouts and resumed tasks. Other consumers follow
-their own documented hosting decisions.
-
-- **At checkout:** If any configured or effective `origin` fetch or push URL points
-  to Azure, stop work in that checkout. Report the checkout and Azure destination,
-  ask the user to switch to the verified GitHub repository, and resume only after
-  verifying the GitHub destination. Preserve local files, commits, refs and history.
-- **During routine work and after merges:** End Azure-to-GitHub and GitHub-to-Azure
-  synchronization. This includes after-merge mirroring, scheduled jobs, manual sync,
-  and automated or agent-run pushes. Refresh only from the actual GitHub merge target
-  when doing post-merge work, and advance a local branch only when safe. Routine agents
-  have no Azure write authority. A legacy helper, alternate remote, direct Azure URL, API
-  or pipeline must never be used to bypass the cutoff.
-- **During an outage:** Keep Azure's current retained snapshot and expect it to age.
-  Preserve its repositories, history and existing pipeline definitions. If GitHub
-  is unavailable, stop the affected operation and report it. Switching to Azure is
-  a separate, explicitly authorized human operation. The human operator must ensure
-  only one active publisher per environment. A GitHub failure does not trigger
-  an automatic switch, mirror or replay.
-
-The owning repositories document their operational procedures. The
-[cutover issue](https://github.com/karpishe-org/Parham_Playground/issues/1) tracks that
-work, and [#163](https://github.com/karpishe-org/Parham_Playground/issues/163) tracks shared
-guidance adoption. Earlier mirroring instructions in the cutover issue and legacy tools
-are historical.
+The owning `karpishe-org` repository on GitHub is the active host for work covered by
+the [Karpishe cutover](https://github.com/karpishe-org/Parham_Playground/issues/1).
+Apply the checkout rule above when either direction of `origin` points to Azure.
+The [Karpishe runbook](https://github.com/karpishe-org/corepishe/blob/dev/docs/engineering/GITHUB_MIGRATION.md#3-transfer-github-review-ownership-and-retain-azure-standby)
+records the repository settings, GitHub-only workflow and emergency standby procedure.
+[Issue #163](https://github.com/karpishe-org/Parham_Playground/issues/163) tracks adoption.
 
 ## Improving guidance
 
 Use shared workflows by default. Before tailoring one, assess whether the improvement
-applies to shared guidance and propose that change first. Record project-specific
-overrides with rationale and authoritative local references. A shared proposal neither
+applies to shared guidance and propose that change first. Link to the shared rule in
+the task's recorded Handbook revision from the local guide. Keep actual repository
+choices, tool commands and project-specific exceptions with their owning repository.
+Record each exception with its rationale and authoritative local reference. A shared proposal neither
 authorizes external publication nor blocks independently authorized local work.
 No universal local/shared winner replaces explicit conflict resolution. Actual team
 memberships, access exceptions, project identities, capability limits and organization
