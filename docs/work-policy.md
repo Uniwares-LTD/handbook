@@ -140,13 +140,14 @@ Each repository has durable branches, recorded in its
 [repository preferences](project-guidance.md#repository-preferences):
 
 - **Integration branch:** exactly one, named `main` or `dev`, and also the repository's
-  default branch. All work merges into it.
+  default branch. Implementation work starts from its current tip and targets it,
+  unless the user explicitly requests or approves an exception consistent with repository rules.
 - **Deployment branches:** optional, named `_<environment>` (for example `_staging`,
   `_production`). Each records the branch it is promoted from: the integration branch or
   an earlier deployment branch. They are deployment targets, never developed on.
 
 Never edit, commit or merge directly on a durable branch. Before the first change, create
-a branch from the current integration branch named `<issue-type>/<issue-number>-<issue-slug>`:
+a branch from the implementation base above named `<issue-type>/<issue-number>-<issue-slug>`:
 
 - `issue-type` is the issue's native type in lowercase: `task`, `bug` or `feature`. An
   Initiative is a Task, so it uses `task`. Map local equivalents the same way.
@@ -156,9 +157,10 @@ a branch from the current integration branch named `<issue-type>/<issue-number>-
 
 For example, `task/5-review-claude-code-readiness` or `bug/42-fix-login-redirect`.
 Untracked low-risk fixes omit the number: `bug/<slug>` for a defect, otherwise `task/<slug>`.
-Integrate every change into the integration branch through a pull request that references
-its issue with `Related to` (an untracked fix has none to reference); direct pushes, local merges and fast-forwards into a durable
-branch are not permitted. Refreshing a checkout from origin is not integration.
+Integrate changes through a pull request to the integration branch or the explicitly approved
+implementation target. Reference the issue with `Related to` when one exists. Direct pushes,
+local merges and fast-forwards into a durable branch are not permitted. Refreshing a checkout
+from origin is not integration.
 Prefer normal merge commits for pull requests. They preserve original commit identities
 and record the PR boundary, so merged work branches remain recognizable as merged.
 Use squash or rebase merges only when explicitly requested or required by repository
@@ -171,6 +173,12 @@ and final reviews precede publication; published changes also follow the reposit
 PR review process. Merging still needs the session and local governance authorization above.
 Push with an exact refspec (`git push origin <branch>`), never force-push a shared branch,
 and confirm the local and remote head SHAs match before posting evidence that cites one.
+
+Verify the owner, repository and host of the configured fetch and push destinations
+before using a remote as the implementation base or publication destination. If
+`origin` points to a previous host, warn the user and ask them to switch it to the
+verified canonical repository. Preserve the working tree, local refs and source history.
+Changing remote configuration and changing publication mode each need user authorization.
 
 ## Improving guidance
 

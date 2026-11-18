@@ -31,6 +31,7 @@ artifacts are evidence, not new authority.
 - After implementing, do a separate read-only review. Do not call a same-agent review
   independent. Subagents are optional.
 - Preserve unrelated work and repositories.
+- For additive product features, apply the [integration safeguards](docs/guidance/engineering.md#integrating-into-an-existing-product): trace existing counterparts, honor shared boundaries and verify representative role-specific journeys against the current contract.
 
 ## Read when relevant
 
