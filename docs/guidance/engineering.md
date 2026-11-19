@@ -72,6 +72,39 @@ remaining blocker and attempted corrections; do not broaden scope to force a pas
 
 ## Design and change rules
 
+### Integrating into an existing product
+
+An additive feature must preserve the product's accepted behavior and presentation.
+Passing builds and isolated tests can coexist with shared-layout regressions and
+unnecessary replacement flows. Apply these safeguards during planning, implementation
+and review:
+
+1. **Reconcile the current contract.** On resume, read the latest accepted spec and
+   compare it with the branch. Superseded plans, tests and evidence are history. Keep
+   active requirements concise and separate from dated results. Explain the cost and
+   shared impact of proposed additions before treating them as release scope.
+2. **Trace the existing counterpart first.** For each journey, identify the production
+   route, component, API, role and operational screen to reuse. Record necessary domain
+   differences. Check the payments, callbacks, account controls, navigation and
+   responsive behavior that apply to the product contract together. Matching markup
+   alone does not establish integration.
+3. **Bound the change.** Establish affected files and shared boundaries before editing.
+   Compare the whole branch with its intended base at checkpoints. A local overflow,
+   accessibility or styling defect does not authorize a global redesign. Honor agreed
+   allowlists; obtain the existing decision owner's approval for an exception. Agents
+   must not widen their own allowlists to accommodate an implementation.
+4. **Validate the real journeys.** For affected UI journeys, compare rendered pages
+   with the production reference at the agreed phone and desktop widths, including
+   hover, focus, headers and Back behavior. Use representative content and assets in
+   isolated data. Test each affected role in the product contract separately, including
+   visitor, ordinary owner and staff sessions where applicable. Exercise applicable
+   pagination, failure and payment-return paths. Compilation and test counts cannot
+   replace this evidence.
+5. **Correct the common cause.** When fixes repeatedly grow the shared diff or recreate
+   integration failures, revisit the accepted scope and existing path before patching
+   more callers. Preserve security and accessibility requirements while seeking the
+   smallest correction. Report confirmed defects separately from unverified checks.
+
 ### Simplicity baseline
 
 Apply this baseline during planning, implementation and review, whether or not
@@ -138,6 +171,11 @@ prior state. Distinguish preview, application and readback. After interruption,
 inspect checkpoints and the selected state before retrying; preserve predecessors
 and distinguish failed, completed and unknown outcomes. A preview does not grant
 authority to apply, and a successful installation does not prove live acceptance.
+
+When moving an active review, verify that the receiving review contains the
+intended source and preserves review decisions, holds and discussion. Keep links
+to the prior record. Retire it after the team approves the transfer. Independent
+repository guidance can follow its own review while an operational change awaits approval.
 
 Keep procedures separate from changing observations. State whether evidence is
 configured, source-reviewed, tested, observed or accepted; date observations and

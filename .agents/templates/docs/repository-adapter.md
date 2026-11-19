@@ -15,6 +15,10 @@ Link or list the commands for install, build, test and validation.
 Invariants, terminology and rules that shared Handbook guidance does not cover.
 Where a local rule differs from shared guidance, say which one applies and why.
 
+Identify the canonical host, owner and repository. Link to any accepted migration
+decision or fallback policy and its local commands. See the Handbook's
+`docs/work-policy.md#repository-hosting-and-migration`.
+
 ## Templates
 
 Issue and PR templates live in `.github`, and document templates in `docs/templates`.

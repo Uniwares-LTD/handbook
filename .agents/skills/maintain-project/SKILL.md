@@ -14,7 +14,8 @@ writing; an existing checkout or project link does not establish adoption author
 
 For authorized local initialization or maintenance:
 
-1. Resolve project identity from canonical configuration and repository evidence.
+1. Resolve project identity and the canonical remote from repository evidence and the
+   [hosting and migration policy](../../../docs/work-policy.md#repository-hosting-and-migration).
 2. Reconcile guidance and the compact project-owned source map; link existing sources.
 3. Select relevant technology skills; preserve local constraints and explain conflicts.
 4. Reconcile bootstrap files and native entrypoints following the README route.

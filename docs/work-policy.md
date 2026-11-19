@@ -140,13 +140,14 @@ Each repository has durable branches, recorded in its
 [repository preferences](project-guidance.md#repository-preferences):
 
 - **Integration branch:** exactly one, named `main` or `dev`, and also the repository's
-  default branch. All work merges into it.
+  default branch. Implementation work starts from its current tip and targets it,
+  unless the user explicitly requests or approves an exception consistent with repository rules.
 - **Deployment branches:** optional, named `_<environment>` (for example `_staging`,
   `_production`). Each records the branch it is promoted from: the integration branch or
   an earlier deployment branch. They are deployment targets, never developed on.
 
 Never edit, commit or merge directly on a durable branch. Before the first change, create
-a branch from the current integration branch named `<issue-type>/<issue-number>-<issue-slug>`:
+a branch from the implementation base above named `<issue-type>/<issue-number>-<issue-slug>`:
 
 - `issue-type` is the issue's native type in lowercase: `task`, `bug` or `feature`. An
   Initiative is a Task, so it uses `task`. Map local equivalents the same way.
@@ -156,9 +157,10 @@ a branch from the current integration branch named `<issue-type>/<issue-number>-
 
 For example, `task/5-review-claude-code-readiness` or `bug/42-fix-login-redirect`.
 Untracked low-risk fixes omit the number: `bug/<slug>` for a defect, otherwise `task/<slug>`.
-Integrate every change into the integration branch through a pull request that references
-its issue with `Related to` (an untracked fix has none to reference); direct pushes, local merges and fast-forwards into a durable
-branch are not permitted. Refreshing a checkout from origin is not integration.
+Integrate changes through a pull request to the integration branch or the explicitly approved
+implementation target. Reference the issue with `Related to` when one exists. Direct pushes,
+local merges and fast-forwards into a durable branch are not permitted. Refreshing a checkout
+from origin is not integration.
 Prefer normal merge commits for pull requests. They preserve original commit identities
 and record the PR boundary, so merged work branches remain recognizable as merged.
 Use squash or rebase merges only when explicitly requested or required by repository
@@ -172,11 +174,31 @@ PR review process. Merging still needs the session and local governance authoriz
 Push with an exact refspec (`git push origin <branch>`), never force-push a shared branch,
 and confirm the local and remote head SHAs match before posting evidence that cites one.
 
+## Repository hosting and migration
+
+Use the consumer's current repository guidance to identify the canonical host, owner
+and repository. Check `origin` at checkout, on resume, and before using it for
+integration or publication. Compare configured `remote.origin.url` and
+`remote.origin.pushurl` with `git remote get-url --all origin` and
+`git remote get-url --push --all origin` to account for push overrides and URL rewrites.
+If any destination points outside the approved repository, pause work in that checkout.
+Report the checkout path and expected repository. Ask the user to select or approve
+a switch to the verified checkout, then verify both directions before resuming. Keep
+the index, working files, local refs and history intact. Changing remote configuration
+and changing publication mode each need user authorization. Use the recorded Handbook
+revision and the owner's current migration guidance when resuming older work.
+
+After an approved merge, identify its actual target on the canonical host. Refresh
+that target and advance its matching local branch only when safe and authorized.
+Preserve feature branches, changed files and divergent or separately checked-out targets.
+
 ## Improving guidance
 
 Use shared workflows by default. Before tailoring one, assess whether the improvement
-applies to shared guidance and propose that change first. Record project-specific
-overrides with rationale and authoritative local references. A shared proposal neither
+applies to shared guidance and propose that change first. Link to the shared rule in
+the task's recorded Handbook revision from the local guide. Keep actual repository
+choices, tool commands and project-specific exceptions with their owning repository.
+Record each exception with its rationale and authoritative local reference. A shared proposal neither
 authorizes external publication nor blocks independently authorized local work.
 No universal local/shared winner replaces explicit conflict resolution. Actual team
 memberships, access exceptions, project identities, capability limits and organization
