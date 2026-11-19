@@ -192,15 +192,6 @@ After an approved merge, identify its actual target on the canonical host. Refre
 that target and advance its matching local branch only when safe and authorized.
 Preserve feature branches, changed files and divergent or separately checked-out targets.
 
-### Karpishe consumer decision
-
-The owning `karpishe-org` repository on GitHub is the active host for work covered by
-the [Karpishe cutover](https://github.com/karpishe-org/Parham_Playground/issues/1).
-Apply the checkout rule above when either direction of `origin` points to Azure.
-The [Karpishe runbook](https://github.com/karpishe-org/corepishe/blob/dev/docs/engineering/GITHUB_MIGRATION.md#3-transfer-github-review-ownership-and-retain-azure-standby)
-records the repository settings, GitHub-only workflow and emergency standby procedure.
-[Issue #163](https://github.com/karpishe-org/Parham_Playground/issues/163) tracks adoption.
-
 ## Improving guidance
 
 Use shared workflows by default. Before tailoring one, assess whether the improvement
