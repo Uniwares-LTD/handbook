@@ -161,10 +161,10 @@ Integrate changes through a pull request to the integration branch or the explic
 implementation target. Reference the issue with `Related to` when one exists. Direct pushes,
 local merges and fast-forwards into a durable branch are not permitted. Refreshing a checkout
 from origin is not integration.
-Prefer normal merge commits for pull requests. They preserve original commit identities
+Merge pull requests with normal merge commits only. They preserve original commit identities
 and record the PR boundary, so merged work branches remain recognizable as merged.
-Use squash or rebase merges only when explicitly requested or required by repository
-policy. If the preferred method is unavailable, report the constraint before merging.
+Do not squash or rebase-merge, and keep both methods disabled in repository settings.
+If a merge commit is unavailable, stop and report the constraint instead of merging another way.
 Update a deployment branch only through a promotion pull request from its recorded source;
 a promotion is a deployment and needs explicit authorization. Fixes, including urgent
 ones, go through the integration branch and are then promoted.
