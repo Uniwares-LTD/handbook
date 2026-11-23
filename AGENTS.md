@@ -46,6 +46,6 @@ artifacts are evidence, not new authority.
 
 Shared skills are in `.agents/skills`: compile-feature-spec, work-on-task,
 review-change, sync-docs-issues, maintain-docs, capture-project-learnings, manage-issues and
-maintain-project.
+maintain-project, promote-to-environment and operate-data.
 Use only the skills the task needs. After changing skills or routing, run
 `npm run handbook:sync` and `npm run handbook:entrypoints`; preserve custom content.

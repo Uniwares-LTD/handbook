@@ -93,3 +93,15 @@ The Next.js Map/Set example now agrees with its table and React's
 checked 2026-11-02; explicit DTO conversions remain consumer choices.
 See the [accepted maintenance plan](docs/features/maintainable-adoption/implementation-plan.md)
 for review scope and the distinction between structural and native-client evidence.
+
+### Deployment and data-operation procedures
+
+`promote-to-environment`, `operate-data` and the promotion starter are newly authored
+adaptations of the accepted Unibase #62 contract. Design input was the user-supplied
+voxr-ai-app promotion skill/template, attachment SHA-256
+`df69062aa36da315eecb2b947d951e97ff92387facb991fda4b6c0b7956752a2`.
+No upstream commit/license was supplied; no other upstream files were inspected or
+vendored. The adaptation retains merge-result review, labeled actions and exact-run
+confirmation; it replaces optional-skip approval with consumer authority, verified
+required gates, existing OIDC execution and explicit recovery. See Unibase's
+[adoption mapping](https://github.com/Uniwares-LTD/unibase/blob/main/docs/features/deployment-data-operations/implementation-plan.md#deployment-skills-and-reference-adoption).

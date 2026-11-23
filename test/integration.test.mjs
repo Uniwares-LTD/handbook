@@ -328,3 +328,26 @@ test('empty bootstrap source cannot install dependent wrappers', t => {
   assert(!existsSync(path.join(root, '.agents/handbook.md')));
   assert(!existsSync(path.join(root, '.agents/skills/playwright/SKILL.md')));
 });
+
+
+test('optional deployment skills use existing selection and preserve local custom content', t => {
+  const root = fixture(t);
+  const filename = path.join(root, 'handbook.json');
+  const config = JSON.parse(readFileSync(filename, 'utf8'));
+  config.technologySkills = ['operate-data', 'promote-to-environment'];
+  writeFileSync(filename, JSON.stringify(config));
+  mkdirSync(path.join(root, '.agents/skills/build-ui'), { recursive: true });
+  const custom = '---\nname: build-ui\ndescription: Use when building this consumer UI.\n---\nLocal design rules.\n';
+  writeFileSync(path.join(root, '.agents/skills/build-ui/SKILL.md'), custom);
+  const result = syncEntrypoints(root, { source, write: true });
+  for (const name of config.technologySkills) {
+    assert(result.changed.includes(`.agents/skills/${name}/SKILL.md`));
+    assert(existsSync(path.join(root, `.claude/skills/${name}/SKILL.md`)));
+  }
+  assert.equal(readFileSync(path.join(root, '.agents/skills/build-ui/SKILL.md'), 'utf8'), custom);
+  assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, []);
+  assert(!JSON.parse(readFileSync(filename, 'utf8')).workflowSkills);
+  const unselected = fixture(t);
+  syncEntrypoints(unselected, { source, write: true });
+  assert(!existsSync(path.join(unselected, '.agents/skills/operate-data')));
+});
