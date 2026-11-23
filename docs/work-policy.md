@@ -78,22 +78,26 @@ resolve the acting member from the assignment, not from the token username.
 
 ## GitHub access
 
-Use the first capable route in this order:
+Use locally authenticated tools for all GitHub writes. This includes pushes, pull
+request actions, issue changes, comments, and updates to projects or repository settings.
+Use the hosted GitHub connector only for reads. A GitHub MCP server can write only if it runs
+locally and uses the developer's local authentication.
+
+For local operations, use the first capable route in this order:
 
 1. **Plain Git** for operations Git supports.
-2. **GitHub MCP** when configured, working and capable of the action.
+2. **Locally authenticated GitHub MCP** when configured and capable of the action.
 3. **GitHub CLI (`gh`)** otherwise. If missing, unconfigured or without access,
    stop the GitHub operation and guide installation, authentication or access repair;
-   verify with a read-only check before continuing. Never request secrets in chat
-   or bypass missing CLI access through the browser.
-4. **Chrome plugin** only for rare actions unsupported by all three routes. Present
-   the exact action and destination, explain why those routes cannot perform it,
-   and obtain explicit approval for that browser action before proceeding.
+   verify with a read-only check before continuing. Never request secrets in chat.
 
-Invoke Git, GitHub MCP and gh outside the execution sandbox from the first attempt,
+For a rare read-only action unsupported by the local tools and hosted connector, obtain
+explicit approval before using the Chrome plugin. Give the exact action, destination and
+reason. If no local tool can perform a write, report the blocker.
+
+Invoke Git, local GitHub MCP and gh outside the execution sandbox from the first attempt,
 including read-only calls and helpers/tests that spawn Git or gh. Use supported
 external/elevated execution; if unavailable, stop and explain the limitation.
-Connected MCP calls use the external connector, not a sandboxed shell process.
 Offline tools without these subprocesses can run normally.
 
 Preserve required helper workflows, validation, preview and readback when choosing
