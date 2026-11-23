@@ -260,3 +260,8 @@ Centralize a procedure when it has one clear owner, but keep short safety and ro
 reminders at decision points. Do not remove examples or prerequisites to satisfy a
 size target. Validate instruction-following through [client acceptance](clients.md),
 not merely reduced file size or passing structural tests.
+
+The legacy `technologySkills` array also selects optional workflow skills such as
+`promote-to-environment` and `operate-data`. They are catalog entries, not additions
+to the default core skill set. Do not add a separate workflowSkills field. Consumer
+runbooks and session authority still govern their use.
