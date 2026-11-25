@@ -145,10 +145,12 @@ Each repository has durable branches, recorded in its
 
 - **Integration branch:** exactly one, named `main` or `dev`, and also the repository's
   default branch. Implementation work starts from its current tip and targets it,
-  unless the user explicitly requests or approves an exception consistent with repository rules.
+  unless the repository adopts the staging-first workflow below or the user explicitly
+  requests or approves an exception consistent with repository rules.
 - **Deployment branches:** optional, named `_<environment>` (for example `_staging`,
   `_production`). Each records the branch it is promoted from: the integration branch or
-  an earlier deployment branch. They are deployment targets, never developed on.
+  an earlier deployment branch, or—under the staging-first workflow—`_staging` as the
+  pre-integration verification target. They are deployment targets, never developed on.
 
 Never edit, commit or merge directly on a durable branch. Before the first change, create
 a branch from the implementation base above named `<issue-type>/<issue-number>-<issue-slug>`:
@@ -169,9 +171,20 @@ Merge pull requests with normal merge commits only. They preserve original commi
 and record the PR boundary, so merged work branches remain recognizable as merged.
 Do not squash or rebase-merge, and keep both methods disabled in repository settings.
 If a merge commit is unavailable, stop and report the constraint instead of merging another way.
-Update a deployment branch only through a promotion pull request from its recorded source;
-a promotion is a deployment and needs explicit authorization. Fixes, including urgent
-ones, go through the integration branch and are then promoted.
+Update a deployment branch only through a pull request with explicit authorization
+(a promotion is a deployment). Under the **staging-first workflow** for repositories with
+an active `_staging` environment:
+
+1. Implementation branches (`bug/*`, `task/*`, `feature/*`) branch from the integration
+   branch (`dev` or `main`) and open a pull request targeting `_staging` first so changes
+   can be verified against live staging services and data.
+2. Once verified on staging, promote the same verified branch to the integration branch
+   (`dev` or `main`) via a companion pull request (never bulk-merge `_staging` into the
+   integration branch while `_staging` holds unrelated unapproved work).
+3. Promote the integration branch to `_production` via a promotion pull request.
+
+Repositories without a staging-first setup follow the standard promotion order where fixes
+go through the integration branch and are then promoted.
 Keep one branch per issue unless the issue explicitly splits delivery. Local checkpoint
 and final reviews precede publication; published changes also follow the repository's
 PR review process. Merging still needs the session and local governance authorization above.
