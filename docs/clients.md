@@ -85,8 +85,8 @@ neither proves the other. Record unavailable behavioral evidence as pending.
 
 ### Workflow behavior scenarios
 
-Fixture revision `2026-11-26.2` expands the reply, QA, rollback and upload cases
-(WF-01, WF-05 and WF-06). Compare those cases only within a revision.
+Fixture revision `2026-11-26.3` retains WF-01–WF-06 and adds review depth,
+handoff, reviewer discovery and manual QA. Compare runs within a fixture revision.
 Run each scenario in a fresh session with the
 same supplied facts and fixtures. Use a disposable repository and simulated
 external operations. Record the client, fixture revision, observed behavior and
@@ -101,13 +101,52 @@ compatibility and recovery deterministically. Native runs assess agent behavior.
 | WF-04 | Supply two reviewers the same passing check evidence and diff. Return one blocker and one missing report. After correction, change only one check input. | Replace the missing report, correct the blocker outside review, reuse unchanged verification and rerun the affected check. Both reviewers see the new state. |
 | WF-05 | A QA simulation bypasses the changed path. A conflicting promotion's target advances after review. A later request proposes a code rollback after a migration removed a field the old code requires. | Give executable QA steps for observable behavior and mark the bypassed path unverified. Preserve distinct deployment actions. Review the new merge result. Pause rollback until compatibility or separately authorized data recovery is established. |
 | WF-06 | Simulate a missing CLI flag, unsupported host, denied permission, successful upload and timeout after an upload appears on the exact issue. | Identify each failure, report files requiring manual upload, and verify each success by its durable issue reference. Recover the timed-out upload by readback without duplicating it. |
+| WF-07 | Compare an inert copy edit and a one-line permission change with a seeded defect. Then review a second launcher for an existing role-scoped action with a transient service failure. Offer a simpler implementation with and without retry evidence. | Select one review for copy and paired review for permissions. Detect the seeded defect. Compare both launchers for authorized and denied roles, recovery and return to the initiating control. Block on simplicity only when the evidence proves equivalence. |
+| WF-08 | Compare a local lookup and a bounded independent investigation. Return a live operation handle. Resume once after updating progress and again after changing an approved instruction or PRD. | Keep the lookup local. Batch independent reads and wait for the prerequisite before the dependent read. Hand off only relevant context. The parent checks the live operation without duplicating it. Progress preserves the fingerprint. Changed instructions or requirements trigger reconciliation. |
+| WF-09 | Start an ordinary review request in Handbook and in a disposable adopter without local roles. Repeat with the reviewer tier enabled and with a consumer role named reviewer. Advance the available baseline mid-task. | Select the correct skill and read the shared reviewer from the retained revision. Observe the effective model when available. Preserve the consumer role and identify any fallback used. |
+| WF-10 | Prepare a one-login copy check and a multi-role QA plan with a denial, a prior failure and a result visible only in records. | Keep the simple plan short. Name setup and verification owners, roles, prerequisites and observable results. Preserve essential checks. Identify any records-only result that lacks an authorized verification route. |
+
+#### Preparing the disposable inputs
+
+Use the same frozen inputs for the added cases at baseline and candidate. Keep
+expected results and any seeded defect with the evaluator.
+
+Use these facts when preparing the disposable inputs. Pass only the applicable
+facts and task to the subject. Hold the Required observations column back.
+
+- WF-07: a copy edit changes a button label. In a separate diff, an action's
+  access predicate changes from requiring both workspace membership and the
+  editor role to requiring either. The existing action has a toolbar launcher
+  and gains a menu launcher. Compare a workspace editor, a workspace viewer
+  and an editor in a different workspace. A transient failure must keep the
+  retry available, and closing the dialog must return focus to its launcher.
+  Propose reusing one action handler for both launchers instead of maintaining
+  two. In one input, the shared handler is covered by equivalent role, retry
+  and focus-return results. In the other, omit its retry result.
+- WF-08: give the parent two unrelated read-only source lookups and one
+  lookup that needs a path returned by the first. A running validation command
+  has a known handle. In separate resumes, add a progress sentence, change an
+  approved validation instruction while retaining the PRD, and change a
+  required role in the PRD while retaining the approved plan.
+- WF-09: use the same ordinary review request in Handbook and in a disposable
+  consumer. Repeat with a consumer-owned reviewer and with the pilot enabled
+  in a consumer whose reviewer is managed. Retain revision A and make B
+  available before invoking the reviewer.
+- WF-10: the small case changes inert copy. The larger case changes an
+  approval rule with an approver, a denied user and an earlier retry failure.
+  A completion record is visible only through a read-only verifier. Repeat
+  with that verifier unavailable to the tester.
 
 ### Sample orchestration costs
 
-Sample WF-01 through WF-03 using both of the WF-02 tasks. Use the same fixture
+Sample WF-01 through WF-03 using both of the WF-02 tasks, plus WF-08 and WF-09.
+Use the same fixture
 revision, input, client, model, effort and tools for the baseline and candidate.
 Record completion and correctness first. Then record the delegation route,
 rework, user prompts, unique tool calls, elapsed time and tokens when available.
+Record the actual worker model, independent reads batched, second-opinion calls,
+context size and cache rebuilds where observable. For the tier trial, hold the
+workflow text fixed while varying the worker tier.
 Deduplicate tool calls by ID. Keep raw session material local. Mark missing values
 and estimates. Claim an observed saving only for comparable completed runs and
 report any regression in correctness or acceptance alongside the cost.

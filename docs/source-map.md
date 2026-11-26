@@ -20,6 +20,8 @@ shared project procedures; [organization access](organization-access.md) defines
 default teams and permissions; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance; engineering owns operational handoff/evidence principles and communication owns operator instruction format.
 [Engineering](guidance/engineering.md#choose-the-workflow) owns proportional routing and
 review completion and the [simplicity baseline](guidance/engineering.md#simplicity-baseline);
+it also owns [session economy](guidance/engineering.md#delegation-and-session-economy)
+and [manual QA planning](guidance/engineering.md#manual-qa-plans).
 [large-issue delivery](guidance/large-issues.md) supplies the conditional
 interview, PRD and checkpoint procedure. [Templates](templates.md) define permissive starters and their use.
 [Onboarding](onboarding.md) defines integration; [provenance](../PROVENANCE.md) records imports.

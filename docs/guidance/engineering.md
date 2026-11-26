@@ -57,9 +57,12 @@ when the active mode forbids writes, return drafts and wait for the mode change.
 
 ## Review completion
 
-Use review-change for separate read-only passes. Small and medium work need one clean
-review. Large work follows the [paired checkpoint review procedure](large-issues.md#checkpoint-execution),
-including reuse of the parent's validation evidence.
+Use review-change for separate read-only passes. Choose one clean review for
+understood, localized, low-risk work. Use paired review for material risk or
+uncertainty regardless of diff size, including changes to authority, money,
+data integrity or recovery when a mistake could have material consequences.
+Large work follows the [paired checkpoint review procedure](large-issues.md#checkpoint-execution).
+For other paired work use the same independent review and shared evidence rules.
 A clean review has no confirmed Blocking findings and has current required verification.
 Nonblocking notes do not restart implementation. Missing required evidence prevents a
 clean completion claim; advisory warnings do not.
@@ -72,6 +75,28 @@ diagnose the common cause and ask for direction before further patching. Report 
 remaining blocker and attempted corrections; do not broaden scope to force a pass.
 
 ## Design and change rules
+
+### Delegation and session economy
+
+Keep small lookups in the parent. Batch independent reads and wait for a
+prerequisite before reading its dependents. When delegation is authorized,
+provide the exact question, scope, pinned source, relevant excerpt and expected
+result. A reviewer starts with the diff, criteria and common evidence. Supply
+the plan after raw findings. Workers return concise evidence and unresolved
+doubts. The parent owns second opinions, review completion and any live
+operation handed back by a worker. Carry its handle, completion signal and
+next check. Read its current state before retrying. Reuse unchanged evidence.
+
+### Manual QA plans
+
+Use the shortest executable flow that covers the changed rule and applicable
+money, access, refusals and prior failures. Keep the environment, role,
+entry point and observable outcome with each step. For multi-role, multi-device
+or multi-day plans, state setup owners, accounts, devices, waits, dependencies and
+irreversible actions up front. Reuse safe setup where it leaves coverage intact.
+For a result visible only in records, name the authorized read-only verifier,
+the person who runs it, and the time and identifiers needed. Mark the result
+unverified when that path is unavailable.
 
 ### Integrating into an existing product
 
@@ -94,7 +119,11 @@ and review:
    accessibility or styling defect does not authorize a global redesign. Honor agreed
    allowlists; obtain the existing decision owner's approval for an exception. Agents
    must not widen their own allowlists to accommodate an implementation.
-4. **Validate the real journeys.** For affected UI journeys, compare rendered pages
+4. **Validate the real journeys.** For a changed entry point to an existing
+   action, derive expectations from its contract and exercise both entry points
+   for each affected role. Observe success, denial, applicable transient failure
+   and recovery, and return to the initiating control. Record inferred behavior
+   separately from observations. For affected UI journeys, compare rendered pages
    with the production reference at the agreed phone and desktop widths, including
    hover, focus, headers and Back behavior. Use representative content and assets in
    isolated data. Test each affected role in the product contract separately, including

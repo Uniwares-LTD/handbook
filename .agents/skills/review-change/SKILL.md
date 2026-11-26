@@ -33,7 +33,9 @@ against the code and give it one verdict (Confirmed, Plausible, Pre-existing, No
 confirmed) and one tier (Blocking, Medium, Informational) as the reviewer contract
 defines. Report Not confirmed findings only as discarded.
 
-The [workflow](../../../docs/guidance/engineering.md#review-completion) determines
+For manual test flows review coverage and tester burden against the
+[manual QA guidance](../../../docs/guidance/engineering.md#manual-qa-plans).
+The [risk-based workflow](../../../docs/guidance/engineering.md#review-completion) determines
 the required pass count. Review stays read-only; return findings to implementation for
 fixes. Record the reviewed state and evidence without creating extra issue comments.
 

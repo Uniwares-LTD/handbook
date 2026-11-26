@@ -18,6 +18,7 @@ Use [the implementation contract](../../agents/implementation.md). Preserve unre
 work and apply the [simplicity baseline](../../../docs/guidance/engineering.md#simplicity-baseline)
 to open implementation decisions, even without ponytail.
 
+Follow the [session economy guidance](../../../docs/guidance/engineering.md#delegation-and-session-economy).
 Resolve small lookups directly. When delegation is authorized and proportionate,
 give each independent investigation a bounded question, named evidence source and
 expected result. Use existing role contracts and the client's supported effort controls.
@@ -34,6 +35,8 @@ read-only pass. Correct confirmed in-scope Blocking findings and revalidate affe
 Use sync-docs-issues for canonical documentation and authorized evidence updates.
 When a PR is authorized, write its description from the repository's PR template
 ([templates](../../../docs/templates.md)) and drop sections that do not apply.
+Use [manual QA guidance](../../../docs/guidance/engineering.md#manual-qa-plans)
+for any tester-facing flow.
 Follow [review completion](../../../docs/guidance/engineering.md#review-completion) for
 clean-review counts and stalled progress. Do not make advisory quality warnings release gates.
 Report real build/operational failures. Before calling work done, run the checks that
