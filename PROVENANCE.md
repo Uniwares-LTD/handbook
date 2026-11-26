@@ -125,3 +125,13 @@ and the [Voxr Handbook at d935189](https://github.com/Jason-Richter-Enterprises/
 | V13 | Adapt grouped confirmation while preserving action-specific authority. |
 | V14 | Adopt comparable manual cost sampling and evidence reporting. |
 | V15 | Adapt revision-local contract checks and consumer upgrade trials. |
+
+### Voxr risk-based review and session economy
+
+The Handbook adapted risk-based review and role-based journey examples from
+[Voxr PR #2180](https://github.com/Jason-Richter-Enterprises/voxr-ai-app/pull/2180).
+Bounded handoffs, the reviewer-tier pilot and comparable evaluation came from
+[Voxr PR #2185](https://github.com/Jason-Richter-Enterprises/voxr-ai-app/pull/2185).
+The tester-burden guidance adapts the portable parts of
+[Voxr's deferred QA proposal](https://github.com/Jason-Richter-Enterprises/voxr-ai-app/pull/2178).
+The [adoption requirements](docs/features/workflow-adoption/prd.md) record the local choices.

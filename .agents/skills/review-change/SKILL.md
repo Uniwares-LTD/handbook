@@ -26,9 +26,10 @@ When the client supports it and the session authorizes delegation, collect raw f
 in a fresh context given the diff, base, acceptance criteria, repository guidance and
 access to relevant source, without the implementation summary, plan or earlier findings.
 Use the generated read-only `reviewer` where supported and verified to route to
-the task's retained contract. If a local reviewer owns the name, use a generic
-read-only reviewer with the pinned shared contract. Otherwise label
-the result "cold-review fallback". After raw collection, read the plan and verification
+the task's retained contract. If native registration is unavailable or a local
+role owns the name, use a generic fresh read-only reviewer with the pinned shared
+contract when supported and authorized. If fresh review is unavailable, label
+the separate local review "cold-review fallback". After raw collection, read the plan and verification
 evidence to check scope and acceptance; this second phase is part of the same review
 pass, not a second clean review. Then verify each finding
 against the code and give it one verdict (Confirmed, Plausible, Pre-existing, Not

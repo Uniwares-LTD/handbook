@@ -169,6 +169,25 @@ test('reviewer sync leaves symlinked native directories untouched', t => {
   assert(!existsSync(path.join(external, 'reviewer.md')));
 });
 
+test('reviewer sync never creates the target of a dangling native link', t => {
+  const root = fixture(t);
+  const target = path.join(root, 'missing-custom-reviewer.md');
+  const entry = path.join(root, '.claude/agents/reviewer.md');
+  mkdirSync(path.dirname(entry), { recursive: true });
+  try {
+    symlinkSync(target, entry, 'file');
+  } catch (error) {
+    if (process.platform === 'win32' && (error.code === 'EPERM' || error.code === 'EACCES')) {
+      return t.skip('Windows file symlinks require local developer privileges.');
+    }
+    throw error;
+  }
+  const result = syncEntrypoints(root, { source, write: true });
+  assert(result.warnings.some(warning => warning.includes('Shared reviewer: Symlink')));
+  assert(!existsSync(target));
+  assert(existsSync(path.join(root, '.claude/skills/review-change/SKILL.md')));
+});
+
 test('reviewer pilot defers to an existing project model choice', t => {
   const root = fixture(t);
   const config = path.join(root, 'handbook.json');

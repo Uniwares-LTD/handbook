@@ -37,7 +37,7 @@ function local(root, reference) {
   let current = root;
   for (const part of relative.split(path.sep)) {
     current = path.join(current, part);
-    if (existsSync(current) && lstatSync(current).isSymbolicLink()) throw new Error('Symlink references are not supported.');
+    if (lstatSync(current, { throwIfNoEntry: false })?.isSymbolicLink()) throw new Error('Symlink references are not supported.');
   }
   return { target, anchor };
 }

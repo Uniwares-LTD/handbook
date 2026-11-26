@@ -20,8 +20,13 @@ export function fingerprint(text, kind) {
       } else if (inComment) {
         if (line.includes('-->')) inComment = false;
       } else if (marker && (marker[1][0] === '~' || !marker[2].includes('`'))) {
+        // Indented fences may belong to a Markdown list and end on dedent.
+        if (line.startsWith(' ')) {
+          approved = normalized;
+          break;
+        }
         fence = marker[1];
-      } else if (/^ {0,3}<!--/.test(line)) {
+      } else if (line.startsWith('<!--')) {
         inComment = !line.includes('-->');
       } else if (/^ {0,3}<[a-z/!?]|<!--(?:(?!-->).)*$/i.test(line)) {
         // Raw HTML and inline multiline comments make the heading boundary ambiguous.
@@ -36,6 +41,7 @@ export function fingerprint(text, kind) {
       }
       offset += line.length + 1;
     }
+    if (fence || inComment) approved = normalized;
   }
   return createHash('sha256').update(approved, 'utf8').digest('hex');
 }

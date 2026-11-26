@@ -27,6 +27,8 @@ test('handoff identity distinguishes progress from approved plan and PRD changes
   assert.equal(fingerprint(commentedBoundary, 'plan'), fingerprint(commentedBoundary, 'prd'));
   const htmlBoundary = '# Plan\n<details>\n' + boundary + '</details>\n\nRun the checks.\n';
   assert.equal(fingerprint(htmlBoundary, 'plan'), fingerprint(htmlBoundary, 'prd'));
+  const indentedFence = original + '\n- Tester note\n  ~~~text\n  Sample.\n\n## Release\n';
+  assert.equal(fingerprint(indentedFence, 'plan'), fingerprint(indentedFence, 'prd'));
   const helper = fileURLToPath(new URL('../.agents/skills/compile-feature-spec/resources/fingerprint.mjs', import.meta.url));
   const missing = spawnSync(process.execPath, [helper, 'plan', helper + '.missing'], { encoding: 'utf8' });
   assert.equal(missing.status, 1);

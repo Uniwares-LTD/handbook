@@ -94,9 +94,33 @@ Merge using a normal merge commit guarded by the exact reviewed head after all r
 
 The approved planning files are in `988cf61`. The owner authorized untracked
 delivery on this work branch and the branch contains the fetched integration
-base. Checkpoints 1 and 2 are in `0e15ebd`. Two separate read-only reviewers
+base. The approved plan fingerprint is
+`e43869c1e62360de03a4619ca3a2a8162d63e7ee2c118e2211a3091f297ac801`.
+The PRD fingerprint is
+`27d13dc0775d66a544e98c6b390e2082095c5f99711f29db4ee0958ff257a9d1`.
+Both matched after progress updates. Checkpoints 1 and 2 are in `0e15ebd`. Two separate read-only reviewers
 passed each checkpoint after corrections. The guidance suite passed 9 tests,
 the structural check passed, and the staged diff passed whitespace checks.
 The Codex CLI reported no active login and Claude Code was unavailable. Native
 baseline and candidate observations remain pending. Retain the frozen fixture
-revision for later comparison. Continue at checkpoint 3.
+revision for later comparison.
+
+Checkpoint 3 is in `789e7a8`. Two independent read-only passes cleared the
+corrected diff. The disposable Git helper cases passed, including candidate
+role validation and the A/B retained-role check. The final integration run
+passed all 30 tests, and source sync produced zero writes.
+
+In checkpoint 4, both the copied `dc22bea` helper and the `789e7a8` helper
+successfully installed from the committed `789e7a8` snapshot in disposable
+adopters. Both were ready, reported no source-aware drift, and wrote nothing
+on repeat sync. The old helper retained the shared skill route and the new
+helper also installed the pinned native reviewer. These runs provide
+structural evidence. Fresh native-client sessions and comparable cost
+observations remain pending for the limitations above.
+
+The integrated review corrected the paired-review route for smaller changes,
+the fresh reviewer fallback, fingerprinting of ambiguous Markdown fences,
+and protection against dangling reviewer links. The affected suite passed
+39 cases. Its dangling-file-link case requires Windows symlink privileges and
+was skipped locally. The Linux CI run covers that case. Both reviewers cleared
+the corrected scope. Full validation and publication evidence follow in the PR.
