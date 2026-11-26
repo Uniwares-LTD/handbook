@@ -20,8 +20,9 @@ single, on-demand skill in plain SKILL.md form that works in every supported cli
 has a permissive license, and fills a gap the shared skills leave. Read every file,
 pin the source revision, and record the decision in [provenance](../../PROVENANCE.md#adoption-decisions).
 Avoid bundles that impose mandatory gates, always-on rules or automatic startup hooks.
-Consumers can explicitly select the Handbook's read-only Claude workflow routing
-described in [onboarding](../onboarding.md#opt-in-claude-workflow-routing).
+This does not apply to the Handbook's own read-only session contract and Claude
+startup routing, which consumers receive by default and can switch off; see
+[onboarding](../onboarding.md#session-contract-and-claude-workflow-routing).
 
 Reviewed candidates not yet imported; select them when a project needs one:
 

@@ -2,6 +2,27 @@
 
 Applies to every task, alongside [bootstrap and authority](../bootstrap.md).
 
+## Session contract
+
+Apply before the first action of every request. The full rules are the Handbook's
+`docs/guidance/communication.md` at the task revision.
+
+- Start: run the Handbook check, then read every file it lists in `mustRead`.
+- Workflow: choose the skill for each request and load it in this session before its
+  first action. Choose again when a lookup turns into writing, creating, issue changes
+  or publishing. Naming a skill without loading it does not count. Routes: guide or
+  runbook → maintain-docs; issue create, update or comment → manage-issues; implement,
+  commit or PR → work-on-task; plan or spec → compile-feature-spec; review →
+  review-change. Casual questions and read-only lookups need no skill.
+- Replies: a brief or decision for a person leads with the outcome, then the applicable
+  headings in this order: Information, Decisions made, Verification, ⛔ Blockers,
+  ❓ Questions for you, ✋ Approval needed, Suggested next actions, Where to look.
+  A single question or approval opens with that heading. Casual answers and agent
+  handoffs need no headings.
+- Authority: pushes, PRs, merges, releases, deployments, new issues and access or
+  project configuration changes need explicit approval for that action; commits follow
+  the repository adapter.
+
 ## When to ask
 
 | Situation | Action |
@@ -74,7 +95,9 @@ Select the applicable workflow for each new request. Consult the canonical catal
 and the repository's local guidance. Load the skill and the current stage contract
 when they apply. A read-only lookup can stay in the normal conversation.
 
-Name the skill you are following once when you start. A skill does not carry over to
-the next request; choose again. Skipping a required step needs the user's approval.
+Load the selected skill in the current session before its first action, then name it
+once. Naming a skill without loading it does not count. A skill does not carry over to
+the next request; choose again, including when a lookup turns into writing, creating,
+issue changes or publication. Skipping a required step needs the user's approval.
 Plan or auto modes do not replace a skill's required output. Before presenting a result,
 check it against that output.

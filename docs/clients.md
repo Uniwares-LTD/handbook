@@ -34,8 +34,8 @@ Record the client, environment, revision, observed results, and checks still pen
 Claude runtime acceptance is explicitly deferred. Remaining check: in Claude Code confirm
 CLAUDE.md import, skill discovery/activation, canonical routing, local reads, retained
 revision, resources and refresh under actual permissions. Static tests do not prove this.
-For a consumer using [opt-in startup routing](onboarding.md#opt-in-claude-workflow-routing),
-start a fresh trusted Claude session and inspect the Workflow adherence context.
+For a consumer with [startup routing](onboarding.md#session-contract-and-claude-workflow-routing)
+(the default), start a fresh trusted Claude session and inspect the communication guide context.
 Repeat after opt-out and sync. Verify the consumer's own startup hook still runs.
 The generated Node invocation uses [Claude command hooks in exec form](https://code.claude.com/docs/en/hooks#exec-form-and-shell-form).
 

@@ -1,6 +1,6 @@
 ---
 name: maintain-docs
-description: "Sets up a repository's documentation and templates from the Handbook starters, writes new documents from templates, restructures docs and refreshes local templates on request. Use when setting up docs or templates in a repository, writing a new guide, spec or decision record, reorganizing docs, or updating a template."
+description: "Sets up a repository's documentation and templates from the Handbook starters, writes new documents from templates, restructures docs and refreshes local templates on request. Use when setting up docs or templates in a repository, writing a new guide, runbook, how-to, spec or decision record, reorganizing docs, or updating a template."
 ---
 
 # Maintain Docs

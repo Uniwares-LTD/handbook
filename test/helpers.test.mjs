@@ -34,6 +34,10 @@ test('clean refresh fast-forwards and records the exact remote baseline', t => {
   writeFileSync(path.join(f.seed, 'policy.md'), 'two'); f.git(f.seed,'commit','-am','update'); f.git(f.seed,'push','origin','main');
   const next = f.run(); assert(next.fresh); assert.notEqual(first.revision, next.revision);
   assert.equal(next.revision, f.git(f.seed,'rev-parse','HEAD'));
+  // The check output itself names the start reads, at the retained revision.
+  assert.deepEqual(next.mustRead.map(command => command.at(-1)),
+    ['docs/bootstrap.md', 'docs/guidance/communication.md'].map(file => `${next.revision}:${file}`));
+  assert.match(next.next, /load the skill for the request in this session/);
 });
 test('dirty checkout is preserved and fallback points to immutable baseline', t => {
   const f = fixture(t); const baseline = f.run();
@@ -169,6 +173,12 @@ test('setup baseline is reused by another consumer and deletion requires setup a
   const second = await runHandbook('check', { root: path.join(f.root, 'another-consumer'), directory, origin: f.remote });
   assert.equal(second.revision, first.revision);
   assert.equal(second.path, first.path);
+  const consumer = path.join(f.root, 'listed-consumer');
+  mkdirSync(consumer);
+  writeFileSync(path.join(consumer, 'handbook.json'), JSON.stringify({ guidance: 'docs/local.md', sourceMap: 'docs/map.md', preferences: '.agents/repository.md' }));
+  const listed = await runHandbook('check', { root: consumer, directory, origin: f.remote });
+  assert.deepEqual(listed.mustRead.slice(2), ['docs/local.md', 'docs/map.md', '.agents/repository.md']);
+  assert.equal(listed.mustRead[1].at(-1), `${listed.revision}:docs/guidance/communication.md`);
   rmSync(directory, { recursive: true, force: true });
   await assert.rejects(runHandbook('check', { directory, origin: f.remote }), { code: 'HANDBOOK_SETUP_REQUIRED' });
   assert(!existsSync(directory));

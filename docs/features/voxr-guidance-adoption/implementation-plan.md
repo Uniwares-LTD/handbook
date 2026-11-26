@@ -18,7 +18,7 @@ review when independent reviewers are unavailable. Run `npm run handbook:sync`,
 `npm run handbook:entrypoints`, `npm run validate`, and `git diff --check`.
 
 Use the [client guide](../../clients.md#workflow-behavior-scenarios) and
-[onboarding](../../onboarding.md#opt-in-claude-workflow-routing) for fresh-session
+[onboarding](../../onboarding.md#session-contract-and-claude-workflow-routing) for fresh-session
 acceptance. Report this evidence separately from deterministic tests and cost
 samples. A client or authentication gap leaves the affected native result pending.
 The local branch is the implementation handoff.
