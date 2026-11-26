@@ -61,6 +61,25 @@ read-only validation and planning only. Tool permission prompts and gated-comman
 are a safety backstop, not a security boundary: prefix rules can be bypassed (for
 example `gh api`, `git -C` or shell wrappers), so never rely on them in place of authority.
 
+### Grouped approvals
+
+Present the exact action, target, scope and stop conditions for each checkpoint in
+one package. A human may explicitly confirm several named checkpoints together.
+Record their confirmation. Reuse it only in the session that granted it and
+only while each action matches the approved conditions. A plan
+first shown after confirmation, or materially revised afterward, needs its own
+approval before implementation.
+
+Pause the dependent action on a changed target, scope or risk, outstanding required
+checks, a Blocking finding, or an ambiguous or rejected remote operation. Read back
+uncertain outcomes before interpreting a retry as pending work. An action omitted
+from the package needs its own authority. The package preserves branch protections,
+human acceptance, exact data-operation authorization and any other action-specific
+rules. Keep destructive operations on their own exact-target approval. A tool
+prompt or passing review grants no checkpoint approval.
+
+### Publication and issue maintenance
+
 Keep reviews, reports, previews, screenshots and other generated output local by default.
 Write them to the ignored output folder the repository adapter names (Handbook: `output/`)
 or to the session's scratch directory, and summarize them in the reply. Do not publish them
@@ -169,8 +188,11 @@ Merge pull requests with normal merge commits only. They preserve original commi
 and record the PR boundary, so merged work branches remain recognizable as merged.
 Do not squash or rebase-merge, and keep both methods disabled in repository settings.
 If a merge commit is unavailable, stop and report the constraint instead of merging another way.
-Update a deployment branch only through a promotion pull request from its recorded source;
-a promotion is a deployment and needs explicit authorization. Fixes, including urgent
+Update a deployment branch through an explicitly authorized promotion PR from its
+recorded source. A consumer that documents the [delivery branch and rollback
+procedure](../.agents/skills/promote-to-environment/SKILL.md#delivery-branch-and-rollback)
+may use a target-based PR for an authorized conflict resolution or rollback. Record
+the original source and target, reviewed PR head and recovery evidence. Fixes, including urgent
 ones, go through the integration branch and are then promoted.
 Keep one branch per issue unless the issue explicitly splits delivery. Local checkpoint
 and final reviews precede publication; published changes also follow the repository's

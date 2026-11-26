@@ -51,7 +51,7 @@ export function validateRevision(directory, revision) {
       for (const file of Object.keys(index.files)) if (!committed.has(file)) throw new Error(`Missing indexed resource: ${file}`);
     }
   }
-  for (const name of new Set([...coreSkills, ...(contract?.skills ?? [])])) {
+  for (const name of new Set(contract ? contract.skills : coreSkills)) {
     if (!/^[a-z0-9-]+$/.test(name)) throw new Error('Invalid shared skill name.');
     const body = read(`.agents/skills/${name}/SKILL.md`);
     const declared = body.match(/^name: ["']?([^\r\n"']+)/m)?.[1];

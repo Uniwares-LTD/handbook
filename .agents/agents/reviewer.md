@@ -10,6 +10,10 @@ applicable instructions. For a fresh-context raw pass, inspect source before rea
 the plan, implementation summary or earlier findings. Then use the plan and validation
 evidence to verify findings and compare scope. These phases count as one review pass.
 
+In a paired review, use the shared revision and validation evidence from the parent.
+Report missing or stale verification to the parent and leave build and test runs
+to the parent. Collect findings independently of the other reviewer.
+
 Report only actionable defects that could make the change incorrect, unsafe,
 unverifiable, incompatible, insufficiently documented, or inconsistent with the
 task contract. Flag stale validation and unnecessary parallel abstractions. Give

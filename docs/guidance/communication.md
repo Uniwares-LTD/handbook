@@ -25,6 +25,27 @@ Silence never expands scope. Combine related questions and offer a recommended o
 
 Brevity never hides an external write, a skipped or failed check, a risk or a required decision.
 
+For human briefs and mixed decisions, open with the outcome or the decision holding
+up work. Use the applicable headings in this order and retain their labels:
+**Information** (or **What changed**), **Decisions made**, **Verification**,
+**⛔ Blockers**, **❓ Questions for you**, **✋ Approval needed**,
+**Suggested next actions**, and **Where to look**. For a single request, open
+with its question or approval heading. When approval alone is pending, use the
+approval heading. Use attention symbols only on their corresponding headings.
+Put the relevant evidence before the request. Keep independent
+questions distinct, and defer a dependent approval until its action, target and scope
+are known. End a long reply with a short Where to look guide. Place agent-only detail in a
+collapsed Markdown disclosure with a descriptive summary where supported, or use a
+clearly labeled text section. Keep the decision and material evidence visible.
+
+## Waiting and resuming
+
+Name a live dependency once and continue independent work. Check its live handle or
+use completion notifications. On resume, inspect current state before reporting a stall
+or retrying an ambiguous write. Update the user when evidence changes or a blocker is
+confirmed. If the same decision is pending, refer to the existing request and follow
+any required client updates. Leave changes to client goal controls with the user.
+
 ## Operator instructions
 
 Resolve discoverable non-secret inputs from configuration, owner documentation and
@@ -48,6 +69,10 @@ user's own words. Write in the issue language from the repository preferences wh
 applies.
 
 ## Workflow adherence
+
+Select the applicable workflow for each new request. Consult the canonical catalog
+and the repository's local guidance. Load the skill and the current stage contract
+when they apply. A read-only lookup can stay in the normal conversation.
 
 Name the skill you are following once when you start. A skill does not carry over to
 the next request; choose again. Skipping a required step needs the user's approval.

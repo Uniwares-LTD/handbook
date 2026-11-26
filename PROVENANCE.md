@@ -105,3 +105,23 @@ vendored. The adaptation retains merge-result review, labeled actions and exact-
 confirmation; it replaces optional-skip approval with consumer authority, verified
 required gates, existing OIDC execution and explicit recovery. See Unibase's
 [adoption mapping](https://github.com/Uniwares-LTD/unibase/blob/main/docs/features/deployment-data-operations/implementation-plan.md#deployment-skills-and-reference-adoption).
+
+### Voxr workflow and consumer upgrade adoption
+
+Adapted source behavior from [Voxr application guidance at 1baa37e](https://github.com/Jason-Richter-Enterprises/voxr-ai-app/tree/1baa37e7ac67b341233092ce6437b15c1d6c8baf)
+and the [Voxr Handbook at d935189](https://github.com/Jason-Richter-Enterprises/handbook/tree/d935189d1ed7d9edeea8e8c9aa6a3c966929ffc9).
+
+| Selection | Decision |
+| --- | --- |
+| V2 | Adapt paired reviews and evidence reuse for large checkpoints. |
+| V3 | Adopt optional, executable PR test flows. |
+| V5 | Adapt delivery branches and rollback to consumer policy and exact release evidence. |
+| V7 | Adapt capability checks and upload readback to existing issue authority. |
+| V8 | Adapt behavioral scenarios to the existing evaluation guide. |
+| V9 | Adapt startup routing as an explicitly selected consumer option. |
+| V10 | Adapt the developer reply layout to existing audience profiles. |
+| V11 | Adopt bounded delegation using existing roles and effort controls. |
+| V12 | Adopt quiet waits, live readback and decision continuity. |
+| V13 | Adapt grouped confirmation while preserving action-specific authority. |
+| V14 | Adopt comparable manual cost sampling and evidence reporting. |
+| V15 | Adapt revision-local contract checks and consumer upgrade trials. |

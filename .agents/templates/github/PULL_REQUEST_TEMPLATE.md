@@ -9,6 +9,12 @@ What changed and why. Link related work with ordinary references (for example
 
 Checks run, read-only review, documentation impact and known limitations.
 
+## Test flow (optional)
+
+Name the environment, role, entry point, action or supported command, expected
+observable result, and acceptance criterion. Mark steps the environment cannot
+exercise as unverified. Remove this section if unused.
+
 ## Deployment
 
 Before deployment: steps, migrations or configuration, or "None".

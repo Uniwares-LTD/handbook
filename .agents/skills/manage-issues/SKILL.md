@@ -47,6 +47,18 @@ within authorization. On uncertain API outcomes, inspect state before retrying a
 avoid duplicate items/comments. No bulk backlog migration or project configuration
 changes are implied by routine issue work.
 
+## Issue evidence files
+
+For an authorized issue upload, identify the exact issue and files. Inspect each
+file in full for suitability, including secrets, private data and expiring links.
+Check the installed GitHub CLI version and the exact command's help before relying
+on an optional command or flag. Distinguish missing local support from host feature,
+authentication and permission failures. Follow the repository's GitHub access policy.
+Use only a capability available for that file type and target. Verify the durable
+issue reference and the published content. After an ambiguous result, read the
+destination before retrying. Preserve verified uploads and report each outcome
+separately, including any file that requires manual upload.
+
 ## Workflow contract
 
 Trigger: Task intake, readiness, dependencies, assigned status/blockers or evidence maintenance.

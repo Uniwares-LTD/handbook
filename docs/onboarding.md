@@ -265,3 +265,34 @@ The legacy `technologySkills` array also selects optional workflow skills such a
 `promote-to-environment` and `operate-data`. They are catalog entries, not additions
 to the default core skill set. Do not add a separate workflowSkills field. Consumer
 runbooks and session authority still govern their use.
+
+## Opt-in Claude workflow routing
+
+Set `"claudeSessionStartRouting": true` in a consumer's `handbook.json` and run
+`npm run handbook:sync -- --source SNAPSHOT` with a reviewed local snapshot. In a
+trusted Claude Code project with Node on PATH and support for command hooks with
+arguments, start a fresh session and verify that the Workflow adherence section
+appears. This hook reads the routing text embedded at sync time and needs no network
+or credentials. Refresh it by syncing from the same source used for the other
+entrypoints. Offline readiness verifies its structure. Source-aware entrypoint
+checks also detect routing text drift.
+
+Update the consumer copy of `scripts/handbook-integration.mjs` to a revision
+that supports the option before enabling it.
+
+The option defaults to false. Set it to false or remove it and sync to remove the
+managed hook. Sync preserves other hooks and permissions and reports edited managed
+hooks for manual reconciliation.
+
+## Recover an older helper after a skill rename
+
+The launcher executes the helper at the last accepted revision, even after a
+checkout's HEAD advances. If that helper rejects a renamed skill, keep the old
+checkout for active handoffs. Use the first-use setup procedure with a new,
+unused checkout path and the approved Handbook origin. Run
+`npm run handbook:setup -- --path NEW_PATH` from the consumer, verify the returned
+revision, and use that path for subsequent checks (or set
+`UNIWARES_HANDBOOK_PATH`). Materialize the reviewed revision there for explicit
+sync. When a default skill name changes, update the consumer's copied offline
+tool and launcher to versions that select the new name. Review local wrappers
+and preserve custom content during the migration.

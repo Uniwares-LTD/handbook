@@ -18,6 +18,9 @@ adapter and applicable scoped/domain skills before editing.
 - For large work, follow the accepted checkpoint plan and
   [large-issue procedure](../../docs/guidance/large-issues.md); continue automatically
   only where the plan permits, after the checkpoint's validation and reviews pass.
+- For a large checkpoint, run required checks once in the parent and give both
+  reviewers the same revision, diff, criteria and results. Rerun only checks
+  invalidated by a correction or other changed input.
 - Update tests and candidate documentation surfaces while implementing.
 - Resolve open implementation choices under that baseline without a new approval
   gate. Stop for unresolved decisions that materially change scope, interfaces, data,

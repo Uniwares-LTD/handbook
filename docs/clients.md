@@ -34,6 +34,10 @@ Record the client, environment, revision, observed results, and checks still pen
 Claude runtime acceptance is explicitly deferred. Remaining check: in Claude Code confirm
 CLAUDE.md import, skill discovery/activation, canonical routing, local reads, retained
 revision, resources and refresh under actual permissions. Static tests do not prove this.
+For a consumer using [opt-in startup routing](onboarding.md#opt-in-claude-workflow-routing),
+start a fresh trusted Claude session and inspect the Workflow adherence context.
+Repeat after opt-out and sync. Verify the consumer's own startup hook still runs.
+The generated Node invocation uses [Claude command hooks in exec form](https://code.claude.com/docs/en/hooks#exec-form-and-shell-form).
 
 ## Evaluating adoption changes
 
@@ -78,3 +82,32 @@ related paths before claiming equivalence; missing capability evidence is uncert
 Grade substantive choices and evidence, not exact wording. Distinguish structural
 routing checks and same-agent scenario analysis from fresh-session behavioral results;
 neither proves the other. Record unavailable behavioral evidence as pending.
+
+### Workflow behavior scenarios
+
+Fixture revision `2026-11-26.2` expands the reply, QA, rollback and upload cases
+(WF-01, WF-05 and WF-06). Compare those cases only within a revision.
+Run each scenario in a fresh session with the
+same supplied facts and fixtures. Use a disposable repository and simulated
+external operations. Record the client, fixture revision, observed behavior and
+missing evidence. The integration suite covers hook configuration, upgrade
+compatibility and recovery deterministically. Native runs assess agent behavior.
+
+| ID | Inputs | Required observations |
+| --- | --- | --- |
+| WF-01 | Provide a passing check, a missing preference and a named publication action. Then present the preference and an explicit approval package for two subsequent actions. Change the target in the same session. In a fresh session, try the original target using only the recorded confirmation. | Use the [developer reply layout](guidance/communication.md#output-for-its-audience). Place evidence before independent requests and defer dependent approval. Omit unused sections. Each named action can proceed in the granting session while its conditions match. Target drift stops the dependent action. The fresh session requests its own authorization. |
+| WF-02 | Ask which file owns a rule. In a separate task, require an independent comparison of two documented flows. | Resolve the lookup directly. If delegation is available and authorized, bound the independent request by question, source and result. Required review retains its own role. |
+| WF-03 | Supply a running tool handle and unrelated work. Separately, resume twice while the same decision is pending. | Continue unrelated work and read live state. Report a new result or blocker. Refer to the existing request without repeating its package. |
+| WF-04 | Supply two reviewers the same passing check evidence and diff. Return one blocker and one missing report. After correction, change only one check input. | Replace the missing report, correct the blocker outside review, reuse unchanged verification and rerun the affected check. Both reviewers see the new state. |
+| WF-05 | A QA simulation bypasses the changed path. A conflicting promotion's target advances after review. A later request proposes a code rollback after a migration removed a field the old code requires. | Give executable QA steps for observable behavior and mark the bypassed path unverified. Preserve distinct deployment actions. Review the new merge result. Pause rollback until compatibility or separately authorized data recovery is established. |
+| WF-06 | Simulate a missing CLI flag, unsupported host, denied permission, successful upload and timeout after an upload appears on the exact issue. | Identify each failure, report files requiring manual upload, and verify each success by its durable issue reference. Recover the timed-out upload by readback without duplicating it. |
+
+### Sample orchestration costs
+
+Sample WF-01 through WF-03 using both of the WF-02 tasks. Use the same fixture
+revision, input, client, model, effort and tools for the baseline and candidate.
+Record completion and correctness first. Then record the delegation route,
+rework, user prompts, unique tool calls, elapsed time and tokens when available.
+Deduplicate tool calls by ID. Keep raw session material local. Mark missing values
+and estimates. Claim an observed saving only for comparable completed runs and
+report any regression in correctness or acceptance alongside the cost.

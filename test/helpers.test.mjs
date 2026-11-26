@@ -223,6 +223,69 @@ test('syntactically broken helper is rejected before promotion or execution', t 
   assert.match(result.reason, /Candidate incompatible/);
 });
 
+test('a newer contract can rename a historical skill and rejects an incomplete rename', async t => {
+  const f = fixture(t), baseline = f.run();
+  const renamed = 'renamed-skill';
+  const old = `.agents/skills/${coreSkills[0]}/SKILL.md`;
+  f.git(f.seed, 'rm', old);
+  mkdirSync(path.join(f.seed, '.agents/skills', renamed), { recursive: true });
+  const newFile = `.agents/skills/${renamed}/SKILL.md`;
+  writeFileSync(path.join(f.seed, newFile), `---\nname: ${renamed}\ndescription: Example.\n---\n`);
+  writeFileSync(path.join(f.seed, 'handbook-contract.json'), JSON.stringify({
+    protocolVersion: 1, requiredFiles: [], skills: [renamed, ...coreSkills.slice(1)]
+  }));
+  f.git(f.seed, 'add', '.'); f.git(f.seed, 'commit', '-m', 'rename'); f.git(f.seed, 'push', 'origin', 'main');
+  const upgraded = f.run();
+  assert.notEqual(upgraded.revision, baseline.revision);
+  // First-use recovery must load the new helper with no old baseline metadata.
+  const replacement = path.join(f.root, 'replacement');
+  const recovered = await runHandbook('setup', { directory: replacement, root: f.root, origin: f.remote });
+  assert.equal(recovered.revision, upgraded.revision);
+  f.git(f.seed, 'rm', newFile); f.git(f.seed, 'commit', '-m', 'incomplete rename'); f.git(f.seed, 'push', 'origin', 'main');
+  assert.equal(f.run().revision, upgraded.revision);
+});
+
+test('a target-based delivery preserves target work and can be reverted through its first parent', t => {
+  const { seed, git } = fixture(t);
+  const base = git(seed, 'rev-parse', 'HEAD');
+  const policy = path.join(seed, 'policy.md');
+  git(seed, 'switch', '-c', 'source');
+  writeFileSync(policy, 'source');
+  git(seed, 'commit', '-am', 'source change');
+  const source = git(seed, 'rev-parse', 'HEAD');
+  git(seed, 'switch', '-c', 'target', base);
+  writeFileSync(policy, 'target');
+  writeFileSync(path.join(seed, 'target-only.md'), 'keep');
+  git(seed, 'add', '.'); git(seed, 'commit', '-m', 'target change');
+  const target = git(seed, 'rev-parse', 'HEAD');
+  git(seed, 'switch', '-c', 'delivery', target);
+  assert.throws(() => git(seed, 'merge', '--no-commit', source));
+  assert.equal(git(seed, 'diff', '--name-only', '--diff-filter=U'), 'policy.md');
+  writeFileSync(policy, 'resolved');
+  git(seed, 'add', 'policy.md'); git(seed, 'commit', '-m', 'resolve delivery');
+  const delivery = git(seed, 'rev-parse', 'HEAD');
+  assert.equal(git(seed, 'diff', '--name-only', target, delivery), 'policy.md');
+  git(seed, 'switch', 'target');
+  // A moved target invalidates the first review before the promotion can merge.
+  writeFileSync(path.join(seed, 'later.md'), 'keep later target change');
+  git(seed, 'add', 'later.md'); git(seed, 'commit', '-m', 'target advanced');
+  const updatedTarget = git(seed, 'rev-parse', 'HEAD');
+  assert.notEqual(updatedTarget, target);
+  git(seed, 'switch', '-c', 'revised-delivery');
+  assert.throws(() => git(seed, 'merge', '--no-commit', source));
+  writeFileSync(policy, 'resolved');
+  git(seed, 'add', 'policy.md'); git(seed, 'commit', '-m', 'resolve against current target');
+  const revisedDelivery = git(seed, 'rev-parse', 'HEAD');
+  assert.equal(git(seed, 'diff', '--name-only', updatedTarget, revisedDelivery), 'policy.md');
+  git(seed, 'switch', 'target');
+  git(seed, 'merge', '--no-ff', '--no-edit', revisedDelivery);
+  const deployed = git(seed, 'rev-parse', 'HEAD');
+  assert.notEqual(deployed, target);
+  git(seed, 'switch', '-c', 'rollback');
+  git(seed, 'revert', '-m', '1', '--no-edit', deployed);
+  assert.equal(git(seed, 'diff', '--name-only', updatedTarget, 'HEAD'), '');
+});
+
 test('missing indexed resource prevents candidate promotion', t => {
   const f = fixture(t), a = f.run();
   writeFileSync(path.join(f.seed, 'handbook-contract.json'), JSON.stringify({ protocolVersion: 1, requiredFiles: [], skills: coreSkills, resourceIndex: 'skills-lock.json' }));

@@ -69,14 +69,19 @@ unavailable required verification or manual action, authorization gaps, or stall
 progress under [review completion](engineering.md#review-completion). Honor runtime
 stopping conditions and goal-state rules; do not claim completion when interrupted.
 
-Each checkpoint needs two consecutive clean read-only review passes on the same
-reviewed state. Prefer fresh reviewers when delegation is authorized and available;
-otherwise disclose the same-agent fallback. Apply review-change's finding verification
-and severity rules. Review the checkpoint diff with its dependencies; the final
-checkpoint's two passes cover the complete integrated diff against the issue base.
-Fixes happen outside review. Changes to reviewed content reset its clean-review count
-and invalidate affected verification; carry forward only evidence whose inputs remain
-unchanged. Later changes to earlier checkpoints require reviewing their effects too.
+Each checkpoint needs two clean read-only reviews of the same state. The parent runs
+required checks once and gives both reviewers the same revision, diff, criteria and
+results. Prefer two independent fresh-context reviewers. Run them concurrently
+when authorized and supported, or sequentially if the client supports only one
+at a time. If independent reviewers are unavailable, use two separate local
+passes and identify the same-agent fallback. Replace a missing review before counting the pair. Apply review-change's
+finding verification and severity rules. Review the checkpoint with its dependencies.
+The final pair covers the integrated diff against the issue base.
+
+Batch confirmed Blocking findings from both reviews before correcting them. Changes
+to reviewed content require a new pair on the resulting diff. Rerun checks whose
+inputs changed and reuse current passing evidence. Review later changes to earlier
+checkpoints wherever they affect the integrated result.
 
 After completion, record the source/diff identity, checks, review results, remaining
 gates and next action in the existing plan. Continue to the next checkpoint when the

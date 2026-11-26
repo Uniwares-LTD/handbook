@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import { checkReadiness, syncEntrypoints, syncTemplates, mapSections, permissionEntries, gatesFile, branchWarnings } from '../scripts/handbook-integration.mjs';
 
 const source = fileURLToPath(new URL('..', import.meta.url));
@@ -61,6 +62,65 @@ test('readiness reports broken references, absent map sections and invalid metad
   assert(result.warnings.some(w => w.includes('Ownership')));
   writeFileSync(path.join(root, 'handbook.json'), '{broken');
   assert.match(checkReadiness(root).warnings[0], /handbook.json/);
+});
+
+test('consumer upgrade preserves settings and installs only opted-in Claude routing', t => {
+  const baselineSource = mkdtempSync(path.join(tmpdir(), 'handbook-routing-baseline-'));
+  t.after(() => rmSync(baselineSource, { recursive: true, force: true }));
+  for (const file of ['.agents/skills', 'handbook-contract.json', 'docs/consumer-bootstrap.md']) {
+    const destination = path.join(baselineSource, file);
+    mkdirSync(path.dirname(destination), { recursive: true });
+    cpSync(path.join(source, file), destination, { recursive: true });
+  }
+  const bootstrap = path.join(baselineSource, 'docs/consumer-bootstrap.md');
+  writeFileSync(bootstrap, readFileSync(bootstrap, 'utf8') + '\nOlder bootstrap fixture.\n');
+  for (const enabled of [false, true]) {
+    const root = fixture(t);
+    syncEntrypoints(root, { source: baselineSource, write: true });
+    const config = path.join(root, 'handbook.json');
+    const settings = path.join(root, '.claude/settings.json');
+    const readJson = file => JSON.parse(readFileSync(file, 'utf8'));
+    const writeJson = (file, value) => writeFileSync(file, JSON.stringify(value));
+    const consumerHook = { hooks: [{ type: 'command', command: 'local-hook' }] };
+    const preferences = existsSync(settings) ? readJson(settings) : {};
+    writeJson(settings, { ...preferences, permissions: { allow: ['Bash(local-check)'] }, hooks: { SessionStart: [consumerHook] } });
+    writeFileSync(path.join(root, 'docs/local.md'), '[known warning](missing.md)');
+    const baseline = checkReadiness(root).warnings;
+    assert(baseline.length > 0);
+    writeJson(config, { ...readJson(config), claudeSessionStartRouting: enabled });
+    assert(syncEntrypoints(root, { source, write: true }).changed.includes('.agents/handbook.md'));
+    assert.deepEqual(checkReadiness(root).warnings.filter(warning => !baseline.includes(warning)), []);
+    assert.deepEqual(syncEntrypoints(root, { source }).warnings, []);
+    assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, []);
+    const after = readJson(settings);
+    assert.deepEqual(after.permissions.allow, ['Bash(local-check)']);
+    assert.deepEqual(after.hooks.SessionStart[0], consumerHook);
+    assert.equal(after.hooks.SessionStart.length, enabled ? 2 : 1);
+    if (!enabled) continue;
+    const command = after.hooks.SessionStart[1].hooks[0];
+    assert.match(execFileSync(process.execPath, command.args, { encoding: 'utf8' }), /^## Workflow adherence\n/);
+
+    const badSource = mkdtempSync(path.join(tmpdir(), 'handbook-routing-source-'));
+    t.after(() => rmSync(badSource, { recursive: true, force: true }));
+    cpSync(baselineSource, badSource, { recursive: true });
+    cpSync(path.join(source, 'docs/consumer-bootstrap.md'), path.join(badSource, 'docs/consumer-bootstrap.md'));
+    mkdirSync(path.join(badSource, 'docs/guidance'));
+    for (const text of ['', '# Wrong heading\n', '## Workflow adherence\n\n## Next section\nUnrelated text.\n', '## Workflow adherence\n' + 'a'.repeat(10000)]) {
+      if (text) writeFileSync(path.join(badSource, 'docs/guidance/communication.md'), text);
+      assert(syncEntrypoints(root, { source: badSource, write: true }).warnings.some(warning => warning.includes('under 10000 characters')));
+      assert.deepEqual(readJson(settings).hooks, after.hooks);
+    }
+    writeJson(config, { ...readJson(config), claudeSessionStartRouting: false });
+    const edited = structuredClone(after);
+    edited.hooks.SessionStart[1].matcher = 'resume';
+    writeJson(settings, edited);
+    assert(syncEntrypoints(root, { write: true }).warnings.some(warning => warning.includes('preserved customized')));
+    assert.deepEqual(readJson(settings), edited);
+    writeJson(settings, after);
+    syncEntrypoints(root, { write: true });
+    assert.deepEqual(readJson(settings).hooks.SessionStart, [consumerHook]);
+    assert.deepEqual(readJson(settings).permissions, after.permissions);
+  }
 });
 
 test('sync preserves custom instruction content and reports manually modified wrappers', t => {
