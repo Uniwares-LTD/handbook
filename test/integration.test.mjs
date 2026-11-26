@@ -166,15 +166,21 @@ test('session contract is inlined into AGENTS.md, preserved when customized and 
   writeFileSync(config, JSON.stringify({ ...JSON.parse(readFileSync(config, 'utf8')), agentsSessionContract: true }));
   syncEntrypoints(root, { source, write: true });
   const framed = readFileSync(agents, 'utf8');
-  assert.match(framed, /^﻿---\r\nkind: agents\r\n---\r\n# Product agents\r\n\r\n<!-- handbook-session-contract:start -->\r\n/);
+  assert.match(framed, /^﻿---\r\nkind: agents\r\n---\r\n# Product agents\r\n\r\n<!-- handbook-session-contract:start -->\r\n\r\n## Session contract\r\n/);
   assert.doesNotMatch(framed.replace(/\r\n/g, ''), /\n/);
+  assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, []);
+  // Extra blank lines a formatter adds beside the markers are drift, not customization.
+  writeFileSync(agents, framed.replace('start -->\r\n\r\n', 'start -->\r\n\r\n\r\n'));
+  const spaced = syncEntrypoints(root, { source, write: true });
+  assert(spaced.changed.includes('AGENTS.md') && !spaced.warnings.some(w => w.includes('customized')));
+  assert.equal(readFileSync(agents, 'utf8'), framed);
   writeFileSync(config, JSON.stringify({ ...JSON.parse(readFileSync(config, 'utf8')), agentsSessionContract: false }));
   syncEntrypoints(root, { source, write: true });
   assert.equal(readFileSync(agents, 'utf8'), crlf);
 
   const plain = fixture(t);
   syncEntrypoints(plain, { source, write: true });
-  assert.match(readFileSync(path.join(plain, 'AGENTS.md'), 'utf8'), /^<!-- handbook-session-contract:start -->\n[\s\S]*-->\n\nRun handbook:check\./);
+  assert.match(readFileSync(path.join(plain, 'AGENTS.md'), 'utf8'), /^<!-- handbook-session-contract:start -->\n\n## Session contract\n[\s\S]*\n\n<!-- handbook-session-contract:end [a-f0-9]{64} -->\n\nRun handbook:check\./);
 });
 
 test('sync preserves custom instruction content and reports manually modified wrappers', t => {
