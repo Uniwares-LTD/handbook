@@ -266,23 +266,27 @@ The legacy `technologySkills` array also selects optional workflow skills such a
 to the default core skill set. Do not add a separate workflowSkills field. Consumer
 runbooks and session authority still govern their use.
 
-## Opt-in Claude workflow routing
+## Session contract and Claude workflow routing
 
-Set `"claudeSessionStartRouting": true` in a consumer's `handbook.json` and run
-`npm run handbook:sync -- --source SNAPSHOT` with a reviewed local snapshot. In a
-trusted Claude Code project with Node on PATH and support for command hooks with
-arguments, start a fresh session and verify that the Workflow adherence section
-appears. This hook reads the routing text embedded at sync time and needs no network
-or credentials. Refresh it by syncing from the same source used for the other
-entrypoints. Offline readiness verifies its structure. Source-aware entrypoint
-checks also detect routing text drift.
+Guidance that a session must choose to read is often skipped, so consumer sync puts the
+[communication guide](guidance/communication.md) where every session receives it. Both
+parts are on by default. Run `npm run handbook:sync -- --source SNAPSHOT` with a
+reviewed local snapshot after updating the consumer copy of
+`scripts/handbook-integration.mjs`.
 
-Update the consumer copy of `scripts/handbook-integration.mjs` to a revision
-that supports the option before enabling it.
+- **AGENTS.md session contract** (all clients): sync inlines the guide's Session contract
+  section in a marked block, after the first heading or at the top. The end marker
+  records its hash. An edited block is preserved and reported for manual reconciliation.
+  Set `"agentsSessionContract": false` and sync to remove it.
+- **Claude startup routing**: a managed SessionStart hook prints the whole guide,
+  embedded at sync time; it needs no network or credentials. It requires a trusted
+  Claude Code project with Node on PATH and command hooks with arguments. Set
+  `"claudeSessionStartRouting": false` and sync to remove it. Sync preserves other hooks
+  and permissions and reports edited managed hooks.
 
-The option defaults to false. Set it to false or remove it and sync to remove the
-managed hook. Sync preserves other hooks and permissions and reports edited managed
-hooks for manual reconciliation.
+Offline readiness reports a missing or drifted block or hook. Source-aware entrypoint
+checks also detect text drift. Verify a fresh Claude session shows the guide at startup.
+`handbook:check` output also lists the shared start reads (`mustRead`) and a `next` step.
 
 ## Recover an older helper after a skill rename
 

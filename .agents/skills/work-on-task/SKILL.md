@@ -1,6 +1,6 @@
 ---
 name: work-on-task
-description: Implements and verifies bounded repository work on a work branch, then runs a separate read-only review and hands off evidence. Use when asked to implement, fix, build or change something for an issue or task, or to work on an issue number.
+description: Implements and verifies bounded repository work on a work branch, then runs a separate read-only review and hands off evidence. Use when asked to implement, fix, build or change something for an issue or task, to work on an issue number, or to commit, push or open a PR for prepared changes.
 ---
 
 # Work On Task

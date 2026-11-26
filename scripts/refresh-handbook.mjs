@@ -80,8 +80,12 @@ function result(c, baseline, mode, limitation) {
     lastAttempt: readJson(c.attemptFile), outcome: mode,
     reason: limitation || (mode === 'updated' ? 'Synchronized compatible main.' : 'Within refresh cooldown.'),
     ...(limitation ? { limitation } : {}),
+    // The check is often the only start step a session runs, so it names every required read.
+    mustRead: startReads.map(file => ['git', '-C', c.cwd, 'show', `${baseline.revision}:${file}`]),
+    next: 'Before the first action: read each mustRead file and the guidance, source map and preferences named in handbook.json; load the skill for the request in this session; reply with the communication guide headings.',
     read: ['git', '-C', c.cwd, 'show', `${baseline.revision}:docs/work-policy.md`] };
 }
+const startReads = ['docs/bootstrap.md', 'docs/guidance/communication.md'];
 function writeJson(file, value) {
   const temporary = `${file}.${process.pid}.tmp`;
   writeFileSync(temporary, JSON.stringify(value, null, 2) + '\n');

@@ -64,7 +64,7 @@ test('readiness reports broken references, absent map sections and invalid metad
   assert.match(checkReadiness(root).warnings[0], /handbook.json/);
 });
 
-test('consumer upgrade preserves settings and installs only opted-in Claude routing', t => {
+test('consumer upgrade preserves settings; Claude routing is on unless set to false', t => {
   const baselineSource = mkdtempSync(path.join(tmpdir(), 'handbook-routing-baseline-'));
   t.after(() => rmSync(baselineSource, { recursive: true, force: true }));
   for (const file of ['.agents/skills', 'handbook-contract.json', 'docs/consumer-bootstrap.md']) {
@@ -74,7 +74,7 @@ test('consumer upgrade preserves settings and installs only opted-in Claude rout
   }
   const bootstrap = path.join(baselineSource, 'docs/consumer-bootstrap.md');
   writeFileSync(bootstrap, readFileSync(bootstrap, 'utf8') + '\nOlder bootstrap fixture.\n');
-  for (const enabled of [false, true]) {
+  for (const enabled of [false, true, undefined]) {
     const root = fixture(t);
     syncEntrypoints(root, { source: baselineSource, write: true });
     const config = path.join(root, 'handbook.json');
@@ -87,7 +87,7 @@ test('consumer upgrade preserves settings and installs only opted-in Claude rout
     writeFileSync(path.join(root, 'docs/local.md'), '[known warning](missing.md)');
     const baseline = checkReadiness(root).warnings;
     assert(baseline.length > 0);
-    writeJson(config, { ...readJson(config), claudeSessionStartRouting: enabled });
+    if (enabled !== undefined) writeJson(config, { ...readJson(config), claudeSessionStartRouting: enabled });
     assert(syncEntrypoints(root, { source, write: true }).changed.includes('.agents/handbook.md'));
     assert.deepEqual(checkReadiness(root).warnings.filter(warning => !baseline.includes(warning)), []);
     assert.deepEqual(syncEntrypoints(root, { source }).warnings, []);
@@ -95,10 +95,13 @@ test('consumer upgrade preserves settings and installs only opted-in Claude rout
     const after = readJson(settings);
     assert.deepEqual(after.permissions.allow, ['Bash(local-check)']);
     assert.deepEqual(after.hooks.SessionStart[0], consumerHook);
-    assert.equal(after.hooks.SessionStart.length, enabled ? 2 : 1);
-    if (!enabled) continue;
+    assert.equal(after.hooks.SessionStart.length, enabled === false ? 1 : 2);
+    if (enabled === false) continue;
     const command = after.hooks.SessionStart[1].hooks[0];
-    assert.match(execFileSync(process.execPath, command.args, { encoding: 'utf8' }), /^## Workflow adherence\n/);
+    const injected = execFileSync(process.execPath, command.args, { encoding: 'utf8' });
+    for (const heading of ['# Communication guidance', '## Session contract', '## Output for its audience', '## Workflow adherence']) {
+      assert(injected.includes(heading + '\n'), heading);
+    }
 
     const badSource = mkdtempSync(path.join(tmpdir(), 'handbook-routing-source-'));
     t.after(() => rmSync(badSource, { recursive: true, force: true }));
@@ -121,6 +124,47 @@ test('consumer upgrade preserves settings and installs only opted-in Claude rout
     assert.deepEqual(readJson(settings).hooks.SessionStart, [consumerHook]);
     assert.deepEqual(readJson(settings).permissions, after.permissions);
   }
+});
+
+test('session contract is inlined into AGENTS.md, preserved when customized and removable', t => {
+  const root = fixture(t);
+  const agents = path.join(root, 'AGENTS.md');
+  const config = path.join(root, 'handbook.json');
+  const original = readFileSync(agents, 'utf8');
+  writeFileSync(agents, '# Product agents\n\n' + original + '\n');
+  syncEntrypoints(root, { source, write: true });
+  const synced = readFileSync(agents, 'utf8');
+  assert.match(synced, /^# Product agents\n\n<!-- handbook-session-contract:start -->\n## Session contract\n/);
+  assert(synced.includes('Where to look') && synced.includes('maintain-docs'));
+  assert(synced.endsWith(original + '\n'));
+  assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, []);
+  assert.deepEqual(syncEntrypoints(root, { source }).warnings, []);
+  assert.deepEqual(checkReadiness(root), { ready: true, warnings: [] });
+
+  writeFileSync(agents, synced.replace('Where to look', 'Local closing list'));
+  assert(syncEntrypoints(root, { source, write: true }).warnings.some(w => w.includes('preserved customized Handbook session contract')));
+  assert.match(readFileSync(agents, 'utf8'), /Local closing list/);
+
+  writeFileSync(agents, synced);
+  writeFileSync(config, JSON.stringify({ ...JSON.parse(readFileSync(config, 'utf8')), agentsSessionContract: false }));
+  assert(syncEntrypoints(root, { source, write: true }).changed.includes('AGENTS.md'));
+  assert.equal(readFileSync(agents, 'utf8'), '# Product agents\n\n' + original + '\n');
+
+  // Front matter, a byte-order mark and CRLF endings survive insertion and removal.
+  const crlf = '﻿---\r\nkind: agents\r\n---\r\n# Product agents\r\n\r\n' + original + '\r\n';
+  writeFileSync(agents, crlf);
+  writeFileSync(config, JSON.stringify({ ...JSON.parse(readFileSync(config, 'utf8')), agentsSessionContract: true }));
+  syncEntrypoints(root, { source, write: true });
+  const framed = readFileSync(agents, 'utf8');
+  assert.match(framed, /^﻿---\r\nkind: agents\r\n---\r\n# Product agents\r\n\r\n<!-- handbook-session-contract:start -->\r\n/);
+  assert.doesNotMatch(framed.replace(/\r\n/g, ''), /\n/);
+  writeFileSync(config, JSON.stringify({ ...JSON.parse(readFileSync(config, 'utf8')), agentsSessionContract: false }));
+  syncEntrypoints(root, { source, write: true });
+  assert.equal(readFileSync(agents, 'utf8'), crlf);
+
+  const plain = fixture(t);
+  syncEntrypoints(plain, { source, write: true });
+  assert.match(readFileSync(path.join(plain, 'AGENTS.md'), 'utf8'), /^<!-- handbook-session-contract:start -->\n[\s\S]*-->\n\nRun handbook:check\./);
 });
 
 test('sync preserves custom instruction content and reports manually modified wrappers', t => {
@@ -187,7 +231,7 @@ test('gated commands merge add-only into the local list and Claude settings', t 
   writeFileSync(path.join(root, '.claude/settings.json'), JSON.stringify(settings));
   assert.deepEqual(syncEntrypoints(root).warnings, ['.claude/settings.json: 1 gated permission entries missing.']);
   writeFileSync(path.join(root, '.claude/settings.json'), JSON.stringify({ permissions: { ask: 'all' } }));
-  assert.match(syncEntrypoints(root, { write: true }).warnings.at(-1), /must be lists; reconcile manually/);
+  assert(syncEntrypoints(root, { write: true }).warnings.some(warning => /must be lists; reconcile manually/.test(warning)));
   assert.equal(JSON.parse(readFileSync(path.join(root, '.claude/settings.json'), 'utf8')).permissions.ask, 'all');
 });
 

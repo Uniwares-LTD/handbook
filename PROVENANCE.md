@@ -118,7 +118,7 @@ and the [Voxr Handbook at d935189](https://github.com/Jason-Richter-Enterprises/
 | V5 | Adapt delivery branches and rollback to consumer policy and exact release evidence. |
 | V7 | Adapt capability checks and upload readback to existing issue authority. |
 | V8 | Adapt behavioral scenarios to the existing evaluation guide. |
-| V9 | Adapt startup routing as an explicitly selected consumer option. |
+| V9 | Adapt startup routing as an explicitly selected consumer option. Superseded by [#27](https://github.com/Uniwares-LTD/handbook/issues/27): routing and the AGENTS.md session contract are on by default, and consumers can switch each off. |
 | V10 | Adapt the developer reply layout to existing audience profiles. |
 | V11 | Adopt bounded delegation using existing roles and effort controls. |
 | V12 | Adopt quiet waits, live readback and decision continuity. |
