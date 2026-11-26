@@ -61,6 +61,22 @@ read-only validation and planning only. Tool permission prompts and gated-comman
 are a safety backstop, not a security boundary: prefix rules can be bypassed (for
 example `gh api`, `git -C` or shell wrappers), so never rely on them in place of authority.
 
+### Grouped approvals
+
+Present the exact action, target, scope and stop conditions for each checkpoint in
+one package. A human may explicitly confirm several named checkpoints together.
+Record their confirmation and reuse it while each action still matches. A plan
+first shown after confirmation, or materially revised afterward, needs its own
+approval before implementation. Downstream approval remains valid where its scope
+and conditions still match.
+
+Pause the dependent action on a changed target, scope or risk, outstanding required
+checks, a Blocking finding, or an ambiguous or rejected remote operation. Read back
+uncertain outcomes before interpreting a retry as pending work. An action omitted
+from the package needs its own authority. The package preserves branch protections,
+human acceptance, exact data-operation authorization and any other action-specific
+rules. A tool prompt or passing review grants no checkpoint approval.
+
 Keep reviews, reports, previews, screenshots and other generated output local by default.
 Write them to the ignored output folder the repository adapter names (Handbook: `output/`)
 or to the session's scratch directory, and summarize them in the reply. Do not publish them

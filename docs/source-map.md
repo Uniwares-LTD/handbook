@@ -4,7 +4,7 @@
 
 - [Refresh helper](../scripts/refresh-handbook.mjs): shared cache, cooldown and candidate checks.
 - [Consumer launcher](../scripts/handbook.mjs): committed helper loading and revision resources.
-- [Integration tooling](../scripts/handbook-integration.mjs): offline readiness and explicit entrypoint sync.
+- [Integration tooling](../scripts/handbook-integration.mjs): offline readiness, entrypoint sync and opt-in Claude workflow routing.
 - [Enrollment helper](../scripts/enroll.mjs): existing assigned issue enrollment.
 - [Issue creation helper](../scripts/create-issue.mjs): approved issue creation with project enrollment.
 - [Access check](../scripts/org-access.mjs): read-only organization team and permission gap report.
@@ -33,8 +33,9 @@ template adds the policy approval section.
 
 ## Generated areas
 
-Claude skill wrappers and the gated entries in `.claude/settings.json` are managed by the
-explicit sync command from `.agents/gated-commands.json`; preserve custom suffixes and settings.
+Explicit sync manages Claude wrappers and the gated entries in `.claude/settings.json`.
+Opt-in workflow routing uses the canonical communication section. Preserve custom
+suffixes and settings.
 [CI](../.github/workflows/validate.yml) runs `npm run validate` for this repository only;
 consumers are not asked to copy or enable it; [guidance lints](../scripts/guidance-lint.mjs)
 check skill catalogs, tool-neutral wording and description budgets.

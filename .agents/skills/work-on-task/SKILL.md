@@ -17,6 +17,13 @@ Recheck the destination before publication, migration tooling or post-merge step
 Use [the implementation contract](../../agents/implementation.md). Preserve unrelated
 work and apply the [simplicity baseline](../../../docs/guidance/engineering.md#simplicity-baseline)
 to open implementation decisions, even without ponytail.
+
+Resolve small lookups directly. When delegation is authorized and proportionate,
+give each independent investigation a bounded question, named evidence source and
+expected result. Use existing role contracts and the client's supported effort controls.
+The parent reconciles evidence, handles dependent decisions and retains required review.
+Follow the shared [wait guidance](../../../docs/guidance/communication.md#waiting-and-resuming)
+and [grouped approval rules](../../../docs/work-policy.md#grouped-approvals).
 Use the [proportional workflow](../../../docs/guidance/engineering.md#choose-the-workflow),
 without a planning artifact or sizing announcement for obvious small work. Keep validation
 evidence in the normal handoff or existing plan. For large work, follow the

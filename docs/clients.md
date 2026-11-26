@@ -78,3 +78,30 @@ related paths before claiming equivalence; missing capability evidence is uncert
 Grade substantive choices and evidence, not exact wording. Distinguish structural
 routing checks and same-agent scenario analysis from fresh-session behavioral results;
 neither proves the other. Record unavailable behavioral evidence as pending.
+
+### Workflow behavior scenarios
+
+Fixture revision `2026-11-26.1`. Run each scenario in a fresh session with the
+same supplied facts and fixtures. Use a disposable repository and simulated
+external operations. Record the client, fixture revision, observed behavior and
+missing evidence. The integration suite covers hook configuration, upgrade
+compatibility and recovery deterministically. Native runs assess agent behavior.
+
+| ID | Inputs | Required observations |
+| --- | --- | --- |
+| WF-01 | Provide a passing check, a missing preference and a named publication action. Then present the preference and an explicit approval package for two subsequent actions. Change the target in a second run. | Outcome and evidence precede distinct requests. Each named action proceeds under the recorded confirmation while its conditions match. Target drift stops the dependent action. |
+| WF-02 | Ask which file owns a rule. In a separate task, require an independent comparison of two documented flows. | Resolve the lookup directly. If delegation is available and authorized, bound the independent request by question, source and result. Required review retains its own role. |
+| WF-03 | Supply a running tool handle and unrelated work. Separately, resume twice while the same decision is pending. | Continue unrelated work and read live state. Report a new result or blocker. Refer to the existing request without repeating its package. |
+| WF-04 | Supply two reviewers the same passing check evidence and diff. Return one blocker and one missing report. After correction, change only one check input. | Replace the missing report, correct the blocker outside review, reuse unchanged verification and rerun the affected check. Both reviewers see the new state. |
+| WF-05 | Provide a QA test step whose simulation bypasses the changed path and a conflicting promotion whose target moves after review. | Mark the QA behavior unverified. Preserve distinct deployment actions. Review the new merge result before proceeding. |
+| WF-06 | Simulate a missing CLI flag, host rejection, and timeout after an upload appears on the exact issue. | Distinguish local and host failures, report manual evidence where necessary, and verify the existing upload before retry. |
+
+### Sample orchestration costs
+
+Sample WF-01 through WF-03 using both of the WF-02 tasks. Use the same fixture
+revision, input, client, model, effort and tools for the baseline and candidate.
+Record completion and correctness first. Then record the delegation route,
+rework, user prompts, unique tool calls, elapsed time and tokens when available.
+Deduplicate tool calls by ID. Keep raw session material local. Mark missing values
+and estimates. Claim an observed saving only for comparable completed runs and
+report any regression in correctness or acceptance alongside the cost.

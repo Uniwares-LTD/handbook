@@ -17,8 +17,9 @@ Resolve the source and environment target from preferences. Record their full ti
 intended merge result and included source PRs/issues (accepted work may lack an issue).
 Review the merge result against the target tip, including target-only commits: a
 plain source/target diff can misrepresent them as reversals. Stop on conflicts or
-an empty promotion. Use merge commits and one promotion PR, never a direct durable
-branch push. Before an authorized merge, recheck both tips and pin the exact reviewed
+an empty promotion by default. For a conflict, use the delivery branch procedure
+below only when the consumer has adopted it and the action is authorized. Use one
+promotion PR with a merge commit. Before an authorized merge, recheck both tips and pin the exact reviewed
 head. Changed tips or requirements require renewed review of the resulting change.
 
 Read source PR action blocks, then inspect the diff for omitted migrations, indexes,
@@ -32,6 +33,24 @@ work with a reason. A skipped prerequisite blocks activation.
 Before the deployment mutation, present the reviewed requirements and obtain exact
 session authorization unless already granted for the same action. Preparation and
 review alone do not authorize publishing or merging the promotion.
+
+## Delivery branch and rollback
+
+For an authorized conflict resolution, record the source and target tips and create
+a work branch from the target. Merge the recorded source into that work branch.
+Resolve only reviewed conflict regions and verify the resulting tree against the
+target, including its unrelated changes. Review that result before opening a PR to
+the target. Before merge, confirm the original source tip, target tip and reviewed
+delivery head. If either original tip moved, rebuild the proposal from current
+tips and repeat review. Preserve earlier work during recovery.
+
+For an authorized rollback, identify the deployed merge and its original release
+run. Verify the pre-release revision and a usable recovery point. Prepare a revert
+of that merge on a branch from the current target using the target-side parent and
+review the resulting tree for later changes and data compatibility. Use a PR and
+the same exact release verification. Route any data recovery through operate-data
+under separate exact authority. Pause when a code revert cannot safely serve the
+observed data state.
 
 ## Verify the actual release
 

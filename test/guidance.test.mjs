@@ -1,10 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { catalogParity, toolNeutral, descriptionBudget, descriptionLimit, skillShape, alwaysLoaded, bodyLineLimit, alwaysLoadedLines } from '../scripts/guidance-lint.mjs';
 
 const agents = 'Shared skills are in `.agents/skills`: work-on-task and review-change.\n';
 const domains = '| Domain | Responsibility | Skills |\n| --- | --- | --- |\n| [Engineering](e.md) | Build | work-on-task, review-change; playwright for browser tooling |\n';
 const base = { skills: ['work-on-task', 'review-change', 'playwright'], imported: ['playwright'], agents, domains };
+
+test('workflow evaluation cases have stable unique IDs and observable criteria', () => {
+  const guide = readFileSync(new URL('../docs/clients.md', import.meta.url), 'utf8');
+  const section = guide.split('### Workflow behavior scenarios')[1]?.split('### Sample orchestration costs')[0];
+  assert.match(section ?? '', /Fixture revision `\d{4}-\d{2}-\d{2}\.\d+`/);
+  const rows = [...section.matchAll(/^\| (WF-\d{2}) \| ([^|]+) \| ([^|]+) \|$/gm)];
+  assert.deepEqual(rows.map(row => row[1]), ['WF-01', 'WF-02', 'WF-03', 'WF-04', 'WF-05', 'WF-06']);
+  for (const [, , input, observations] of rows) {
+    assert(input.trim() && observations.trim());
+  }
+});
 
 test('catalog parity passes when both catalogs match the skill set', () => {
   assert.deepEqual(catalogParity(base), []);

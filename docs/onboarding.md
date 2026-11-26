@@ -265,3 +265,32 @@ The legacy `technologySkills` array also selects optional workflow skills such a
 `promote-to-environment` and `operate-data`. They are catalog entries, not additions
 to the default core skill set. Do not add a separate workflowSkills field. Consumer
 runbooks and session authority still govern their use.
+
+## Opt-in Claude workflow routing
+
+Set `"claudeSessionStartRouting": true` in a consumer's `handbook.json` and run
+`npm run handbook:sync -- --source SNAPSHOT` with a reviewed local snapshot. In a
+trusted Claude Code project with Node on PATH and support for command hooks with
+arguments, start a fresh session and verify that the Workflow adherence section
+appears. This hook reads the routing text embedded at sync time and needs no network
+or credentials. Refresh it by syncing from the same source used for the other
+entrypoints. Offline readiness verifies its structure. Source-aware entrypoint
+checks also detect routing text drift.
+
+Update the consumer copy of `scripts/handbook-integration.mjs` to a revision
+that supports the option before enabling it.
+
+The option defaults to false. Set it to false or remove it and sync to remove the
+managed hook. Sync preserves other hooks and permissions and reports edited managed
+hooks for manual reconciliation.
+
+## Recover an older helper after a skill rename
+
+If an older refresh helper rejects a candidate due to a renamed skill, verify the
+Handbook checkout's origin and that its `main` branch is clean and can fast-forward
+to the approved Handbook revision. In that checkout, run `git fetch origin main`
+outside the sandbox and use `git merge --ff-only APPROVED_SHA` to update the local
+cache to the reviewed full SHA. If the cache is dirty or divergent, preserve it
+and use the documented setup procedure with a separate clean checkout. Rerun the
+consumer check and explicit sync from the reviewed snapshot. Existing task handoffs
+continue to use their recorded revision while it remains available.
