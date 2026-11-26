@@ -26,11 +26,15 @@ Silence never expands scope. Combine related questions and offer a recommended o
 Brevity never hides an external write, a skipped or failed check, a risk or a required decision.
 
 For human briefs and mixed decisions, open with the outcome or the decision holding
-up work. Use the headings that help, in this order: Information (or What changed),
-Decisions made, Verification, Blockers, Questions for you, Approval needed, and
-Suggested next actions. Put the relevant evidence before the request. Keep independent
+up work. Use the applicable headings in this order and retain their labels:
+**Information** (or **What changed**), **Decisions made**, **Verification**,
+**⛔ Blockers**, **❓ Questions for you**, **✋ Approval needed**,
+**Suggested next actions**, and **Where to look**. For a single request, open
+with its question or approval heading. When approval alone is pending, use the
+approval heading. Use attention symbols only on their corresponding headings.
+Put the relevant evidence before the request. Keep independent
 questions distinct, and defer a dependent approval until its action, target and scope
-are known. Use a short reading guide for long replies. Place agent-only detail in a
+are known. End a long reply with a short Where to look guide. Place agent-only detail in a
 collapsed Markdown disclosure with a descriptive summary where supported, or use a
 clearly labeled text section. Keep the decision and material evidence visible.
 

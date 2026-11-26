@@ -257,7 +257,9 @@ export function syncEntrypoints(root, { write = false, source } = {}) {
 const routingMarker = 'Handbook workflow routing';
 const routingGuide = 'docs/guidance/communication.md';
 const routingLimit = 10000;
-const validRoutingText = section => section?.trim() && section.length + 1 < routingLimit;
+const routingHeading = '## Workflow adherence\n';
+const validRoutingText = section => section?.startsWith(routingHeading) &&
+  section.slice(routingHeading.length).trim().length > 0 && section.length + 1 < routingLimit;
 
 function routingHook(section) {
   // The reviewed routing text is data to a fixed Node program, with no shell expansion.
@@ -303,7 +305,7 @@ function syncClaudeRouting(root, enabled, { write, source, warnings, changed }) 
   if (enabled && source) {
     const guide = path.join(source, routingGuide);
     const section = existsSync(guide) ? read(guide).split(/^(?=#{1,2} )/m)
-      .find(part => part.startsWith('## Workflow adherence\n'))?.trim() : '';
+      .find(part => part.startsWith(routingHeading))?.trim() : '';
     if (!validRoutingText(section)) {
       warnings.push(routingGuide + ': expected a Workflow adherence section under 10000 characters; preserved existing routing.');
       return;

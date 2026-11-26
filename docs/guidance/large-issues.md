@@ -71,9 +71,10 @@ stopping conditions and goal-state rules; do not claim completion when interrupt
 
 Each checkpoint needs two clean read-only reviews of the same state. The parent runs
 required checks once and gives both reviewers the same revision, diff, criteria and
-results. Run independent fresh-context reviews concurrently when authorized and
-supported. Otherwise use two separate local passes and identify the same-agent
-fallback. Replace a missing review before counting the pair. Apply review-change's
+results. Prefer two independent fresh-context reviewers. Run them concurrently
+when authorized and supported, or sequentially if the client supports only one
+at a time. If independent reviewers are unavailable, use two separate local
+passes and identify the same-agent fallback. Replace a missing review before counting the pair. Apply review-change's
 finding verification and severity rules. Review the checkpoint with its dependencies.
 The final pair covers the integrated diff against the issue base.
 

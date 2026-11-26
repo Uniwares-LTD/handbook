@@ -58,7 +58,8 @@ when the active mode forbids writes, return drafts and wait for the mode change.
 ## Review completion
 
 Use review-change for separate read-only passes. Small and medium work need one clean
-review; large work follows the checkpoint review count in the large-issue procedure.
+review. Large work follows the [paired checkpoint review procedure](large-issues.md#checkpoint-execution),
+including reuse of the parent's validation evidence.
 A clean review has no confirmed Blocking findings and has current required verification.
 Nonblocking notes do not restart implementation. Missing required evidence prevents a
 clean completion claim; advisory warnings do not.

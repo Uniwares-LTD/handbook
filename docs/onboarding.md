@@ -286,11 +286,13 @@ hooks for manual reconciliation.
 
 ## Recover an older helper after a skill rename
 
-If an older refresh helper rejects a candidate due to a renamed skill, verify the
-Handbook checkout's origin and that its `main` branch is clean and can fast-forward
-to the approved Handbook revision. In that checkout, run `git fetch origin main`
-outside the sandbox and use `git merge --ff-only APPROVED_SHA` to update the local
-cache to the reviewed full SHA. If the cache is dirty or divergent, preserve it
-and use the documented setup procedure with a separate clean checkout. Rerun the
-consumer check and explicit sync from the reviewed snapshot. Existing task handoffs
-continue to use their recorded revision while it remains available.
+The launcher executes the helper at the last accepted revision, even after a
+checkout's HEAD advances. If that helper rejects a renamed skill, keep the old
+checkout for active handoffs. Use the first-use setup procedure with a new,
+unused checkout path and the approved Handbook origin. Run
+`npm run handbook:setup -- --path NEW_PATH` from the consumer, verify the returned
+revision, and use that path for subsequent checks (or set
+`UNIWARES_HANDBOOK_PATH`). Materialize the reviewed revision there for explicit
+sync. When a default skill name changes, update the consumer's copied offline
+tool and launcher to versions that select the new name. Review local wrappers
+and preserve custom content during the migration.

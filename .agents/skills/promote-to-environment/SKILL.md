@@ -44,7 +44,8 @@ the target. Before merge, confirm the original source tip, target tip and review
 delivery head. If either original tip moved, rebuild the proposal from current
 tips and repeat review. Preserve earlier work during recovery.
 
-For an authorized rollback, identify the deployed merge and its original release
+For a rollback under the consumer's documented procedure, obtain authority for the
+specific release and target. Identify the deployed merge and its original release
 run. Verify the pre-release revision and a usable recovery point. Prepare a revert
 of that merge on a branch from the current target using the target-side parent and
 review the resulting tree for later changes and data compatibility. Use a PR and

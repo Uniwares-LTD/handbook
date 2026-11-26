@@ -105,7 +105,7 @@ test('consumer upgrade preserves settings and installs only opted-in Claude rout
     cpSync(baselineSource, badSource, { recursive: true });
     cpSync(path.join(source, 'docs/consumer-bootstrap.md'), path.join(badSource, 'docs/consumer-bootstrap.md'));
     mkdirSync(path.join(badSource, 'docs/guidance'));
-    for (const text of ['', '# Wrong heading\n', '## Workflow adherence\n' + 'a'.repeat(10000)]) {
+    for (const text of ['', '# Wrong heading\n', '## Workflow adherence\n\n## Next section\nUnrelated text.\n', '## Workflow adherence\n' + 'a'.repeat(10000)]) {
       if (text) writeFileSync(path.join(badSource, 'docs/guidance/communication.md'), text);
       assert(syncEntrypoints(root, { source: badSource, write: true }).warnings.some(warning => warning.includes('under 10000 characters')));
       assert.deepEqual(readJson(settings).hooks, after.hooks);

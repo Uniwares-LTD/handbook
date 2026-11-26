@@ -18,7 +18,8 @@ consumer guidance without losing local settings.
 
 ## Scope and authority
 
-This delivery covers the Handbook. The Voxr chore is a separate draft for U1–U3.
+This delivery covers the Handbook. [Voxr issue #2175](https://github.com/Jason-Richter-Enterprises/voxr-ai-app/issues/2175)
+tracks U1–U3 separately.
 The source revisions and individual adoption decisions live in
 [provenance](../../../PROVENANCE.md#voxr-workflow-and-consumer-upgrade-adoption).
 Live consumer adoption, publication, deployment and issue changes use their

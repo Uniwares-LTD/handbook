@@ -223,7 +223,7 @@ test('syntactically broken helper is rejected before promotion or execution', t 
   assert.match(result.reason, /Candidate incompatible/);
 });
 
-test('a newer contract can rename a historical skill and rejects an incomplete rename', t => {
+test('a newer contract can rename a historical skill and rejects an incomplete rename', async t => {
   const f = fixture(t), baseline = f.run();
   const renamed = 'renamed-skill';
   const old = `.agents/skills/${coreSkills[0]}/SKILL.md`;
@@ -237,6 +237,10 @@ test('a newer contract can rename a historical skill and rejects an incomplete r
   f.git(f.seed, 'add', '.'); f.git(f.seed, 'commit', '-m', 'rename'); f.git(f.seed, 'push', 'origin', 'main');
   const upgraded = f.run();
   assert.notEqual(upgraded.revision, baseline.revision);
+  // First-use recovery must load the new helper with no old baseline metadata.
+  const replacement = path.join(f.root, 'replacement');
+  const recovered = await runHandbook('setup', { directory: replacement, root: f.root, origin: f.remote });
+  assert.equal(recovered.revision, upgraded.revision);
   f.git(f.seed, 'rm', newFile); f.git(f.seed, 'commit', '-m', 'incomplete rename'); f.git(f.seed, 'push', 'origin', 'main');
   assert.equal(f.run().revision, upgraded.revision);
 });
@@ -262,15 +266,24 @@ test('a target-based delivery preserves target work and can be reverted through 
   const delivery = git(seed, 'rev-parse', 'HEAD');
   assert.equal(git(seed, 'diff', '--name-only', target, delivery), 'policy.md');
   git(seed, 'switch', 'target');
-  git(seed, 'merge', '--no-ff', '--no-edit', delivery);
+  // A moved target invalidates the first review before the promotion can merge.
+  writeFileSync(path.join(seed, 'later.md'), 'keep later target change');
+  git(seed, 'add', 'later.md'); git(seed, 'commit', '-m', 'target advanced');
+  const updatedTarget = git(seed, 'rev-parse', 'HEAD');
+  assert.notEqual(updatedTarget, target);
+  git(seed, 'switch', '-c', 'revised-delivery');
+  assert.throws(() => git(seed, 'merge', '--no-commit', source));
+  writeFileSync(policy, 'resolved');
+  git(seed, 'add', 'policy.md'); git(seed, 'commit', '-m', 'resolve against current target');
+  const revisedDelivery = git(seed, 'rev-parse', 'HEAD');
+  assert.equal(git(seed, 'diff', '--name-only', updatedTarget, revisedDelivery), 'policy.md');
+  git(seed, 'switch', 'target');
+  git(seed, 'merge', '--no-ff', '--no-edit', revisedDelivery);
   const deployed = git(seed, 'rev-parse', 'HEAD');
   assert.notEqual(deployed, target);
   git(seed, 'switch', '-c', 'rollback');
   git(seed, 'revert', '-m', '1', '--no-edit', deployed);
-  assert.equal(git(seed, 'diff', '--name-only', target, 'HEAD'), '');
-  git(seed, 'switch', 'target');
-  git(seed, 'commit', '--allow-empty', '-m', 'target advanced');
-  assert.notEqual(git(seed, 'rev-parse', 'target'), target);
+  assert.equal(git(seed, 'diff', '--name-only', updatedTarget, 'HEAD'), '');
 });
 
 test('missing indexed resource prevents candidate promotion', t => {
