@@ -119,6 +119,9 @@ test('incompatible candidate preserves last good baseline and checkout with a re
 
 test('task A resources stay at A through refresh to B and a resumed handoff', async t => {
   const f = fixture(t);
+  const reviewer = '.agents/agents/reviewer.md';
+  mkdirSync(path.dirname(path.join(f.seed, reviewer)), { recursive: true });
+  writeFileSync(path.join(f.seed, reviewer), 'Reviewer A');
   mkdirSync(path.join(f.seed, 'assets'));
   writeFileSync(path.join(f.seed, 'assets/run.mjs'), "import {value} from './value.mjs'; console.log(value);");
   writeFileSync(path.join(f.seed, 'assets/value.mjs'), "export const value = 'A';");
@@ -128,6 +131,7 @@ test('task A resources stay at A through refresh to B and a resumed handoff', as
   const task = { path: f.clone, revision: first.revision };
   const a = materialize(task.path, task.revision, { origin: f.remote });
   writeFileSync(path.join(f.seed, 'policy.md'), 'two');
+  writeFileSync(path.join(f.seed, reviewer), 'Reviewer B');
   writeFileSync(path.join(f.seed, 'assets/value.mjs'), "export const value = 'B';");
   f.git(f.seed, 'commit', '-am', 'B'); f.git(f.seed, 'push', 'origin', 'main');
   const second = await runHandbook('check', { directory: f.clone, origin: f.remote, force: true });
@@ -136,6 +140,9 @@ test('task A resources stay at A through refresh to B and a resumed handoff', as
   assert.equal(materialize(resumed.path, resumed.revision, { origin: f.remote }).resourcePath, a.resourcePath);
   assert.equal(readFileSync(path.join(a.resourcePath, 'policy.md'), 'utf8'), 'one');
   assert.equal(f.git(resumed.path, 'show', `${resumed.revision}:policy.md`), 'one');
+  assert.equal(f.git(resumed.path, 'show', `${resumed.revision}:${reviewer}`), 'Reviewer A');
+  assert.equal(readFileSync(path.join(a.resourcePath, reviewer), 'utf8'), 'Reviewer A');
+  assert.equal(f.git(resumed.path, 'show', `${second.revision}:${reviewer}`), 'Reviewer B');
   assert.equal(execFileSync(process.execPath, [path.join(a.resourcePath, 'assets/run.mjs')], { cwd: f.root, encoding: 'utf8', windowsHide: true }).trim(), 'A');
   assert.deepEqual(readFileSync(path.join(a.resourcePath, 'assets/image.bin')), Buffer.from([0, 255, 128, 7]));
   writeFileSync(path.join(a.resourcePath, 'policy.md'), 'tampered');
@@ -294,6 +301,24 @@ test('a target-based delivery preserves target work and can be reverted through 
   git(seed, 'switch', '-c', 'rollback');
   git(seed, 'revert', '-m', '1', '--no-edit', deployed);
   assert.equal(git(seed, 'diff', '--name-only', updatedTarget, 'HEAD'), '');
+});
+
+test('required reviewer role is enforced by the candidate contract', t => {
+  const f = fixture(t);
+  const contract = path.join(f.seed, 'handbook-contract.json');
+  const role = '.agents/agents/reviewer.md';
+  writeFileSync(contract, JSON.stringify({ protocolVersion: 1, requiredFiles: [], skills: coreSkills }));
+  f.git(f.seed, 'add', 'handbook-contract.json');
+  f.git(f.seed, 'commit', '-m', 'older v1 contract');
+  f.git(f.seed, 'push', 'origin', 'main');
+  const baseline = f.run();
+  assert.equal(baseline.revision, f.git(f.seed, 'rev-parse', 'HEAD'));
+  writeFileSync(contract, JSON.stringify({ protocolVersion: 1, requiredFiles: [role], skills: coreSkills }));
+  f.git(f.seed, 'commit', '-am', 'declare required reviewer');
+  f.git(f.seed, 'push', 'origin', 'main');
+  const result = f.run();
+  assert.equal(result.revision, baseline.revision);
+  assert.match(result.reason, /reviewer\.md/);
 });
 
 test('missing indexed resource prevents candidate promotion', t => {

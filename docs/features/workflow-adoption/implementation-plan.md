@@ -92,4 +92,11 @@ Merge using a normal merge commit guarded by the exact reviewed head after all r
 
 ## Verified progress and resume
 
-This is the implementation handoff. Execution begins at checkpoint 1 after implementation authority and tracking are settled. Record verified checkpoint identities, evidence and remaining native runs here during execution.
+The approved planning files are in `988cf61`. The owner authorized untracked
+delivery on this work branch and the branch contains the fetched integration
+base. Checkpoints 1 and 2 are in `0e15ebd`. Two separate read-only reviewers
+passed each checkpoint after corrections. The guidance suite passed 9 tests,
+the structural check passed, and the staged diff passed whitespace checks.
+The Codex CLI reported no active login and Claude Code was unavailable. Native
+baseline and candidate observations remain pending. Retain the frozen fixture
+revision for later comparison. Continue at checkpoint 3.

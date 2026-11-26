@@ -4,7 +4,7 @@
 
 - [Refresh helper](../scripts/refresh-handbook.mjs): shared cache, cooldown and candidate checks.
 - [Consumer launcher](../scripts/handbook.mjs): committed helper loading and revision resources.
-- [Integration tooling](../scripts/handbook-integration.mjs): offline readiness, entrypoint sync, the AGENTS.md session contract and Claude workflow routing.
+- [Integration tooling](../scripts/handbook-integration.mjs): offline readiness, entrypoint sync, the AGENTS.md session contract, Claude workflow routing and managed reviewer discovery.
 - [Enrollment helper](../scripts/enroll.mjs): existing assigned issue enrollment.
 - [Issue creation helper](../scripts/create-issue.mjs): approved issue creation with project enrollment.
 - [Access check](../scripts/org-access.mjs): read-only organization team and permission gap report.

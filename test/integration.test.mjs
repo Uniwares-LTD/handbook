@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, cpSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, cpSync, symlinkSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -9,6 +9,8 @@ import { execFileSync } from 'node:child_process';
 import { checkReadiness, syncEntrypoints, syncTemplates, mapSections, permissionEntries, gatesFile, branchWarnings } from '../scripts/handbook-integration.mjs';
 
 const source = fileURLToPath(new URL('..', import.meta.url));
+const readJson = file => JSON.parse(readFileSync(file, 'utf8'));
+const writeJson = (file, value) => writeFileSync(file, JSON.stringify(value));
 const branches = '## Branches\n\n- Integration branch: dev\n- Deployment branches: _staging (from dev), _production (from _staging)\n';
 function fixture(t) {
   const root = mkdtempSync(path.join(tmpdir(), 'handbook-integration-'));
@@ -64,6 +66,143 @@ test('readiness reports broken references, absent map sections and invalid metad
   assert.match(checkReadiness(root).warnings[0], /handbook.json/);
 });
 
+test('shared reviewer is pinned and its pilot preserves both startup defaults', t => {
+  const root = fixture(t);
+  const entry = path.join(root, '.claude/agents/reviewer.md');
+  const configPath = path.join(root, 'handbook.json');
+  const config = readJson(configPath);
+  syncEntrypoints(root, { source, write: true });
+  const plain = readFileSync(entry, 'utf8');
+  assert.match(plain, /REVISION:\.agents\/agents\/reviewer\.md/);
+  assert.match(plain, /tools: Read, Grep, Glob, Bash/);
+  assert.doesNotMatch(plain, /^model:/m);
+  assert(!existsSync(path.join(root, '.agents/agents')));
+  for (const enabled of [true, false]) {
+    const selected = { ...config, agentsSessionContract: enabled, claudeSessionStartRouting: enabled };
+    writeJson(configPath, selected);
+    syncEntrypoints(root, { source, write: true });
+    const agents = readFileSync(path.join(root, 'AGENTS.md'), 'utf8');
+    const settingsPath = path.join(root, '.claude/settings.json');
+    const settings = readFileSync(settingsPath, 'utf8');
+    writeJson(configPath, { ...selected, agentTierPilot: true });
+    const dryRun = syncEntrypoints(root, { source });
+    assert(dryRun.warnings.some(warning => warning.includes('.claude/agents/reviewer.md')));
+    assert.equal(readFileSync(entry, 'utf8'), plain);
+    assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, ['.claude/agents/reviewer.md']);
+    assert.match(readFileSync(entry, 'utf8'), /^model: sonnet$/m);
+    assert.equal(readFileSync(path.join(root, 'AGENTS.md'), 'utf8'), agents);
+    assert.equal(readFileSync(settingsPath, 'utf8'), settings);
+    assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, []);
+    writeJson(configPath, selected);
+    assert(syncEntrypoints(root, { write: true }).warnings.some(warning => warning.includes('pilot drift')));
+    assert.match(readFileSync(entry, 'utf8'), /^model: sonnet$/m);
+    syncEntrypoints(root, { source, write: true });
+    assert.equal(readFileSync(entry, 'utf8'), plain);
+  }
+  writeJson(configPath, { ...config, agentTierPilot: 'yes' });
+  const invalid = syncEntrypoints(root, { source, write: true });
+  assert.deepEqual(invalid.changed, []);
+  assert.match(invalid.warnings[0], /agentTierPilot must be a boolean/);
+});
+
+test('reviewer sync preserves an unmanaged wrapper and a consumer-owned role', t => {
+  const root = fixture(t);
+  const entry = path.join(root, '.claude/agents/reviewer.md');
+  mkdirSync(path.dirname(entry), { recursive: true });
+  const custom = '---\nname: reviewer\ndescription: custom\nmodel: opus\n---\nProject contract.\n';
+  writeFileSync(entry, custom);
+  const collision = syncEntrypoints(root, { source, write: true });
+  assert(collision.warnings.some(warning => warning.includes('Preserved customized/unmanaged')));
+  assert.equal(readFileSync(entry, 'utf8'), custom);
+  const role = path.join(root, '.agents/agents/reviewer.md');
+  mkdirSync(path.dirname(role), { recursive: true });
+  writeFileSync(role, custom);
+  assert(syncEntrypoints(root, { source, write: true }).warnings.some(warning => warning.includes('Consumer owns reviewer')));
+  assert.equal(readFileSync(role, 'utf8'), custom);
+  assert.equal(readFileSync(entry, 'utf8'), custom);
+});
+
+test('reviewer sync waits for bootstrap reconciliation and keeps a managed suffix', t => {
+  const root = fixture(t);
+  const bootstrap = path.join(root, '.agents/handbook.md');
+  const wrapper = path.join(root, '.claude/agents/reviewer.md');
+  writeFileSync(bootstrap, 'Consumer customization');
+  assert(syncEntrypoints(root, { source, write: true }).warnings.some(warning => warning.includes('migration deferred')));
+  assert(!existsSync(wrapper));
+  writeFileSync(bootstrap, '');
+  syncEntrypoints(root, { source, write: true });
+  const initial = readFileSync(wrapper, 'utf8');
+  writeFileSync(wrapper, initial + '\nLocal reviewer note.\n');
+  const config = path.join(root, 'handbook.json');
+  writeJson(config, { ...readJson(config), agentTierPilot: true });
+  syncEntrypoints(root, { source, write: true });
+  assert.match(readFileSync(wrapper, 'utf8'), /^model: sonnet$/m);
+  assert.match(readFileSync(wrapper, 'utf8'), /Local reviewer note\.\n$/);
+});
+
+test('reviewer sync respects native names declared in nested files', t => {
+  const root = fixture(t);
+  const nested = path.join(root, '.claude/agents/team/inspection.md');
+  mkdirSync(path.dirname(nested), { recursive: true });
+  const custom = "---\nname: 'reviewer' # consumer role\ndescription: Project review\n---\n";
+  writeFileSync(nested, custom);
+  const result = syncEntrypoints(root, { source, write: true });
+  assert(result.warnings.some(warning => warning.includes('owns the reviewer name') && warning.includes('inspection.md')));
+  assert.equal(readFileSync(nested, 'utf8'), custom);
+  assert(!existsSync(path.join(root, '.claude/agents/reviewer.md')));
+  const roles = path.join(root, '.agents/agents');
+  mkdirSync(roles);
+  writeFileSync(path.join(roles, 'reviewer.md'), '---\nname: reviewer\ndescription: Repository role\n---\n');
+  syncEntrypoints(root, { source, write: true });
+  assert(!existsSync(path.join(root, '.claude/agents/reviewer.md')));
+});
+
+test('reviewer sync leaves symlinked native directories untouched', t => {
+  const root = fixture(t);
+  const external = path.join(root, 'custom-agents');
+  mkdirSync(external);
+  mkdirSync(path.join(root, '.claude'));
+  symlinkSync(external, path.join(root, '.claude/agents'), 'junction');
+  const result = syncEntrypoints(root, { source, write: true });
+  assert(result.warnings.some(warning => warning.includes('Shared reviewer: Symlink')));
+  assert(existsSync(path.join(root, '.claude/skills/review-change/SKILL.md')));
+  assert(!existsSync(path.join(external, 'reviewer.md')));
+});
+
+test('reviewer pilot defers to an existing project model choice', t => {
+  const root = fixture(t);
+  const config = path.join(root, 'handbook.json');
+  writeJson(config, { ...readJson(config), agentTierPilot: true });
+  mkdirSync(path.join(root, '.claude'));
+  const settings = path.join(root, '.claude/settings.json');
+  const env = { CLAUDE_CODE_SUBAGENT_MODEL: 'opus' };
+  writeJson(settings, { env });
+  const result = syncEntrypoints(root, { source, write: true });
+  assert(result.warnings.some(warning => warning.includes('deferred to the configured')));
+  assert.doesNotMatch(readFileSync(path.join(root, '.claude/agents/reviewer.md'), 'utf8'), /^model:/m);
+  assert.deepEqual(readJson(settings).env, env);
+  writeJson(settings, { ...readJson(settings), env: {} });
+  writeJson(path.join(root, '.claude/settings.local.json'), { env });
+  assert(syncEntrypoints(root, { source, write: true }).warnings.some(warning => warning.includes('settings.local.json')));
+  assert.doesNotMatch(readFileSync(path.join(root, '.claude/agents/reviewer.md'), 'utf8'), /^model:/m);
+});
+
+test('source sync limits the model field to its managed reviewer', t => {
+  const root = fixture(t);
+  const config = path.join(root, 'handbook.json');
+  writeJson(config, { ...readJson(config), kind: 'source', agentTierPilot: true });
+  const roles = path.join(root, '.agents/agents');
+  mkdirSync(roles, { recursive: true });
+  cpSync(path.join(source, '.agents/agents/reviewer.md'), path.join(roles, 'reviewer.md'));
+  writeFileSync(path.join(roles, 'local-review.md'), '---\nname: local-review\ndescription: Local reviewer\n---\n');
+  mkdirSync(path.join(root, '.agents/skills'));
+  cpSync(path.join(source, '.agents/skills/review-change'), path.join(root, '.agents/skills/review-change'), { recursive: true });
+  syncEntrypoints(root, { write: true });
+  const directory = path.join(root, '.claude/agents');
+  assert.match(readFileSync(path.join(directory, 'reviewer.md'), 'utf8'), /^model: sonnet$/m);
+  assert.doesNotMatch(readFileSync(path.join(directory, 'local-review.md'), 'utf8'), /^model:/m);
+});
+
 test('consumer upgrade preserves settings; Claude routing is on unless set to false', t => {
   const baselineSource = mkdtempSync(path.join(tmpdir(), 'handbook-routing-baseline-'));
   t.after(() => rmSync(baselineSource, { recursive: true, force: true }));
@@ -79,8 +218,6 @@ test('consumer upgrade preserves settings; Claude routing is on unless set to fa
     syncEntrypoints(root, { source: baselineSource, write: true });
     const config = path.join(root, 'handbook.json');
     const settings = path.join(root, '.claude/settings.json');
-    const readJson = file => JSON.parse(readFileSync(file, 'utf8'));
-    const writeJson = (file, value) => writeFileSync(file, JSON.stringify(value));
     const consumerHook = { hooks: [{ type: 'command', command: 'local-hook' }] };
     const preferences = existsSync(settings) ? readJson(settings) : {};
     writeJson(settings, { ...preferences, permissions: { allow: ['Bash(local-check)'] }, hooks: { SessionStart: [consumerHook] } });
@@ -360,7 +497,7 @@ test('starter templates are copied once, never overwritten unless named, and fol
 function sourceFixture(t) {
   const copy = mkdtempSync(path.join(tmpdir(), 'handbook-source-copy-'));
   t.after(() => rmSync(copy, { recursive: true, force: true }));
-  for (const name of ['handbook-contract.json', '.agents/skills', 'docs/consumer-bootstrap.md']) {
+  for (const name of ['handbook-contract.json', '.agents/skills', '.agents/agents', 'docs/consumer-bootstrap.md']) {
     mkdirSync(path.dirname(path.join(copy, name)), { recursive: true });
     cpSync(path.join(source, name), path.join(copy, name), { recursive: true });
   }
@@ -438,6 +575,17 @@ test('older snapshots without a bootstrap preserve existing consumer routes', t 
   assert.deepEqual(result.changed, []);
   assert(result.warnings.some(w => w.includes('Source lacks')));
   assert(existsSync(path.join(root, '.agents/handbook.md')));
+});
+
+test('older snapshots without the reviewer preserve the installed wrapper', t => {
+  const root = fixture(t), copy = sourceFixture(t);
+  syncEntrypoints(root, { source, write: true });
+  const entry = path.join(root, '.claude/agents/reviewer.md');
+  const before = readFileSync(entry, 'utf8');
+  rmSync(path.join(copy, '.agents/agents/reviewer.md'));
+  const result = syncEntrypoints(root, { source: copy, write: true });
+  assert(result.warnings.some(warning => warning.includes('lacks the shared reviewer')));
+  assert.equal(readFileSync(entry, 'utf8'), before);
 });
 
 test('empty bootstrap source cannot install dependent wrappers', t => {

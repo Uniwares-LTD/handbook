@@ -20,6 +20,8 @@ For authorized local initialization or maintenance:
 3. Select relevant technology skills; preserve local constraints and explain conflicts.
 4. Reconcile bootstrap files and native entrypoints following the README route.
    Use explicit sync; never overwrite customized wrappers or replace project AGENTS.md.
+   For the shared reviewer, reconcile the copied helper and use source-aware
+   sync and drift checks. Preserve consumer-owned reviewer roles.
    Use maintain-docs to start the adoption documents and offer the starter templates.
 5. Run offline readiness/drift checks and the appropriate setup/check/doctor command.
    Keep baseline availability separate from advisory local readiness.
