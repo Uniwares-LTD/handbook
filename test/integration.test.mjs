@@ -134,12 +134,22 @@ test('session contract is inlined into AGENTS.md, preserved when customized and 
   writeFileSync(agents, '# Product agents\n\n' + original + '\n');
   syncEntrypoints(root, { source, write: true });
   const synced = readFileSync(agents, 'utf8');
-  assert.match(synced, /^# Product agents\n\n<!-- handbook-session-contract:start -->\n## Session contract\n/);
+  // Blank lines inside the markers keep Markdown formatters from rewriting the block.
+  assert.match(synced, /^# Product agents\n\n<!-- handbook-session-contract:start -->\n\n## Session contract\n/);
+  assert.match(synced, /\n\n<!-- handbook-session-contract:end [a-f0-9]{64} -->\n\n/);
   assert(synced.includes('Where to look') && synced.includes('maintain-docs'));
   assert(synced.endsWith(original + '\n'));
   assert.deepEqual(syncEntrypoints(root, { source, write: true }).changed, []);
   assert.deepEqual(syncEntrypoints(root, { source }).warnings, []);
   assert.deepEqual(checkReadiness(root), { ready: true, warnings: [] });
+
+  // A block written by the first release, without the blank lines, is intact and upgraded.
+  const compact = synced.replace('start -->\n\n', 'start -->\n').replace('\n\n<!-- handbook-session-contract:end', '\n<!-- handbook-session-contract:end');
+  writeFileSync(agents, compact);
+  assert.deepEqual(checkReadiness(root), { ready: true, warnings: [] });
+  const upgrade = syncEntrypoints(root, { source, write: true });
+  assert(upgrade.changed.includes('AGENTS.md') && !upgrade.warnings.some(w => w.includes('customized')));
+  assert.equal(readFileSync(agents, 'utf8'), synced);
 
   writeFileSync(agents, synced.replace('Where to look', 'Local closing list'));
   assert(syncEntrypoints(root, { source, write: true }).warnings.some(w => w.includes('preserved customized Handbook session contract')));
