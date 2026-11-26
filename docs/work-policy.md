@@ -65,10 +65,10 @@ example `gh api`, `git -C` or shell wrappers), so never rely on them in place of
 
 Present the exact action, target, scope and stop conditions for each checkpoint in
 one package. A human may explicitly confirm several named checkpoints together.
-Record their confirmation and reuse it while each action still matches. A plan
+Record their confirmation. Reuse it only in the session that granted it and
+only while each action matches the approved conditions. A plan
 first shown after confirmation, or materially revised afterward, needs its own
-approval before implementation. Downstream approval remains valid where its scope
-and conditions still match.
+approval before implementation.
 
 Pause the dependent action on a changed target, scope or risk, outstanding required
 checks, a Blocking finding, or an ambiguous or rejected remote operation. Read back
