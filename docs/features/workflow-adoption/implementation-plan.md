@@ -1,0 +1,126 @@
+# Wire review, agent economy and manual QA into everyday work
+
+## Contract and execution entry
+
+Implement the [requirements and acceptance cases](prd.md) against Handbook main at `dc22beaf6c21c0107480f97cb3e1bf23f086b42a`. The planning task's bootstrap revision was `97c499839cb2c0eb82a96f41c58d5e125a1bcc9c`. On implementation entry, verify the current integration base, establish the executing task's Handbook revision and check for intervening changes. Use Node 22 or newer. Follow the normal substantial-work tracking and branch policy. Keep these planning documents on the local planning branch until the owner authorizes implementation. At entry carry both reviewed documents onto the issue branch from the current integration tip. If substantial work is to remain untracked, obtain a task-specific exception. The exception for PR #26 covered that PR. Publication and live consumer writes need their own scope.
+
+Use the existing bootstrap, skills, role contracts, sync command and drift checks. Keep one owner per rule. The ordinary path must work without model selection, a startup hook, delegation, or telemetry. Run source commands at the Handbook root and consumer commands at the fixture root.
+
+## 1. Capture the baseline before changing behavior
+
+Keep WF-01 through WF-06 and their existing assertions. Add WF-07 for risk and journey review, WF-08 for handoff and resume, WF-09 for reviewer discovery and tier selection, and WF-10 for manual QA. Bump the fixture revision and update the explicit ID list in `test/guidance.test.mjs` in the same change. Keep the published criteria available to maintainers. Give subjects only the scenario input, with the scoring key and seeded defect held by the evaluator. Extend the versioned evaluation design in `docs/clients.md`. Freeze the new inputs and evaluator-only answers before the first run. Exercise inert copy versus a permission change, a second launcher with role checks and retry, a local lookup versus bounded delegation, a changed plan, a long-running handle and short versus heavy QA plans. Use the same fixtures against the base and candidate. Record revision, client version, model, effort, tools and available access. Keep raw transcripts local.
+
+For V21 record correctness and missed blockers first, then rework, prompts, time, calls, tokens and available cost. Also record actual worker model, independent reads batched, second opinions, context size and cache rebuilds when observable. For the V20 tier trial, vary the worker tier separately from workflow text. Record unsupported readings and unavailable clients. Baseline capture may use a retained base snapshot later if a client is unavailable now. Never compare unlike runs as savings.
+
+## 2. Wire the shared rules into task selection and execution
+
+| Work | Canonical owner and route | Proof |
+| --- | --- | --- |
+| V16–V17 | Update review completion in `docs/guidance/engineering.md`. Link the risk decision from `work-on-task`, `review-change`, the reviewer contract and large checkpoints. Extend existing integration and simplicity scenarios in `docs/clients.md`. | Both review routes work. A missing report or stale check keeps the round pending. A corrected revision gets fresh review. Separate observed UI return behavior from a test that only asserts configuration. |
+| V18 | Put the shared parent/worker rules in engineering guidance. Route planning and implementation through the applicable skills. Pass a worker its exact question, allowed scope, relevant excerpt, pinned source and expected evidence. A worker returns its finding, source or unresolved doubt. | A small lookup stays local. Independent reads can run together. A dependent read waits for its input. The parent receives a usable operation handle, expected completion signal and next check, and retains ownership until completion. |
+| V19 | Extend `docs/guidance/large-issues.md` and the implementation-plan starter. Identify approved plan bytes with SHA-256, path and revision. Use the fingerprint procedure below for committed and working copies. | An unchanged excerpt resolves to its approved source. A changed requirement invalidates the affected handoff. A progress-only update preserves the approved plan identity. Handoff carries task revision, branch, checks, findings, pending operation handles and approval provenance. A fresh session reacquires required authority. |
+| Manual QA | Own tester-burden guidance in engineering guidance and link it from PR test-flow preparation, `review-change`, and the optional Test flow sections in `.github/PULL_REQUEST_TEMPLATE.md` and `.agents/templates/github/PULL_REQUEST_TEMPLATE.md`. Keep the local policy approval section. Route standalone QA issues through `manage-issues` and standalone guides through `maintain-docs` when those workflows produce a manual plan. Use it for standalone QA plans as well. | Combine redundant setup and reuse valid accounts or fixtures. A records-only outcome identifies an available authorized read-only check and who runs it. If unavailable, report the gap. Preserve essential cases and keep the simple plan concise. |
+
+Update `docs/source-map.md`, the domain index and provenance where navigation or ownership changes. Inspect root `AGENTS.md` and the consumer bootstrap for the route from an ordinary request to the canonical owner. Add a short pointer only where the route is missing. Avoid duplicating the policy in entry points.
+
+### Handoff protocol and review independence
+
+Use the existing starter's final level-two heading `## Verified progress and resume` as the only progress boundary. Hash the UTF-8 bytes before that heading after normalizing CRLF to LF, preserving all other whitespace. Recognize the heading only outside fenced code. For an older plan with no heading hash the whole document. Reject duplicate boundaries and use the full plan for reconciliation. Keep acceptance, scope, checkpoint instructions and linked PRD identity above the boundary. At approval record the full SHA-256 digest, repository, path, approved commit when available, and the same normalized full-file digest for the PRD when one governs the plan. Record the identities in the handoff or progress section after hashing. When no committed plan exists, retain the exact approved snapshot in the existing task handoff before relying on an excerpt. Place a small read-only Node hashing routine in the compile-feature-spec skill resources. Invoke it from the retained snapshot with the plan or PRD path in the project worktree. Exercise it from `test/guidance.test.mjs` with fixtures for Windows line endings, fenced examples, changed PRD, progress-only edits and a missing approved snapshot. A missing or mismatched identity requires reading and comparing the complete affected artifact. Material changes to accepted scope return to its owner for approval.
+
+Apply excerpt handoffs to implementation and bounded investigations. A fresh reviewer receives the base, diff, criteria, pinned source and common validation evidence. Follow the reviewer contract's two-stage review. Withhold the implementation narrative, plan excerpt, earlier findings and evaluator answers until the raw review is collected. Then compare against the plan. Missing reports on the same revision are replaced individually. Corrections invalidate affected checks and both reviews of the old diff. Follow the existing repeated-blocker rule. Same-session compaction preserves verifiable authority and a fresh session establishes its own.
+
+## 3. Resolve roles and settings in Handbook and consumers
+
+Handbook has implementation and reviewer contracts. Its generator currently creates read-only Claude agent wrappers from **local** role files. Consumer skill wrappers instead resolve the shared skill through the retained revision. A new adopter with no local role directory must still reach the shared reviewer. A worker with a read-only wrapper must never be assigned write work.
+
+1. In Handbook, keep direct skill-to-role references. In consumers, route from the local skill entry point to the retained shared skill, then resolve its role and references within that same revision via the existing bootstrap or resources snapshot. Test a consumer containing neither Handbook docs nor local role contracts.
+2. Extend `scripts/handbook-integration.mjs` with the following reviewer selection rules. The shared wrapper reads the existing task baseline from the handoff and resolves `.agents/agents/reviewer.md` and its economy rules inside that revision. If the worker cannot recover the revision, return the missing input to the parent before review.
+
+   | Sync or review condition | Required behavior |
+   | --- | --- |
+   | Handbook source | Generate the wrapper from the local canonical reviewer. Keep the implementation contract on its existing skill route. |
+   | Consumer with a reviewed source and intact bootstrap | Generate the managed `.claude/agents/reviewer.md` from the snapshot when its reviewer contract is present. Add both role contracts to the new revision's `handbook-contract.json` requiredFiles. Keep protocol v1. A candidate declaring a missing role fails promotion. |
+   | Older snapshot or missing bootstrap | Preserve existing files and report the missing prerequisite. Use the skills available at the retained revision. Source-free sync checks local structure and preserves the last managed shared wrapper. |
+   | Consumer owns the role name or customized the wrapper | Check ownership before the local-role loop. Preserve the consumer's role and its authority. For shared review use a generic read-only handoff to the pinned contract, or the disclosed same-agent fallback. |
+   | Intact managed shared wrapper | Preserve its custom suffix and use the existing checksum rules. Source-aware entrypoint checks compare expected content without writing. |
+   | Codex or client without native reviewer registration | The parent supplies the pinned reviewer contract through an authorized read-only handoff, or runs the existing review fallback. |
+
+
+3. Add an optional boolean `agentTierPilot` to `handbook.json`, default off, validated for source and consumer. On supported managed Claude reviewer wrappers, emit `model: sonnet` only on the managed Handbook reviewer during the pilot. Omit that generated field when the pilot is disabled. Reject nonboolean values before writing. If an explicit selection conflicts, preserve it and report that the requested pilot tier could not be verified. Prefer higher capability for consequential design or implementation when the parent can select it. Existing explicit client and consumer choices take precedence. Do not manufacture Voxr's stage agents, grant tools, or create a write-capable wrapper. Unsupported controls leave a usable ordinary workflow and an explicit pilot limitation.
+4. Preserve the two independent consumer defaults from [onboarding](../../onboarding.md#session-contract-and-claude-workflow-routing). Without overrides, sync embeds the Session contract in the consumer’s `AGENTS.md` and installs the offline Claude hook that prints the full communication guide. Setting `agentsSessionContract` or `claudeSessionStartRouting` to false disables only its own managed surface. The reviewer-tier pilot is independently off by default. Put the economy pointer in the selected workflow and reference it from Workflow adherence. Keep the compact Session contract, the hook output budget, managed markers and consumer customizations intact. Handbook source continues to use its own entry points.
+5. Update `docs/onboarding.md` and `docs/consumer-bootstrap.md` with the reviewer upgrade boundary. Reuse the launcher’s existing `mustRead` and `next` contract. Read shared bootstrap and communication at the retained revision, then the configured local guidance, source map and preferences. Load the selected skill before acting and reselect when a lookup turns into a write. Shared prose arrives on baseline refresh for a new task. Changes to copied helpers require reviewed helper reconciliation. Bootstrap, wrapper and hook changes require explicit source-aware sync. Consumer-owned templates require a separately selected update.
+
+## 4. Prove adoption and review the integrated change
+
+From Handbook run `npm run handbook:sync`, `npm run handbook:entrypoints` and `npm run validate`. Extend `test/integration.test.mjs` for source routing, fresh consumer, existing consumer upgrade, custom role collision, missing capability, settings preservation, opt-in/off and idempotence. In `test/helpers.test.mjs`, cover the candidate required-role check and older v1 fallback with disposable Git fixtures. After inspecting changes under `.agents`, regenerate `skills-lock.json` with `node scripts/check.mjs --write-lock` before the full validation run. Inspect generated diffs.
+
+Use a disposable committed Handbook candidate. Run the following from a disposable consumer with the matching reviewed helpers. PATH and SHA are the retained Handbook checkout and candidate revision, and SNAPSHOT is the returned resourcePath. Quote paths for the active shell.
+
+~~~text
+node scripts/handbook.mjs resources --path PATH --revision SHA
+npm run handbook:sync -- --source SNAPSHOT
+npm run handbook:entrypoints -- --source SNAPSHOT
+npm run handbook:ready
+~~~
+
+Run the same sync again and verify zero writes. Start a task pinned to revision A, advance the available baseline to B and verify that its delegated role still resolves A. A new task may use B. Exercise both source and adopter with ordinary prompts that omit skill names. Inspect which rules and role actually loaded. In available fresh Codex and Claude sessions, run the frozen cases and compare outcomes with the baseline. Report native behavior, structural evidence and unavailable cases separately. Numeric pilot thresholds and claimed savings require measured evidence.
+
+Apply the existing large-checkpoint procedure at each checkpoint. Run affected checks once and provide both read-only reviewers the same state and results. Disclose same-agent fallback if needed. The final pair covers the full diff against the implementation base, including docs, generated files, upgrades and acceptance results. Continue between checkpoints when prerequisites hold. Record any unavailable native acceptance separately and identify the client and action needed to finish it. A live adopter rollout begins only after Handbook publication and selection of the target repository.
+
+## Workflow ownership and checkpoint exits
+
+Use [maintain-project](../../../.agents/skills/maintain-project/SKILL.md) for both a new adoption and reconciliation. Update its bootstrap and entrypoint step and the onboarding maintenance table to identify shared-role generation, copied-helper upgrade, source-aware check, and customized-wrapper recovery. Use [maintain-docs](../../../.agents/skills/maintain-docs/SKILL.md) for named template updates. Add the route to [templates](../../templates.md) and reconcile the source map and provenance through [sync-docs-issues](../../../.agents/skills/sync-docs-issues/SKILL.md). Preserve consumer-owned adapters, source maps, templates, native selection and tracking. Reconcile existing contradictory review-count language in engineering guidance, the large-work procedure and any skill or role that repeats it. Keep discovery pointers in the domain index, local entry points and generated wrappers short. Use a source-aware dry comparison before and after sync. Treat unrelated legacy warnings under the existing advisory policy.
+
+| Checkpoint | Exit evidence and continuation |
+| --- | --- |
+| 1 | Run `node --test test/guidance.test.mjs`. Freeze inputs and comparator base before editing rules. Continue with structural work if no native client is available. Record which baseline runs must be recovered from the retained base. |
+| 2 | Trace source and consumer bootstrap → selected skill → policy → role or QA template for all seven requirements. Run the fingerprint fixtures, workflow fixture check and `npm run check` after the reviewed lock update. Continue after checkpoint review. |
+| 3 | Run `node --test test/integration.test.mjs test/helpers.test.mjs` and both source sync/drift commands. Keep existing coverage of default-on routing, independent opt-outs, edited blocks, formatter-stable spacing, CRLF and untitled AGENTS files. Cross the reviewer pilot with both defaults enabled and both disabled. Verify pilot-only toggles preserve startup content. Include older helper with new shared prose, newer helper with old snapshot, disabled pilot, source-free sync, customized wrapper/hook, missing role and an interrupted sync followed by a retry. Each preserves a usable previous route or reports its exact missing prerequisite. Continue after checkpoint review. |
+| 4 | Run `npm run validate` and `git diff --check` on the final state. Inspect warnings as well as exit codes. Run fresh Codex and Claude sessions in Handbook and the disposable adopter. Record adapter, effective revision, selected workflow/role and observed outcome for each client and repository kind. For the pilot, record effective model from client evidence or mark it unverified. Finish deterministic work when its checks pass. Native acceptance stays pending for each unobserved route. An unavailable measurement prevents a savings claim. |
+
+Use an isolated disposable repository and the existing fixture origin injection for automated Git trials. For manual launcher trials use the expected canonical origin and a retained committed candidate. Never point a real adopter at an unpublished candidate or change its integration to demonstrate the plan. A rejected refresh candidate retains the last usable baseline. A drift warning from entrypoint sync requires reconciliation and does not roll back the baseline. Recover generated integration files by reconciling the reviewed prior helper and snapshot on the consumer work branch, preserving local edits. A new checkout with no usable baseline follows normal setup/recovery. Before merging a Handbook policy change, obtain the existing repository-admin approval under the contribution policy. Start a real rollout only with an authorized target and the published revision.
+
+## Unattended delivery by Sol Medium
+
+Use Sol at medium reasoning effort as the parent. Start from the local checkout containing both planning files. Verify origin, branch and working tree, then preserve the accepted planning files in a local commit before integrating current origin/main. When the owner explicitly accepts untracked delivery for this task, use the existing task/plan-handbook-workflow-adoption branch as the implementation and PR branch. Otherwise follow the tracked branch procedure above. The executing user's goal supplies session authority for the named actions. A copy of this document alone supplies none.
+
+Run checkpoints 1–4 in order. At each exit, retain the branch, source and diff identities, exact checks, findings and next operation in the progress section. Correct every confirmed in-scope defect, including actionable Medium findings. Triage external review feedback against the same acceptance criteria. Keep preferences, unrelated defects and unverified suggestions visible as dispositions. Follow the Handbook repeated-blocker escalation rule. After corrections, rerun affected checks and the required reviews of the revised content. Use the final checkpoint pair for the integrated prepublication review.
+
+For publication, verify the canonical origin, push the work branch and create or update one ready PR targeting main. Use the existing template, request admin-team review and record the owner's qualifying policy approval when verified. Read back the remote head, base, full PR diff, reviews, threads and CI. Reuse valid review evidence for unchanged content and inspect the published PR for new findings. Fix confirmed in-scope findings and CI failures on the same branch. If main advances, integrate its current tip and revalidate the resulting diff. Monitor outstanding required checks and reviews. After an ambiguous remote operation, read its outcome before retrying.
+
+Merge using a normal merge commit guarded by the exact reviewed head after all required checks and approvals pass and actionable in-scope findings are resolved. Verify the merged PR, merge SHA and inclusion on canonical main. Fetch the actual target, safely refresh the local reference and verify the post-merge validation run. Disclose unavailable native observations and cost data exactly as specified above. An observed workflow failure remains a defect. Keep live adopter rollouts outside this delivery.
+
+## Verified progress and resume
+
+The approved planning files are in `988cf61`. The owner authorized untracked
+delivery on this work branch and the branch contains the fetched integration
+base. The approved plan fingerprint is
+`e43869c1e62360de03a4619ca3a2a8162d63e7ee2c118e2211a3091f297ac801`.
+The PRD fingerprint is
+`27d13dc0775d66a544e98c6b390e2082095c5f99711f29db4ee0958ff257a9d1`.
+Both matched after progress updates. Checkpoints 1 and 2 are in `0e15ebd`. Two separate read-only reviewers
+passed each checkpoint after corrections. The guidance suite passed 9 tests,
+the structural check passed, and the staged diff passed whitespace checks.
+The Codex CLI reported no active login and Claude Code was unavailable. Native
+baseline and candidate observations remain pending. Retain the frozen fixture
+revision for later comparison.
+
+Checkpoint 3 is in `789e7a8`. Two independent read-only passes cleared the
+corrected diff. The disposable Git helper cases passed, including candidate
+role validation and the A/B retained-role check. The final integration run
+passed all 30 tests, and source sync produced zero writes.
+
+In checkpoint 4, both the copied `dc22bea` helper and the `789e7a8` helper
+successfully installed from the committed `789e7a8` snapshot in disposable
+adopters. Both were ready, reported no source-aware drift, and wrote nothing
+on repeat sync. The old helper retained the shared skill route and the new
+helper also installed the pinned native reviewer. These runs provide
+structural evidence. Fresh native-client sessions and comparable cost
+observations remain pending for the limitations above.
+
+The integrated review corrected the paired-review route for smaller changes,
+the fresh reviewer fallback, fingerprinting of ambiguous Markdown fences,
+and protection against dangling reviewer links. The affected suite passed
+39 cases. Its dangling-file-link case requires Windows symlink privileges and
+was skipped locally. The Linux CI run covers that case. Both reviewers cleared
+the corrected scope. Full validation and publication evidence follow in the PR.

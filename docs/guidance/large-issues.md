@@ -1,6 +1,9 @@
 # Large-issue delivery
 
-Read this only for work routed as Large by [engineering guidance](engineering.md#choose-the-workflow).
+Use this procedure for work routed as Large by
+[engineering guidance](engineering.md#choose-the-workflow). For smaller
+work routed to paired review, use only the review instructions in
+[checkpoint execution](#checkpoint-execution).
 Existing [authority](../work-policy.md#agent-authority) and client limits apply at every
 stage. Reuse accepted requirements and plans; do not repeat an interview or recreate
 artifacts that already meet the stage's exit criteria.
@@ -54,6 +57,25 @@ does not grant push, PR, merge, deployment or access-change authority.
 
 ## Checkpoint execution
 
+For an excerpt handoff, record the repository, path, approved commit when available
+and SHA-256 of the approved plan and its governing PRD. Run
+`node SNAPSHOT/.agents/skills/compile-feature-spec/resources/fingerprint.mjs plan FILE`
+and repeat with `prd` for the requirements. Use the approved copy and verify against
+the current copy before relying on an excerpt. The plan hash excludes the final
+Verified progress and resume section. Keep instructions above that heading.
+Use level-three headings or deeper for progress subsections and avoid lines of
+hyphens or equals signs that can be read as a new top-level heading.
+With ambiguous markup such as raw HTML or indented fences, the helper hashes
+the whole file.
+Compare the whole plan after an edit to such a file.
+Retain an exact approved copy in the existing handoff when no commit exists.
+A missing or changed identity requires comparing the full affected artifact.
+Return material changes to the owner for approval.
+
+Carry the retained Handbook revision, branch, current checks and findings, live
+operation handles, and approval provenance in the existing progress or handoff.
+A fresh session obtains its own session-scoped authority for pending actions.
+
 Before implementation, confirm the active mode permits changes, the accepted PRD and
 plan are available, prerequisites are usable, and execution authority is established.
 Recommend an explicitly requested Goal for each checkpoint when the client supports it.
@@ -69,7 +91,9 @@ unavailable required verification or manual action, authorization gaps, or stall
 progress under [review completion](engineering.md#review-completion). Honor runtime
 stopping conditions and goal-state rules; do not claim completion when interrupted.
 
-Each checkpoint needs two clean read-only reviews of the same state. The parent runs
+Each checkpoint needs two clean read-only reviews of the same state. Apply the
+same review procedure outside large work when the
+[risk-based route](engineering.md#review-completion) calls for a pair. The parent runs
 required checks once and gives both reviewers the same revision, diff, criteria and
 results. Prefer two independent fresh-context reviewers. Run them concurrently
 when authorized and supported, or sequentially if the client supports only one

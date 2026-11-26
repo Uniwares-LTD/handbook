@@ -244,6 +244,7 @@ until selection is authorized. Current Handbook project.json remains local-only.
 | Shared procedure or technology reference | Normal baseline refresh; no wrapper rewrite |
 | docs/consumer-bootstrap.md | Explicit sync updates `.agents/handbook.md` only |
 | Selected skill discovery metadata | Explicit sync updates the corresponding Codex and Claude wrappers |
+| Shared reviewer entrypoint or tier | Reconcile the copied integration helper and explicitly sync from a reviewed snapshot |
 | Launcher or integration helper | Review and reconcile copied scripts, then explicit sync |
 | Consumer adapter, source map or templates | Consumer-owned edit; never bulk replacement |
 
@@ -287,6 +288,34 @@ reviewed local snapshot after updating the consumer copy of
 Offline readiness reports a missing or drifted block or hook. Source-aware entrypoint
 checks also detect text drift. Verify a fresh Claude session shows the guide at startup.
 `handbook:check` output also lists the shared start reads (`mustRead`) and a `next` step.
+
+## Shared reviewer and optional tier
+
+Source-aware sync installs a managed read-only Claude reviewer from the
+reviewed snapshot when the consumer bootstrap is intact. The reviewer reads
+its task's retained Handbook revision. A consumer-owned reviewer or customized
+wrapper keeps its name. Use the shared contract through a generic read-only
+handoff or the documented review fallback in that case. The same handoff
+works when native reviewer registration is unavailable.
+
+Set `"agentTierPilot": true` in Handbook or a consumer to request Sonnet in
+the managed Handbook reviewer. The default omits the model field. A Claude
+per-invocation model choice takes precedence over the generated alias. The
+generator also defers to a subagent model set in project `.claude/settings.json`
+or `.claude/settings.local.json`.
+User-level or process model defaults may have lower precedence than the wrapper.
+If relying on one, leave the pilot off or use an explicit invocation choice.
+Check the effective model in the client.
+For consequential design or implementation choose higher capability when the
+client exposes a supported choice and the user permits it.
+[Claude Code subagent model selection](https://code.claude.com/docs/en/sub-agents#choose-a-model)
+
+After changing the setting in a consumer, reconcile the local helper and run
+`npm run handbook:sync -- --source SNAPSHOT` followed by
+`npm run handbook:entrypoints -- --source SNAPSHOT`. Set it to false or remove
+it and sync to remove the generated model field. An older snapshot or sync
+without a source preserves the installed shared wrapper. Reviewer selection
+and tier do not change the startup hook or session contract settings.
 
 ## Recover an older helper after a skill rename
 

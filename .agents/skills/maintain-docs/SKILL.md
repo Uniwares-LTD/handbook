@@ -35,6 +35,8 @@ first, then use `--update` with the named file.
 
 Run `npm run handbook:ready` and the repository's own link or docs checks after changes.
 
+For standalone manual test plans, follow the [manual QA guidance](../../../docs/guidance/engineering.md#manual-qa-plans).
+
 ## Workflow contract
 
 Trigger: Setting up a repository's documents or templates, writing or restructuring a document, or refreshing a template.

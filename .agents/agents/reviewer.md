@@ -10,7 +10,9 @@ applicable instructions. For a fresh-context raw pass, inspect source before rea
 the plan, implementation summary or earlier findings. Then use the plan and validation
 evidence to verify findings and compare scope. These phases count as one review pass.
 
-In a paired review, use the shared revision and validation evidence from the parent.
+Use the [session economy rules](../../docs/guidance/engineering.md#delegation-and-session-economy).
+In a [paired review](../../docs/guidance/engineering.md#review-completion),
+use the shared revision and validation evidence from the parent.
 Report missing or stale verification to the parent and leave build and test runs
 to the parent. Collect findings independently of the other reviewer.
 
@@ -33,6 +35,7 @@ review rounds. Only Blocking findings restart the fix loop.
 The [simplicity baseline](../../docs/guidance/engineering.md#simplicity-baseline) is
 part of acceptance. To block unnecessary complexity, identify an open implementation
 decision introduced by this change and a concrete, materially simpler alternative
+with equivalent failure handling and retry behavior where applicable
 that meets the same requirements. Cite the affected code and evidence from related
 paths, flows and relevant platform capabilities, including checked downstream effects.
 Compare total implementation and maintenance burden; fewer lines or moving complexity

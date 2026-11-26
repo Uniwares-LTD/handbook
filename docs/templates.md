@@ -37,6 +37,9 @@ The lessons-learned template stays with the capture-project-learnings skill.
 
 ## Finding and using a template
 
+Use the [manual QA guidance](guidance/engineering.md#manual-qa-plans) for an
+optional PR test flow or a standalone test plan.
+
 1. Use the repository's local copy when one exists. The repository guidance lists its
    template locations; for an issue body that is the matching `.github` form.
 2. Otherwise read the shared starter at the task's Handbook revision, for example

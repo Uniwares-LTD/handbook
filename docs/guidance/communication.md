@@ -94,6 +94,8 @@ applies.
 Select the applicable workflow for each new request. Consult the canonical catalog
 and the repository's local guidance. Load the skill and the current stage contract
 when they apply. A read-only lookup can stay in the normal conversation.
+For orchestration, follow the engineering guide's delegation and session economy
+section at the retained Handbook revision.
 
 Load the selected skill in the current session before its first action, then name it
 once. Naming a skill without loading it does not count. A skill does not carry over to

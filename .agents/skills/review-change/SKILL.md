@@ -25,15 +25,20 @@ a separate pass by the same agent from genuinely independent-agent review.
 When the client supports it and the session authorizes delegation, collect raw findings
 in a fresh context given the diff, base, acceptance criteria, repository guidance and
 access to relevant source, without the implementation summary, plan or earlier findings.
-The generated read-only `reviewer` subagent serves this where supported. Otherwise label
-the result "cold-review fallback". After raw collection, read the plan and verification
+Use the generated read-only `reviewer` where supported and verified to route to
+the task's retained contract. If native registration is unavailable or a local
+role owns the name, use a generic fresh read-only reviewer with the pinned shared
+contract when supported and authorized. If fresh review is unavailable, label
+the separate local review "cold-review fallback". After raw collection, read the plan and verification
 evidence to check scope and acceptance; this second phase is part of the same review
 pass, not a second clean review. Then verify each finding
 against the code and give it one verdict (Confirmed, Plausible, Pre-existing, Not
 confirmed) and one tier (Blocking, Medium, Informational) as the reviewer contract
 defines. Report Not confirmed findings only as discarded.
 
-The [workflow](../../../docs/guidance/engineering.md#review-completion) determines
+For manual test flows review coverage and tester burden against the
+[manual QA guidance](../../../docs/guidance/engineering.md#manual-qa-plans).
+The [risk-based workflow](../../../docs/guidance/engineering.md#review-completion) determines
 the required pass count. Review stays read-only; return findings to implementation for
 fixes. Record the reviewed state and evidence without creating extra issue comments.
 

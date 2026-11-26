@@ -4,7 +4,7 @@
 
 - [Refresh helper](../scripts/refresh-handbook.mjs): shared cache, cooldown and candidate checks.
 - [Consumer launcher](../scripts/handbook.mjs): committed helper loading and revision resources.
-- [Integration tooling](../scripts/handbook-integration.mjs): offline readiness, entrypoint sync, the AGENTS.md session contract and Claude workflow routing.
+- [Integration tooling](../scripts/handbook-integration.mjs): offline readiness, entrypoint sync, the AGENTS.md session contract, Claude workflow routing and managed reviewer discovery.
 - [Enrollment helper](../scripts/enroll.mjs): existing assigned issue enrollment.
 - [Issue creation helper](../scripts/create-issue.mjs): approved issue creation with project enrollment.
 - [Access check](../scripts/org-access.mjs): read-only organization team and permission gap report.
@@ -20,6 +20,8 @@ shared project procedures; [organization access](organization-access.md) defines
 default teams and permissions; [local operations](uniwares-project.md) describe Handbook's existing organization project. Consumer tracking is never selected from this map. [Domains](guidance/README.md) route reusable guidance; engineering owns operational handoff/evidence principles and communication owns operator instruction format.
 [Engineering](guidance/engineering.md#choose-the-workflow) owns proportional routing and
 review completion and the [simplicity baseline](guidance/engineering.md#simplicity-baseline);
+it also owns [session economy](guidance/engineering.md#delegation-and-session-economy)
+and [manual QA planning](guidance/engineering.md#manual-qa-plans).
 [large-issue delivery](guidance/large-issues.md) supplies the conditional
 interview, PRD and checkpoint procedure. [Templates](templates.md) define permissive starters and their use.
 [Onboarding](onboarding.md) defines integration; [provenance](../PROVENANCE.md) records imports.

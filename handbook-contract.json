@@ -3,6 +3,8 @@
   "resourceIndex": "skills-lock.json",
   "requiredFiles": [
     "docs/bootstrap.md",
+    ".agents/agents/reviewer.md",
+    ".agents/agents/implementation.md",
     "docs/project-guidance.md",
     "docs/guidance/README.md",
     "docs/guidance/communication.md",

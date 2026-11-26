@@ -11,6 +11,10 @@ Checks run, read-only review, documentation impact and known limitations.
 
 ## Test flow (optional)
 
+Follow Manual QA plans in `docs/guidance/engineering.md` at the retained Handbook
+revision. For a heavy flow, identify setup owners and prerequisites. For
+records-only verification, name the authorized verifier.
+
 Name the environment, role, entry point, action or supported command, expected
 observable result, and acceptance criterion. Mark steps the environment cannot
 exercise as unverified. Remove this section if unused.

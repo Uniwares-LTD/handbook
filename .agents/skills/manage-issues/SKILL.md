@@ -47,6 +47,9 @@ within authorization. On uncertain API outcomes, inspect state before retrying a
 avoid duplicate items/comments. No bulk backlog migration or project configuration
 changes are implied by routine issue work.
 
+For an issue that contains a manual test plan, follow the
+[manual QA guidance](../../../docs/guidance/engineering.md#manual-qa-plans).
+
 ## Issue evidence files
 
 For an authorized issue upload, identify the exact issue and files. Inspect each
